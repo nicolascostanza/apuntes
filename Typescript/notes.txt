@@ -1,0 +1,80 @@
+* sintaxis tsx ---> const variable: <tipo de variable> = valor asignado a la variable
+* tsc --init   ---> crea el archivo tsconfig.json  (aca podemos desactivar el error any)
+* tipos primitivos ts --> boolean, number, string, enum, null, undefined
+* tipos objetos ts ---> clases, interfaces, matriz, literales
+* ademas hay tipos parametros
+* void sirve para indicar la ausencia de un valor, ejemplo una funcion q no retorna nada
+* sintaxis enum:
+    enum NombreDeEnumeracion {
+        'opcion 1',
+        'opcion 2',
+        'opcion 3',
+        'opcion 4',
+    }
+* type any significa q permite cualquier tipo de dato
+* type :unknown  ---> pasa cuando no sabes al momento de iniciarlizarlo q tipo de dato va a ser. Este tipo no te permite acceder a propiedades de la variable, ejemplo:
+* let nombre: unknown = 10, y luego no se puede acceder a nada mediante nombre. blablabla
+* tambien podes hacer una asercion de tipos. ejemplo:
+    let variable: unknown = 10;
+    variable = 'mateo';
+    (variable as string).toLowerCase() || (<string>variable).toLowerCase()
+* podemos usar el caracter | para permitir mas de un tipo de dato. Ejemplo:
+    let sueldo: number | string = 'hola me podes cambiar a numero'
+* interfaz ---> es un contrato q hacemos de que debe tener ciertos valores cada campo con su tipo de dato. Ejemplo:
+    interface Employee {
+        employeeId: number,
+        name: string
+    }
+    inferface Manager {
+        isActive: boolean
+    }
+    let pedro: Employee = {
+        employeeId: 123846,
+        name: 'pedrito'
+    }
+* tenemos la interseccion, sirve para agregar dos tipos de interfaces a una variable. Siguiendo el ejemplo de arriba mostramos abajo esta implementacion.
+    let pedro: Employee & Manager = {
+        employeeId: 123846,
+        name: 'pedrito',
+        isActive: true
+    }
+* ademas podemos crear typos. Entonces siguiendo el ejemplo de arriba mostramos abajo.
+    type EmployeeManager = Employee & Manager
+    let person: EmployeeManager = {
+        employeeId: 311,
+        name: 'javier',
+        isActive: true
+    }
+* rescriccion literal (puede hacerse esto con boolean, string, number) ejemplo:
+    type answer = 'yes' | 'no' | 'maybe'
+    let result: answer = 'maybe'
+* para arrays la sintaxis es (tipo de dato de los elementos dentro del array):
+    let nameArray: number[]= [1,2,3]
+* para los hooks en react tenes en el useState por ejemplo, el primero el valor y en el segundo una funcion
+* para definir una tupla ponemos (la tupla son solo 2 elementos):
+    let nameTupla: [string, number] = ['nico', 24]
+* cuando pasamos el e como evento ---> en los parametros de la funcion
+le ponemos e: React.ChangeEvent<HTMLInputElement>
+si tenemos un click es React.MouseEvent<HTMLButtonElement>
+
+podemos poner el archivo types.ts
+y desp importamos en donde quedamos ej: import type {nameInterface} from './types'
+para darle las props a un componente le damos ej:
+const nombreComponente. React.VFC<PropsInterface> = ({propeidades...}) => {
+codigo...
+}}
+
+en el componente app le importamos import type {AppProps} from 'react ??'
+
+diferencia de React.VFC y React.FC es q el .fc te dice q vas a recibir
+implicitamente la prop children
+
+
+
+
+
+
+
+
+
+

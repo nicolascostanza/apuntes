@@ -1,0 +1,235 @@
+INICIALIZAR FIREBASE
+    * para inicializar firebase, debemos ir en internet al sitio de firebase, crear una app y ahi te da los comandos con tus credenciales para iniciar un proyecto con firebase.
+    * una vez obtenidos los datos sensibles. En el codigo pones
+    CODIGO:
+    import {initializeApp} from 'firebase/app'
+    const firebaseConfig = {
+        // todas las variables sensibles q tenes con sus valores
+    }
+    initializeApp(firebaseConfig)
+
+INICIALIZAR FIRESTORE
+    CODIGO:
+    import {getFirestore} from 'firebase/firestore'
+
+    const database = getFirestore()
+
+CRUD
+
+1) READ:
+    * el snapshots.docs.data() te trae toda la data de los documentos menos su id.
+    * Para obtener el id de un documento hacemos snapshots.docs.id
+    CODIGO:
+    import {getDocs, collection} from 'firebase/firestore'
+
+    const colRef = collection(database, 'nombre de la collecion')
+    getDocs(colRef).then((snapshots)=> {
+        // aca tenes todos los documentos de la collection
+        console.log(snapshots.docs)
+        // asi obtenemos la data
+        let books = [];
+        snapshots.docs.forEach((doc)=> {
+            books.push({...doc.data(), id: doc.id})
+        })
+    })
+
+2) ADD:
+    * addDoc recibe dos parametros, el primero es la referencia a la colleccion y la segunda es un objeto con los campos q tiene el nuevo objeto a agregar
+    CODIGO:
+    import {addDoc, collection} from 'firebase/firestore;
+
+    const database = getFirestore()
+    const docRef = collection(database, 'nombre de la colleccion en el store')
+    addDoc(docRef, objeto con los datos de cada campo).then(() => console.log('todo ok')).catch((e) => console.log(e, 'error'))
+
+3) EDIT:
+    * update doc recibe dos parametros la referencia del documento y el objeto modificiado
+    CODIGO:
+    import {updateDoc, doc} from 'firebase/firestore;
+
+    const docRef = doc(database, 'nombre de la collection en firestore', idDelDocumentoAEditar)
+    updateDoc(docRef, { objeto con los valores q queres sobreescribir})
+
+4) DELETE:
+    * el doc del import referencia el documento a eliminar
+    * la funcion doc recibe 3 parametros, 1 la database o db, segundo la colleccion q estamos referenciando, y el tercero es el id del documento q queremos borrar
+    CODIGO:
+    import {deleteDoc, doc} from 'firebase/firestore;
+
+    const docRef = doc(database, 'nombre de la collection en el store' , idDelDocumentoABorrar)
+    deleteDoc(docRef).then(()=> console.log('todo ok')).catch((e) => console.log('error', e))
+
+ACTUALIZACION EN TIEMPO REAL DEL STORE
+    * el primer parametro puede ser una collection o un documento en particular, hasta puede ser un campo de un documento
+    * onSnapshot recibe dos parametros, el primero es la referencia a la colleccion y el segundo es una funcion q se dispara cada vez q cambia el store de firebase.
+    CODIGO:
+    import {onSnapshot} from 'firebase/firestore'
+
+    const colRef = collection(database, 'nombre de la collecion')
+    onSnapshot(colRef, (snapshots) => {
+        // aca tenes todos los documentos de la collection
+        console.log(snapshots.docs)
+        // asi obtenemos la data
+        let books = [];
+        snapshots.docs.forEach((doc)=> {
+            books.push({...doc.data(), id: doc.id})
+        })
+
+QUERYS O FILTRADO DE DOCUMENTOS DEL STORE
+    * where se usa dentro de query
+    * la funcion query recibe 2 parametros, la primera es la collection ref y el segundo es la funcion where q importamos
+    * where recibe 3 parametros --->
+    1° es el nombre del campo o field q queremos traer. Ejemplo: 'email'
+    2° es el operador o la comparacion. Ejemplo: '=='
+    3° el valor al que debe responder la comparacion. Ejemplo: 'niqo@gmail.com'
+    CODIGO:
+    import {query, where} from 'firebase/firestore'
+
+    const colRef = collection(database, 'nombre de la collecion')
+    const q = query(colRef, where('email', '==', 'niqo@gmail.com'))
+    // una vez q tenemos la query, le pasamos ese parametro al onSnapshot o al getDocs
+     onSnapshot(q, (snapshots) => {
+        // aca tenes todos los documentos de la collection
+        console.log(snapshots.docs)
+        // asi obtenemos la data
+        let books = [];
+        snapshots.docs.forEach((doc)=> {
+            books.push({...doc.data(), id: doc.id})
+        })
+
+QUERYS DEVUELTAS EN ORDEN, O ORDENAMIENTO DE LOS DOCUMENTOS
+    * al realizar esto DEBEMOS crear un index, luego de hacer el codigo de abajo si nos tira error vamos y creamos un index en firestore
+    * creamos la query pero esta vez le pasamos 4 argumentos
+    * orderBy se usa dentro de la query y le pasamos un parametro
+    * por default el orden es 'asc'
+    1° es el nombre del campo o field q queremos traer. Ejemplo: 'email'
+    2° es el operador o la comparacion. Ejemplo: '=='
+    3° el valor al que debe responder la comparacion. Ejemplo: 'niqo@gmail.com'
+    4° orderBy()
+    * al orderBy le pasamos 2 parametros
+    1° es el campo por el q lo queremos ordenar. Ejemplo: 'email'
+    2° 'asc' o 'desc' para q los ordene ascendente o descendente
+    CODIGO:
+    import {orderBy} from 'firebase/firestore'
+
+    const colRef = collection(database, 'nombre de la collecion')
+    // las dos lineas siguientes podemos elegir una, el where filtra y luego orderBy ordena o podemos solo ordenar todos los documentos
+    const q = query(colRef, where('email', '==', 'niqo@gmail.com'), orderBy('email', 'asc'))
+    const q = query(colRef, orderBy('email', 'asc'))
+    // una vez q tenemos la query, le pasamos ese parametro al onSnapshot o al getDocs
+     onSnapshot(q, (snapshots) => {
+        // aca tenes todos los documentos de la collection
+        console.log(snapshots.docs)
+        // asi obtenemos la data
+        let books = [];
+        snapshots.docs.forEach((doc)=> {
+            books.push({...doc.data(), id: doc.id})
+        })
+
+ORDENAR LOS DATOS QUE TE TRAES POR SU FECHA DE CREACION
+    * timesamps es para q lo ordene de la fecha de creacion
+    * cuando estamos creando y agregando los documentos a la collection le ponemos un campo del objeto que diga: createdAt: serverTimestamp()
+    * 'asc' va del primero q agregaste al mas nuevo (el mas nuevo lo deja ultimo)
+    CODIGO:
+    import {serverTimestamp} from 'firebase/firestore'
+
+    const colRef = collection(database, 'nombre de la collecion')
+    addDoc(docRef, objeto con los datos de cada campo)
+        .then(() => console.log('todo ok'))
+        .catch((e) => console.log(e, 'error'));
+
+    // una vez creados asi los ordenamos en la query
+    const q = query(colRef, orderBy('createdAt'))
+     onSnapshot(q, (snapshots) => {
+        // aca tenes todos los documentos de la collection
+        console.log(snapshots.docs)
+        // asi obtenemos la data
+        let books = [];
+        snapshots.docs.forEach((doc)=> {
+            books.push({...doc.data(), id: doc.id})
+        })
+    }
+
+OBTENER UN SIMPLE DOCUMENTO
+    * getDoc te trae un solo documento
+    * doc recibe 3 parametros, database, nombre de la collection, id del documento
+    CODIGO:
+    import {getDoc, doc} from 'firebase/firestore'
+    const docRef = doc(database, 'nombre de la collecion', id del documento)
+    getDoc(docRef)
+        .then((doc)=> console.log(doc.data(), doc.id))
+
+AUTENTICACION SETUP Y INICIALIZACION
+    * vamos a la tab de la pagina de firebase q dice authentication y le damos a iniciar
+    * elegimos el provider, hay nativos y agregados. Nativo ejemplo: email y password. Agregados ejemplo : google account
+    * lo ponemos activado
+    CODIGO:
+    // libreria de autenticacion
+    import {getAuth} from 'firebase/auth'
+
+    // esta auth la exportamos a donde queramos y tiene las funciones de autenticacion
+    const auth = getAuth()
+
+CREACION DE NUEVO USUARIO CON EMAIL Y CONSTRASEÑA
+    * cuando te registras automaticamente firebase te loggea y entras
+    * createUserWithEmailAndPassword recibe 3 parametros.
+    1° le pasamos el auth de la inicializacion del sistema de firebase autentication
+    2° email
+    3° password
+    CODIGO:
+    import {createUserWithEmailAndPassword} from 'firebase/auth'
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+            console.log(userCredentials.user)
+        })
+        .catch((err)=> console.log(err))
+
+LOGGIN
+    * signInWithEmailAndPassword le pasamos 3 argunmentos
+    1° le pasamos el auth de la inicializacion del sistema de firebase autentication
+    2° email
+    3° password
+    CODIGO:
+    import {signInWithEmailAndPassword} from 'firebase/auth'
+
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredentials)=> console.log('user logged in:', userCredentials.user))
+        .catch((err)=> console.log('error al loggearse', err, err.message))
+
+LOGOUT
+    * signOut recibe un parametro, la auth de la inicializacion del servicio de autenticacion
+    CODIGO:
+    import {signOut} from 'firebase/auth'
+
+    signOut(auth)
+        .then(()=> console.log('user logout'))
+        .catch((err)=> console.log('error al desloguearse', err))
+
+SABER SI ESTA LOGGEADO O NO
+    * tiene 2 argumentos, el auth de la inicializacion del servicio de autenticacion y el 2do es una funcion que se va a correr cada vez q la autenticacion del usuario cambie
+    CODIGO:
+    import{onAuthStatechanged} from 'firebase/auth'
+
+    // si el usuario no esta loggeado userCredentials es null
+    onAuthStatechanged(auth, (userCredentials) => {
+        console.log('cambio el estado del usuario en cuestion, se loggeo o desloggeo o registro', userCredentials)
+    })
+
+DARSE DE BAJA DEL SISTEMA DE AUTENTICACION O DE LA BASE DE DATOS
+    * las susbscripciones del sistema pueden ser los snapshots q te dan los datos cada vez q se actualiza o cambia la base de datos y tambien puede ser el sistema de autenticacion q te dice si esta loggeado o no
+    * para esto en todos los snapshots o auth states en vez de hacer la funcion le damos una const nombreVariable y lo igualamos a la funcion de snpashots o auth q teniamos
+    CODIGO:
+
+    // le asignamos una variable
+    const unSubCollection = onSnapshot(colRef, (snapshots) => {
+        // aca tenes todos los documentos de la collection
+        console.log(snapshots.docs)
+        // asi obtenemos la data
+        let books = [];
+        snapshots.docs.forEach((doc)=> {
+            books.push({...doc.data(), id: doc.id})
+        })
+    }
+    // para desubscribirnos y q no la ejecuten mas hacemos
+    unSubCollection()

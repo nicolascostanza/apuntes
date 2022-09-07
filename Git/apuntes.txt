@@ -1,0 +1,202 @@
+CLASS 01:
+    HAY 3 TIPOS DE CONTROLES DE VERSIONES: locales, centralizados(rcs-cvs-svn), distribuidos(git)
+    locales: es cuando creas carpetas por cada cambio q haces.
+    Hay controles de versiones locales y centralizados, la diferencia es q centralizados tienen un servidor al cual se le mandan los cambios
+    distribuidos: lo mejor de los 2 anteriores, podes tener versiones locales y tambien mandarlos a internet
+    hay 4 pags para usarlos: github, gitlab, bitbucket, sourceforge.net
+CLASS 02:
+    cuando pones git clone <url> podes agregarle desp el nombre de la carpeta donde lo queres clonar
+    para montar un github tuyo localmente, usar docker
+CLASS 03:
+    para ponerle git a mi carpeta le ponemos:
+        1) git init .
+        2) git add .
+        3) git commit -am "mensaje del commit"
+    Para trabajar con git desde VSCode vamos a la 3er pestaña
+    para usar git visualmente instalar tortoisegit, te da las funcionalidades en el boton derecho del mouse
+CLASS 04:
+    Se le llama HEAD, al ultimo commit realizado
+    git reset tiene 2 formas de operar, la forma dura o la forma blanda
+    si mergeas puede ser q se de q la master no haya cambiado desde q empezaste la rama q vas a fusionar o si puede q haya cambiado. Si cambio te hace un nuevo commit cuando usar git merge y ahi manda todo el cambio (fast-foward o recursive)
+    git flow es una forma de trabajar
+    GIT FLOW NORMAL: update --> change --> review --> commit
+    traducido git flow: git pull --> codeo y hago cambios --> git diff --> git commit -m blablabla
+    Hacer un fork es clonarme un repo ajeno en mi repositorio propio. Para eso vas al repo q queres y le das click al boton fork arriba a la derecha
+    en la carpeta .git tenemos la carpeta hooks (dentro estan el pre-commit, pre-push, etc)
+    Si al precomit.sample le sacas el .sample, se ejecuta cada vez q vayas a commitear
+    hay 3 hooks q son server side. Q ejecuta el servidor, osea github:
+        1) PRE-RECEIVE
+        2) UPDATE
+        3) POST-RECEIVE
+CLASS 05:
+    Habla solo de gitlab, no interesa por ahora
+CLASS 06:
+    para resoliver conflictos:
+        1) git pull de la rama q master o la q necesites
+        2) soluciono conflictos
+        3) git add .
+        4) git commit -m "texto"
+        5) git push
+    para volver a un estado anterior de la rama:  (esto no elimina la rama anterior)
+        1) git checkout <numerode commit>
+        2) git checkout -b <nombrede la nueva rama>
+    git reset tiene 3 opciones:
+        1) --soft   --> en el head
+        2) --mixed  --> en el staging area
+        3) --hard   --> en el repo
+    en git se trabaja con 3 arbol ---> head, staging area,
+CLASS 07:
+    git flow es un flujo de trabajo basado en ramas.
+    tiene varias ramas distintas:
+        1) master (la q sale a produccion)
+        2) hotfixes (se arreglan errores urgentes)
+        3) release branches (se arreglan bugs y se prepara para salir a produccion)
+        4) develop (rama principal de desarrollo)
+        5) feature branches (aca se crean para las nuevas funcionalidades, una vez terminadas se mergean a la rama develop)
+    para el desarrollo se trabaja en ramas features/nombre de lo q se haga. Esa se desarrolla y una vez terminada se envia a la rama develop. Que seria como la master pero de la parte de desarrollo
+    la master es la q sale a produccion
+    la rama release se usan para preparar una salida a produccion. En esta solo se meten bugfixes, NO SE AGREGAN NUEVAS FUNCIONALIDADES, solo se corrige para salir a produccion
+    cuando mergeamos la rama release a la rama master DEBEREMOS TAGUEARLO. example: v1.0
+    los tags se agregan cada vez q se agrega algo a la rama master q es la q sale a produccion
+    una vez terminado los hotfixes se envian a la rama master y a la rama develop
+    para esto usamos git flow, q ya viene integrado con git
+    como usar git flow ?
+        1) en la carpeta que queramos ponemos git flow init (te hace preguntas para crear las ramas)
+        2) para crear una nueva funcionalidad pones git flow feature start nameNewFuncionaliti
+        3) para terminar la funcionalidad ponemos git flow feature finish nameNewFuncionaliti
+CLASS 08:
+    la integracion continua ---> es un proceso por el cual continuamente vamos a ir integrando nuestro cambios al producto. Es automatizado. Generalmente cada 30 minutos o cada X tiempo. Uno de los pilares es q nuestro codigo tiene q estar versionado
+    CI
+        -> X tiempo, verificamos los ultimos cambios
+            -> el codigo debe estar en un repositorio. Este repo debe ser versionado
+    para esto lo delegamos a un software. Ejemplos: jenkins (por exelencia)
+    CD ---> continious delivery, entrega continua. Enfoque donde pasamos rapidamente nuestros cambios a produccion (deben tener cambios pequeños, todo lo contrario a gitflow). Applicaciones web es normal usarlo (en front y back). Habitualmente se hace en etapas. Generalmente al principio se publican los cambios a usuarios especiales q tienen otro tipo de permiso para visualizar los cambios. DEBEMOS tener un flag q nos permita desactivar inmediatamente esta feature.
+    CI ---> equipo de desarrollo, control de versiones y construccion y test unitarios. Luego se va a automated acceptance tests(son tests de funcionalidad)(se usa selenium, postman, etc).
+    Teamcity ---> para ci
+    pipeline ---> es una lista con una serie de pasos a ejecutar
+    En github una ves linkeado todo vamos a setings webhooks, y te muestra en recent deliveries todas las cosas q se disparan cuando se hace una pull o un push. Hay q codearlo a mano el pipeline.
+    JENKINS ---> jenkins.io
+CLASS 09:
+    github actions ---> CI/CD hecho dentro de github.
+    Las acciones se disparan cuando suceden eventos dentro de githubs
+    eventos --> jobs --> steps --> actions --> runners
+    los worksflow se crean en nuestro repo (carpeta .github y adentro otra carpeta q se llama workflows)
+    En el archivo create se le da un nombre.
+    Despues en on: Se le crean los eventos.
+    github actions tiene secrets ---> para variables sensibles. Vas a settings y despues a Secrets y ahi tenes la lista. La sintaxis es secrets.<nombre q le pusiste>
+    cada vez q se dispara un evento (push, pull, commit, o lo q quieras), el repo va a la parte de actions q lee la carpeta worksflow q tiene adentro los archivos .yml  --> esos archivos son los workflows q tenemos y q podemos codear a gusto para hacer nuestro ci o cd
+CLASS 10:
+    los pipelines se ejecutan a travez de runners.
+    los runners son programitas que estan instalados en diversas maquinas q estan constantemente mirando que se tenga q ejecutar un pipeline y cuando se tiene q ejecutar un pipeline, el runner q este libre agarra el archivo gitlab-ci.yml y procesarlo y disparar las acciones q tiene. Son los q ejecutan el trabajo
+    tenes los stages: q pueden ser: test, build, deploy
+    y desp en cada job(tarea(le pones el nombrew q queres)) le pones un stage con uno de esos 3 q definiste previamente
+    tambien esta la opcion only: q podes hacer q se ejecute solo con algo
+    tenes la seccion variables
+    tenes la opcion except q se hace excepto q haya alguna variable o cosa
+    tenes la parte de tags: y ahi le pones ejemplo: - windows  ---> se ejecuta si tiene esos tags el runner
+    tenes artifact tambien q te genera un archivo binario para descargar cuando termina el pipeline
+    y la parte script q codeas algun script
+    los jobs sirven para modularizar un poco el pipeline. Lo divide en partes, ejemplo, build y deploy
+CLASS 11:
+    - parallel ---> para q se ejecute en paralelo cada step
+    image: para ver con q lo ejecutas, lenguaje y version (creo)
+    example:
+    image: <nombre de la imagen>
+
+    pipelines:
+        <default lo ejecuta por default si no esta en ninguno de los siguientes casos>
+        default:
+            <Aca tenemos un paso q tiene un name y un script>
+            - step:
+                name:
+                script:
+                    - echo Hola
+                    - echo adios
+        branches:
+        tags:
+        bookmarks:
+        pull-requests:
+            <esto significa sobre cualquier rama, tambien podes especificar q rama, ejemplo: 'feature/TG-104'>
+            '**':
+                - step:
+                    name:
+                    script:
+                        - echo Estoy adentro de una pr
+                    <aca te guarda las cosas temporalmente, para descargarlo o usarlo despues>
+                    artifacts:
+                        - ./miprograma
+        custom:
+            default:
+                <estas variables las podemos usar dentro de los scripts, se usan poniendo $NombreVariable >
+                - variables:
+                    - nombreVariable: Nombre
+                    default: "Nicolas"
+COMANDOS:
+    *- git remote add <name{origin}> <link del repo>  para linkear la carpeta local con tus cambios a un repo en la nube
+    *- mkdit <nombre de la carpeta> crea una carpeta nueva en dnd estes parado
+    *- cd <carpeta> nos metemos en la carpeta seleccionada
+    *- git init .  (el punto indica esta carpeta, crea un repositorio de versiones aca)
+    *- git log ---> muestra todos los commits de esa rama
+    *- git diff ---> muestra las diferencias q hay
+    *- git config ---> sirve para cambiar la configuracion de git (se puede cambiar, globalmente (--global) o localmente(--local))
+    *- git config --global user.name <nombre elegido>  || user.email (cambia el email)
+    *- git config --list --global  || --list --local
+    *- git add . ---> agrega todo || git add <nombre del archivo> y agrega ese solo.   Esto es agregado al Staging area
+    *- git commit -a (el -a indica q commitee todo) (cuando se te abre ese documento editable arriba de todo podes ponerle el nombre)
+    *- :wq para guardar los cambios y salir
+    *- git init --bare aplication ---> aca es como un repositorio github pero localmente, aparte no podemos trabajar sobre el, solo leerlo. Aca lo creas. Para trabajar clonamos la ruta donde lo creamos en otra carpeta donde vayamos a trabajar
+    *- git tag -a <nombre descriptivo de la version. example: v1.0> <aca podemos poner el commit q queremos q sea el ultimo, si no pones nada te agarra el actual>
+    *- git push origin <nombre del tag> para pushear las etiquetas agregadas
+    *- git checkout <nombre de la rama o el tag>
+    *- git revert <hash del commit, con los 8 primeros alcanza> ---> esto te vuelve al commit elegido (no borra nada)
+    *- git rm <nombre del archivo>  ---> no lo borra, solo lo hace desaparecer. Se puede recuperar
+    *- git log --oneline ---> pone todos los comits en una linea
+    *- git reset --soft HEAD~<numero de commits hacia atras>   ---> APUNTA EL HEAD A OTRO COMMIT MAS ATRAS (ESTE NO BORRA LOS ARCHIVOS, SOLO BORRA EL HISTORIAL EN GIT LOG Y TE VUELVE AL ELEGIDO)
+    *- git reset --hard HEAD~<numero de commits hacia atras>   ---> TE VUELVE ATRAS EL HEAD AL COMMIT ELEGIDO Y ADEMAS TE BORRA LOS FICHEROS Q SE HAYAN AGREGADO DESPUES DE ESE COMMIT (SI en hard o en soft ~numerito no pones nada te borra lo hecho desp del ultimo commit hecho)
+    *- git bisect ---> te dice en q commit se pudo haber roto git
+    *- git bisect start ---> empieza la biseccion de lo q anda y lo q no
+    *- git bisect good <numero del ultimo commit bueno> ---> desp del start va este
+    *- git bisect bad <numero del ultimo commit bueno> ---> desp aca dnd dejo de funcionar
+    *- git blame <nombre del archivo q queres saber> ---> nos permite saber quien ha hecho que cosa
+    *- git branch <nombre de la rama nueva> ---> crea una rama nueva
+    *- git branch ---> muestra todas las ramas disponibles
+    *- git status ---> muestra el estado de los archivos y la rama q estas
+    *- git checkout <nombre de la rama a dnd queres ir> ---> cambia de rama
+    *- git checkout -b <nombre de la nueva rama> ---> crea una rama y te cambia a esa rama
+    *- git branch <nombre de la nueva rama> <numero del commit desde donde queres partir a la nueva rama>  ---> crea una nueva rama desde un punto anterior
+    *- git checkout -b <nombre nueva rama> <nombre de la rama q partis, puede no ser master> ---> crea una nueva branch desde otra rama q no sea la main
+    *- git merge <nombre de la rama q quiero fusionar a la q estoy actualmente>  ---> fusiona una rama con la q estoy ahora
+    *- git rebase <nombre de la rama q queremos mergear a la q estamos ahora>  ---> permite hacer un merge pero modifica el historial (git log) (bastante util pq deja un historial lineal)
+    *- git log --oneline --graph   ---> te muestra el historial con la bifurcacion de las ramas
+    *- git stash   ---> lo guarda para seguir trabajando en otra cosa, pero no lo commitea y tampoco lo borra. Lo deja en una "linea paralela"
+    *- git stash apply ---> aplica los cambios q no tenia commiteados sobre los actuales
+    *- git stash list ---> muestra una lista con todos los stash
+    *- git stash clear ---> borra los stash q teniamos una ves realizado el git stash apply
+    *- git stash save <"nombre para guardar este stash"> ---> guarda el stash con un nombre personalizado
+    *- git stash pop ---> va borrando los stash q tenemos guardados ,desde el ultimo para atras
+    *- git cherry-pick <hash del commit q quiero traer a esta rama, al menos 8 caracteres> ----> fusionar un commit en particular a otro commit. Para esto vamos a la rama q queremos traernos algo, vemos q commit es, luego cambiamos de nuevo a la rama q queremos traerlo y le hacemos ese comando
+    *- git cherry-pick <hash del primero q quiero traer>^..<numero del ultimo commit del intervalo>  ---> con esto traemos solo un INTERVALO DE COMMITS (ojo la sintaxis)
+    *- git cherry-pick <hash del primero q quiero traer>^..<numero del ultimo commit del intervalo>  ---> con esto traemos solo un INTERVALO DE COMMITS SIN INCLUIR LOS EXTREMOSS (ojo la sintaxis)
+    *- git pull origin <nombre de la rama que queremos traer>
+    *- git checkout -d <nombre de la rama a borrar>
+    *- git pull origin <nombre de la rama> ---> te trae lo ultimo de la rama para asi solucionar conflictos antes de pushear
+    *- git merge --abort ---> abortamos el merge
+    *- git branch -a ---> te muestra todas las ramas
+    *- git log --branches='*'  ||  --branches='<nombre de la rama q queres ver>'  ---> para ver todos los cambios de todas las ramas
+    *- git revert <hash del commit> <hash del commit siguiente a revertir, etc>  ---> para deshacer cambios al cual queres revertir (esto no elimina info tampoco). Crea un nuevo commit sin los cambios realizados en esos commits puestos
+    *- git commit --amend ---> cambia el nombre del commmit
+    *- git clean -n || -f  ---> limpia, elimina las carpetas q no esten staggeadas con git add (-n es para saber q pasaria, y el -f lo fuerza a hacerlo, y el -i te despliega un texto interactivo con opciones para eliminar)
+    *- git reset --hard <hash del commit a dnd volves>  ----> te borra todo, hasta el commit q fuiste
+    *- git reset --mixed --->  este es el por defecto, no hace falta poner el --mixed. Elimina todo lo q esta en el staging area pero no esta commiteado. todo lo q esta en git add . Te lo saca de ahi, pero no lo borra, lo deja sin agregar nomas
+    *- git reset --soft <hash del commit> ---> actualiza el head. No borra ni repo ni staging area. te "mueve" al estado de el commit q pusiste pero sin moverte de la rama dnd estas
+    *- !wq ----> guarda las opciones y sigue
+    *- rm <nombre del archivo> ---> borra el archivo localmente en dnd estas trabajando
+    *- git rm <nombre del archivo> ---> este si lo borra bien. Lo agrega como borrado al staging area
+    *- git flow init (te hace preguntas para crear las ramas)
+    *- git flow feature start nameNewFuncionaliti  ---> para crear una nueva funcionalidad
+    *- git flow feature finish nameNewFuncionaliti ---> para terminar la funcionalidad
+    *- git flow release start <nombre o numero de la version> ----> crea la rama release
+    *- git flow release finish '<nombre o numero de la version>' ---> termina el release
+    *- git flow hotfix start <nombre de la branch> ---> inicia el hotfix
+    *- git flow hotfix finish <nombre de la branch> ---> fin del hotfix
+    *- git commit -m "asdasd" && git push ---> eñ && ejecuta las dos cosas en una linea
