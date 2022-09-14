@@ -1,0 +1,111 @@
+-------------- ADJETIVOS POSESIVOS ----------------
+- indican posesion
+- tabla (sujetos / su posesivo):
+    - i ---> my
+    - you ---> your
+    - he ---> his
+    - she ---> her
+    - it ---> its
+    - we ---> our
+    - you ---> your
+    - they ---> their
+--------------- HAVE / HAS ---------------------
+- have significa tener
+- has para oraciones en simple present. No se usa en negativo ni en preguntas !!!
+- have para ---> i, you, we, they
+- has para ---> he, she, it
+-------------- ADVERBIOS DE FRECUENCIA ---------
+- never ---> nunca
+- rarely ---> raramente
+- sometimes ---> a veces
+- often ---> a menudo, con frecuencia
+- always ---> siempre
+-------------- TIEMPOS VERBALES ----------------
+PAST CONTINIOUS
+    - i was listening music
+    - Para hablar en el pasado continuo hay q usar el verbo to-be en pasado.
+    - presente: am, are, is
+    - pasado: was, were
+    - was se usar para el singular ---> i, he, she, it
+    - were se usa para el plural  ----> you, we, they
+    - el verbo to-be puede ser: ser o estar. en pasado se convierte a: estaba o era
+    - ejemplos:
+        i was playing --- yo estaba jugando
+        he was playing --- el estaba jugando
+        you were playing --- ustedes estaban jugando
+        they were playing --- ellos estaban jugando
+    - estructura:
+        pronombre(i, he, we, they, etc) + was/were + verbo en ing + lo q sigue
+    - para las preguntas se arranca CON WAS O were
+        - ejemplos:
+            Estabas durmiendo ? no, yo estaba pensando --- were you sleeping ? No, i was thinking
+PAST SIMPLE
+    - la diferencia del pasado simple con el continuo es q paso en el pasado y termino (past simple)
+    - en el pasado simple los verbos se le agregan el ed . Ejemplo: worked
+    - ejemplos:
+        - afirmativo: i worked
+        - negativo: i didn't work ---> aca tampoco cambia el tiempo verbal con ed. solo le agregamos el did (pasado del do)
+        - pregunta: did i work ?  ---> le agregamos el did al principio y con eso sabemos el tiempo verbal, no hace falta convertir el verbo. Si ademas a la pregunta le agregamos una palabra interrogativa, ejemplo: where, when, why, etc. quedaria al principio de todo esa palabra. ejemplo: where did i work ?
+    - cambio de verbos desde infinitivo al pasado simple:
+        - terminan en ed: walk ---> walked  (se les agrega ed, son los mas comunes)
+        - terminan en d:  use ---> used  (al terminar en e se les agrega la d nomas)
+        - terminan en y: cry ---> cried (si terminan en "y" se les saca la "y" y se les pone "ied")
+        - tienen un final consonante/vocal/consonante: stop ---> stopped (al terminar con esa estructura en el infinitivo se le repite la ultima letra y se le agrega "ed")
+    - pronunciacion:
+        - si termina en n,g,m,r,v,vocales ---> pronunciamos solo la "d" del "ed" final. Ejemplo: "learned" --> "lernd"
+        - si termina en k,s,p,f,ch,sh ---> le agregamos un "t" o "tuh". Ejemplo: "cooked" ----> "cookt"
+        - si termina en t,d ---> pronunciamos "ed"
+    - verbos irregulares:
+        - go --> went (ir)
+        - buy --> bougth (comprar)
+        - sell --> sold (vender)
+        - forget --> forgot (olvidar)
+        - sleep --> slept (dormir)
+        - teach --> taught (enseñar)
+        - speak --> spoke (hablar)
+        - hurt --> hurt (herir)
+        - know --> knew (saber)
+        - meet --> met (conocer)
+        - give --> gave (dar)
+        - writen --> wrote (escribir)
+PRESENT SIMPLE
+    - este tiempo verbal se usa en  casos como:
+        - cosas q son permantentes. Ej: we live in new york
+        - rutinas. Ej: i wake up at 6:00 am
+        - hechos. Ej: The sun rises in the east
+        - horarios (schedules). Ej: Our class starts at 9:00 am
+        - frecuencia. Ej: she always takes the bus
+    - si usamos adverbios de frecuencia deberiamos usar comunmente el presente simple
+    - Estructura de oraciones:
+        - afirmativas:
+            - i, you, we, they ---> el verbo sin 's'. Ej: we work
+            - he, she, it ---> se le agrega 's' al final del verbo. ACA ES EL UNICO LUGAR DONDE EL VERBO INFINITIVO SE MODIFICA. Ej: he works
+        - negativo:
+            - i, you, we, they ---> le agregamos el don't. Ej: we don't work
+            - he, she, it ---> agregamos el doesn't y le sacamos la 's' al verbo. Ej: She doesn't work
+        - question:
+            - ademas le podemos agregar la palabra q pregunta antes del do/does. Ej: What do you do?
+            - i, you, we, they ---> le ponemos el do antes del pronombre. Ej: Do we work ?
+            -he, she, it ---> le agregamos el does antes del pronombre y le sacamos la 's' al verbo. Ej: Does she work ?
+    - verbos en present simple:
+        - los comunes se le agrega "s" al final
+        - terminan en s,sh,ch,x en el infinitivo, se le agrega "es" al final
+        - terminan en consonante + "y". se les agrega "ies" al final
+
+
+min 23:00
+https://www.youtube.com/watch?v=Z19NAX_gWxI
+
+
+
+
+PRESENT CONTINUOUS
+
+A APRENDER:
+adverbios de frecuencia, ver todos
+verbos irregulares en el pasado
+
+
+
+
+

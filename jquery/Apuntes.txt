@@ -1,0 +1,22 @@
+- Jquery es para manejo de dom, lo importas abajo del body y antes de tus scripts propios
+- La sintaxis: $("el selecctor").Accion
+- Ejemplo: $('h1').hide() ---> esconde los h1
+- Lo primero q hacemos es esperar q el documento html cargue para poder usar jquery. Para esto hacemos: $('document').ready(function (){ //ACA EJECUTAMOS NUESTRO CODIGO JQUERY // })
+- Para seleccionar por ids la sintaxis es: $('#NombreDelId').AccionArealizar
+- Para las clases lo mismo: $('.claseElegida').AccionArealizar
+- Con los eventos se le pasa una funcion en la accion a realizar. ejemplo: $('button').click(function(){//codigo cuando hace click//})
+- accion: fadeOut() o fadeIn() ---> desaparece/aparece lentamente, como una transicion
+- accion: slideDown() o slideUp() ---> aparece/desaparece para arriba como animado
+- accion: animate({}) --> recibe un objeto con las animaciones que queres hacer
+- obtencion de valores de html. seleccionas el elemento que queres y le pones .text() o .html()
+- Tambien podemos capturar atributos. con la accion .atrr('nombre del atributo que queremos')
+- podemos convertir el texto de algun elemento capturandolo y dandole en la accion .text('texto que queremos ponerle')
+- accion: .append('lo que queres agregarle'). Lo agrega al final del elemento seleccionado
+- accion: .prepend('lo que queres agregar'). Lo mismo q el .append() pero al principio
+- para agregarle otro elemento desp del seleccionado usamos la accion: .after('aca pasamos el html q queremos agregar desp del elemento selecionado')
+- .before() ---> lo mismo q after pero antes
+- .remove() ---> remueve un elemento del dom
+- .empty() ---> vaciamos un elemento. Sigue existiendo pero vacio
+- .addClass('clase de css q le queres agregar')
+- .removeClass('saca la clase q le indiques de css')
+- .toggleClass('clase q queres usar de toggle') ---> esto hace q cada vez se active lo ponga o saque a la clase
