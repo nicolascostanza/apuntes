@@ -69,6 +69,16 @@ en el componente app le importamos import type {AppProps} from 'react ??'
 diferencia de React.VFC y React.FC es q el .fc te dice q vas a recibir
 implicitamente la prop children
 
+Ejemplo de como ponerle props a un componente en react:
+
+    interface BlogCard {
+    title: string;
+    url: string;
+    }
+
+    const BlogCard: React.FC<BlogCard> = ({ title, url }) => (
+        ... CODIGO
+    );
 
 
 
