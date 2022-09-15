@@ -1,8 +1,12 @@
 DROPDOWN
     * instalar paquete https://www.npmjs.com/package/react-native-dropdown-select-list
     * recibe 2 props obligatorias --> data y setSelected
-
-
+FLATLIST
+    * le pasas:
+        - la data como prop q es la info a renderizar
+        - el componente q queres dejar fijo como header ---> stickyHeaderIndices={[0]}
+        - El componente q va a quedar de encabezadoListHeaderComponent={() => <HeaderList />}
+        - el item q va a renderizar por cada vez q tiene un elemento del array data ---> renderItem
 
 
 

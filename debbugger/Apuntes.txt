@@ -1,0 +1,12 @@
+Para debuggear el codigo no se deben usar los console.log.
+primera opcion:
+    Para esto existe la cuarta pestaña del vscode en la cual podemos crear nuestro debugger
+    1) le ponemos Create a launch.json file
+    2) elegimos la opciones que queremos, sea nodejs, wepapp, etc
+    Para poner breakpoints tenemos q darle al puntito rojo al lado de cada linea del codigo
+segunda opcion:
+    apretamos f1
+    ponemos attach to node process y seleccionamos la de debuggin y elegimos el de --inspect
+tercera opcion:
+    si ponemos en la consola node --inspect archivo entry de lo q usamos, ej index.js
+    nos crea un puerto paralelo para el debugging entonces vamos a la 4 pestaña del vscode y le damos a  debugURL y ponemos la url del puerto para debuggear

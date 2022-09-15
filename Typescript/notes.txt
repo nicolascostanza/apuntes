@@ -80,11 +80,109 @@ Ejemplo de como ponerle props a un componente en react:
         ... CODIGO
     );
 
+-------------------- CURSO NINJA ---------------------
+SETUP TS
+	- 1) para instalar typescript vamos a la terminal y ponemos:
+			- si lo queremos global: npm install -g typescript
+			- si lo queremos en el proyecto: npm install typescript (preferentemente esta)
+	- 2) tsc <archivo en typescript q es el origen> <a dnd vamos a convertirlo en js>
+			- obs: si no esta el archivo a dnd vamos a mandarlo lo crea y si tienen el mismo nombre no hace falta ponerlo
+	- 3) para usar un watcher q compile cada vez q guardamos. Sintaxis:
+			- tsc <archivo en typescript q es el origen de lo q vamos a compilar> -w
+TIPOS
+	- cualquier tipo: let variableName: any
+	- no se sabe al momento de declararlo: let variableSinSaber: unknown
+	- string: let nombreVariable: string
+	- boolean: let nombreVariable: boolean
+	- number: let nombreVariable: number
+	- mixed: let nombreVariableMixed: number|string
+	- Array --->
+		* ARRAY DE NUMEROS: let arrayNumbers: number[]
+		* ARRAY DE STRINGS: let arrayStrings: string[]
+		* ARRAY DE BOOLEANS: let arrayBoolean: boolean[]
+		* ARRAY DE UNION DE TIPOS: let arrayMixed: (string|number)[]
+	- Object ---> hacemos una interface para decir q tipos debe tener ese objeto en cada campo
+	- Object ---> <Record<K,T>>   ---> K son las keys del objeto y T los values del objeto
+SETUP:
+	- carpeta public para lo q va a ser deployado, como index.html, styles.css
+	- carpeta src donde esta todo el codigo fuente q vamos a realizar
+	- pones en terminal tsc --init .Esto te crea el objeto de tsconfig.json para configurar las cosas q queres usar y cuales no
+	- en el tsconfig:
+		- "rootDir": './src'
+		- 'outDir': './public'
+		- al poner las 2 opciones de arriba, si ponemos tsc o tsc -w ya te compila todo bien
+		- para q solo incluya al compilar las carpetas q queremos, antes de cerrar el json de tsconfig, le ponemos "include":["carpetas q queremos incluir", "carpeta2 q queremos incluir"]
+FUNCIONES:
+	sintaxis:
+		* let getData: Function = () => { //codigo// }
+	paramtros en funciones:
+		* const add: Function = (a:number, b:number, c?: number|string){ //codigo// }
+			** el parametro c se le pone signo de pregunta para que sea opcional pasarlo o no
+			** podemos agregarle un valor por defecto poniendo ejemplo. (a: number = 0)
+		* si la funcion tiene return tenemos q ponerle desp de los parantesis de parametro los :number o el tipo q tenga el return
+		* si no retorna nada, desp de los parentesis se le pone :void
+TIPOS
+	- sintaxis ---> type StringOrNumber = string | number
+	- enum ---> type Names = 'nicolas' | 'carolina' | 'manuel'
+TIPO FUNCION
+	- let add: (a:number, b:number) => void;
+		* esto ya queda guardado como que add es una funcion flecha q tiene 2 parametros de tipo numero y q no retorna nada
+DOM Y CASTEOS
+	- si le agregamos al final del query selector o lo que sea el ! ---> significa q le decimos yo se que esto existe
+	- etiqueta form le damos el tipo ---> :HTMLFormElement
+	- etiqueta select ---> :HTMLSelectElement
+	- etiqueta input ---> :HTMLInputElement
+	- cuando pasas la e en un evento le pones e:Event
+CLASES
+	ejemplo:
+		Class Person {
+			constructor(private nombre: string, public detalles: string, readonly sueldo:number){
+				this.nombre = nombre;
+				this.detalles = detalles;
+				this.sueldo = sueldo;
+			}
 
+			format(){
+				return `${this.nombre} cobra ${this.sueldo}`
+			}
+		}
 
+		const firstPerson = new Person('nicolas', 'un tipazo', 723617)
 
+		// tambien podemos asignar arrays de clases
+		let personas: Person[] = [];
+PUBLIC, PRIVATE Y READONLY
+	- si le ponemos antes de la variable private no nos deja acceder de afuera al menos q este dentro de un metodo en el return
+	- si pones readonly antes de la variable no te deja modificarla
+	- sino por defecto viene public q te deja hacer todo
+	- las 3 opciones q podes usar adentro de las clases para cada variable de la clase son: public, private, readonly
+MODULOS
+	- para trabajar por modulos y exportar/importar clases, interfases y tipos tenemos q ir a tsconfig.json y en "target" poner "es6", y en "module" poner "es2015"
+INTERFACES
+	- la diferencia entre interfaz y clase es q la interface no sirve para crear sino para controlar q tenga cierto tipado el objeto
+	- ejemplo sintaxis:
+		inferface Person {
+			name: string;
+			age: number;
+			hablar(a:string): void;
+			gastar(a:number): number;
+		}
 
+		const me: Person = {
+			name: 'nicolas',
+			age: 24,
+			hablar(text: string): void {
+				console.log(text)
+			}
+			gastar(cantidad: number): number {
+				return cantidad
+			}
+		}
+INTERFACES CON CLASES
+	-
 
-
+quede aca
+https://www.youtube.com/watch?v=XPGFqx8Vg-Y&list=PL4cUxeGkcC9gUgr39Q_yD6v-bSyMwKPUI&index=17
+4:48
 
 
