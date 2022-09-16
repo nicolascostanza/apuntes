@@ -45,7 +45,7 @@ PAST SIMPLE
     - ejemplos:
         - afirmativo: i worked
         - negativo: i didn't work ---> aca tampoco cambia el tiempo verbal con ed. solo le agregamos el did (pasado del do)
-        - pregunta: did i work ?  ---> le agregamos el did al principio y con eso sabemos el tiempo verbal, no hace falta convertir el verbo. Si ademas a la pregunta le agregamos una palabra interrogativa, ejemplo: where, when, why, etc. quedaria al principio de todo esa palabra. ejemplo: where did i work ?
+        - pregunta: did I work ?  ---> le agregamos el did al principio y con eso sabemos el tiempo verbal, no hace falta convertir el verbo. Si ademas a la pregunta le agregamos una palabra interrogativa, ejemplo: where, when, why, etc. quedaria al principio de todo esa palabra. ejemplo: where did i work ?
     - cambio de verbos desde infinitivo al pasado simple:
         - terminan en ed: walk ---> walked  (se les agrega ed, son los mas comunes)
         - terminan en d:  use ---> used  (al terminar en e se les agrega la d nomas)
@@ -147,4 +147,51 @@ PRESENTE EJERCICIO:
 11b do they make
 12a does open the supermarket
 12b don't know
+
+*** siempre las preguntas que tienen que ver conmigo, osea con la persona que soy. Se responden con yes I am, o no I'm not
+*** siempre aderirme al tiempo de esa pregunta, responder en el mismo tiempo verbal
+*** Palabras de preferencia. Son palabras que cambian el verbo y hace q esten en infinitivo o en gerundio.
+EJ: like, enjoy, love, hate, prefer, don't mind
+*** todas las cosas q son en imperativo, como una orden. No se les pone el sujeto
+
+
+------------- preguntas tipicas de entrevista ----------------
+1) tell me about yourself (hablanos de vos)
+
+I'm Nicolas. I'm 24 years old. I live in Rosario Argentina. I'm a software developer since 3 years ago. I consider myself as a person who likes working in a team and programming a lot.
+
+2) whats is your greatest strength ? (cual es tu principal virtud)
+
+My greatest strength is my hability to fix problems that at first require certain information that i don't know about but i'm able to learn quickly to fix the problem by my own
+
+VER OTRA OPCION
+
+3) What is your greatest weakness? (cual es mi principal debilidad)
+
+Well my greatest weakness is that i'm very perfectionist so sometimes i take more time to finish a job
+
+4) Why should we hire you? (porque deberiamos contratarte)
+
+Because of my sense of responsability and because i like to deliver jobs really really well done
+
+5) Why do you want to work for us? (porque queres trabajar con nosotros)
+
+I would like working with you to obtain laboral experience working with people from abroad('abrod') and improve('imprub') and polish my english
+
+6) Where do you see yourself in 5 years? (como me veo en 5 años)
+
+Ok i see myself like a senior software developer or project manager
+
+7) How do you handle stress and pressure? (como manejo el stress y la presion)
+
+Basically I try to meditate and i try to think straight the best solution for the problem
+
+8) Describe a difficult work situation and what you did to overcome it…
+
+VER DESPUES
+
+9) What are your salary expectations? (cuanto quiero cobrar)
+
+I expect to earn 2000('tu thausand') dollars per month
+
 

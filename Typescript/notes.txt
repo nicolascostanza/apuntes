@@ -179,10 +179,51 @@ INTERFACES
 			}
 		}
 INTERFACES CON CLASES
-	-
+	- IMPORTANTE: para tener herencia entre clases ( que una clase tenga las propiedades de otra) usamos la palabra Extends. Ej:
+		class Telefono {
+			constructor(marca){
+				this.marca = marca
+			}
+			anuncio(){
+				return 'LLego el nuevo telefono', this.marca;
+			}
+		}
 
-quede aca
-https://www.youtube.com/watch?v=XPGFqx8Vg-Y&list=PL4cUxeGkcC9gUgr39Q_yD6v-bSyMwKPUI&index=17
-4:48
+		Class Modelo extends Telefono{
+			constructor(marca, modelo){
+				super(marca);
+				this.modelo = modelo;
+			}
+			anuncioCompleto(){
+				return this.anuncio() + ' el modelo es:' + this.modelo
+			}
+		}
 
+		** ENTONCES ---> la clase modelo extiende las propiedades q tiene la clase telefono, para traerte algo del padre (en este caso la clase telefono) usamos la palabra super. Ademas tambien podemos usar los metodos del padre usando this.NombreDelMetodo()
+RENDERIZADO HTML
+	* para el ul -----> let ulTraido: HTMLUListElement;
+	* li ----> const liACreat: HTMLLIElement;
+	* y asi con todos los demas tags o eventos de html
+GENERICS
+	* cuando le pasamos :object Le estamos diciendo genericamente q es un objeto pero no sabbemos q propiedades tiene
+	* para cambiar esto podemos hacer lo siguiente:
+		const addId = <T extends object>(obj: T) => {
+			// codigo
+		}
 
+	Esto hace q ahora podamos inferir las propiedades q agarra, sea cuales sean. De forma generica. Ademas podemos ser mas precisos diciendole:
+		const addId = <T extends {name: string, price: number}>(obj: T) => {
+			// codigo
+		}
+	Ademas de pasar esas propiedades tambien podemos pasarle otras opcionalmente. Las que estan entre {} deben ser obligatorias
+	* Para redondear la teoria. La <T> le podes pasar lo q sea y asignarselo abajo, es como una variable de tipo de dato
+ENUMS
+	* sintaxis:
+		enum Billetes { 10, 20, 50, 100, 500, 1000}
+	* ahora si asignamos billetes tiene q ser si o si uno de los puestos ahi. Se usa poniendo ej: Billetes.10
+	* y sirve para dar opciones limitadas de q puede ser un valor ejemplo
+		enum Respuestas {'hola' | 'chau'}
+TUPLAS
+	* sirve para especificar q tipo de dato va a estar en cada elemento del array
+	* ejemplo:
+		let tup: [string, number, string, boolean] = ['nicol', 123, 'dfdfssd', true]
