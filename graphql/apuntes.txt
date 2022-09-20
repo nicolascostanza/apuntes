@@ -1,0 +1,96 @@
+* graphql es un lenguaje de consultas. Significa grapichs query languaje. Lenguaje de consulta de grafos o de graficos
+* apollo server es un framework o libreria q se usa para usar graphql
+* npm install apollo-server graphql
+* ejemplo:
+import {gql} from 'apollo-server'
+
+// defino la estructura q quiero
+
+const typeDefs = gql`
+  type Person {
+    name: String!
+    phone: String
+    street: String!
+    city: String!
+    id: ID!
+    check: String!
+    address: String!
+  }
+
+  // ademas debemos describir las consultas q podemos hacer o nos quieren hacer
+
+  type Query{
+    personCount: Int!
+    allPersons: [Person]!
+    // el de abajo es una consulta con parametro
+    findPerson(name: String!): Person
+  }
+`
+
+// debemos definir tambien los resolvers, como va a obtener esos datos
+
+const resolvers = {
+  Query: {
+    personCount: () => persons.length,
+    allPersons: () => persons,
+    // los args son los parametros q le estamos pasando a la consulta
+    findPerson: (root, args) => {
+      const{name} = args
+      return persons.find(person => person.name === name)
+    }
+  },
+  Person: {
+    address: (root) => `${root.stree} ${root.city}`,
+    check: (root) => 'nicolas'
+    address : (root) => {
+      return {
+        street: root.street,
+        city: root.city
+      }
+    }
+  }
+}
+
+// creamos nuestro servidor con apollo
+
+const server = new ApolloServer({
+  typeDefs, resolvers
+})
+
+// iniciamos el servidor
+
+server.listen().then(({url}) => {
+  console.log('server listen', url)
+})
+
+
+*OBS: name es requerido por eso la exclamacion al final. Ver tipos de datos q hay en la documentacion.
+
+* Una vez terminado lo de arriba en codigo, haces node index.js o lo levantas como sea y te vas al puerto en el q esta corriendo en el navegador. Te va sa salir un playground para codear.
+
+para hacer una consulta ahi se escribe de la siguiente manera:
+* OBS ---> ctrl + espacio te da las query que podes hacer o te dice q tipo de cosas podes hacer, como un predictivo
+* OBS ---> si lo q queres consultar es un objeto o un array tenemos q decirle q campos queremos obtener, query numero 2.
+
+query {
+  personCount
+}
+
+query {
+  allPersons {
+    name
+    phone
+  }
+}
+
+query {
+  findPerson(name: 'Midu') {
+    phone
+  }
+}
+
+
+
+
+
+
