@@ -1,0 +1,285 @@
+APUNTE ---- 03
+
+* ETIQUETAS HTML ---> estan delimitadas por '<' and '>' symbols. Son insensitive, osea q no diferencian entre mayusculas y minusculas. Usualmente son usadas de a pares con <> opening tags y closing tags. Tambien hay algunas etiquetas que tienen auto cerrado por no poseer contenido
+
+* ELEMENTO HTML ---> es todo lo que esta rodeado entre las etiquetas de apertura y de cierre. Estas etiquetas pueden ser autocerradas en caso de que el contenido no sea requerido
+
+* H1 ... H6 ETIQUETAS ---> solo debe usarse una vez el h1 por documento. Esto no es una regla pero es bueno para el renderizado de la pantalla y el SEO (posicionamiento en las busquedas, search engine optimization)
+
+* ETIQUETA P ---> debe ser usada para definir parrafos
+
+* ETIQUETA A ---> se usa para mostrar un link clickeable
+
+* ETIQUETA IMG ---> se usa para renderizar imagenes en el documento html. La propiedad 'alt' debe contener una definicion para mostrar cuando la imagen definida en la propiedad 'src' esta rota
+
+* COMPORTAMIENTO EN PANTALLA ---> Comunmente los elementos html tienen 2 tipos de valores para ser mostrados: 'inline' o 'block'
+  - ELEMENTOS EN BLOQUE ---> Un elemento en bloque siempre empieza en una linea nueva. Y el navegador agrega automaticamente algo de espacio(margen) antes y despues del elemento. Estos toman todo el ancho disponible. Ejemplo de este tipo de elemento son las etiquetas: p, div, section, aside, header, ol, ul, li, main, nav, etc
+  - ELEMENTOS EN LINEA ---> Estos elementos no empiezan al principio de una nueva linea. Empiezan en la misma linea que el ultimo elemento anterior a el y solo toma el ancho necesario. Algunas etiquetas que sirven de ejemplo son: span, img, button, select, a
+
+* HTML DISEÑO RESPONSIVE ---> Un diseño de web responsive permitira a la pagina ser leida y mostrada bien en diferentes dispositivos. Desde medidas de telefono a computadoras de escritorio. Esto se realiza ajustando las medidas de cada elemento, reordenando, mostrando y ocultando elementos automaticamente cuando las dimensiones del dispositivo varien
+
+* VIEWPORT META TAG ---> esta etiqueta va en el head del documento. Agregando esta etiqueta el navegador obtiene informacion sobre como manejar las dimensiones y las escalas. El viewport de un navegador es el area en donde el contenido puede ser visto. Cuando se renderiza y se desborda el viewport del navegador, este nos da unas barras de desplazamiento en la direccion necesaria. Es habitual que en telefonos o tables se rendericen las paginas con un tamaño mayor al debido. Entonces se baja la escala para que quede ajustada al viewport
+
+* UNIDADES RESPONSIVAS Y METODOS ---> Algunas medidas estan bien utilizadas, como %, vw, vh, tambien propiedades como min-widht o max-widht son muy utiles. Para hacer elementos dinamicos. En el pasado se usaban media querys con dimensiones standar de pantallas para cambiar por completo la medida de un elemento. En la actualidad lo mas usado es flex-box y grid para hacer paginas dinamicas.
+
+* CSS ---> Traducido es hojas de estilo en cascada. Describe como los elementos html deben ser mostrados. CSS puede reutilizar elementos html hasta incluso documentos, ahorrando mucho tiempo. CSS puede utilizarse para resolver problemas relacionado a las posiciones o dimensiones.
+
+* SELECTORES ---> Se utilizan para elegir que elemento queres aplicarle estilos.
+  - selectores simples ---> elige elementos basados en nombre, id o clase
+  - selectores combinados ---> selecciona elementos basados en una relacion entre ellos
+  - selectores de pseudo-clases ---> selecciona elementos en un cierto estado
+  - selectores de pseudo-elementos ---> selecciona y estiliza una parte de un elemento
+  - selectores de atributos ---> selecciona elementos basados en un atributo o el valor del atributo
+  - '*' ---> es el selector universal. Selecciona a todos los elementos. Es util para darle un reset de margenes y padding a las paginas que ya traen por defecto en los navegadores.
+  - selectores de grupos ---> poniendo una etiqueta, clase o id separados por una coma le damos le mismo estilo a todos
+
+* COMBINADORES
+  “ ” descendente
+  > hijo
+  ~ hermano
+  + hermano adjunto
+
+* PSEUDO SELECTORES
+  * clases ---> .class:pseudo-class
+  * elementos ---> element::pseudo-element
+
+* BOX MODEL ---> es una caja que encierra a cada elemento html. Se divide en:
+  - contenido: es el contenido que aparece dentro de la caja, como texto o imagenes
+  - relleno (padding): es el espacio del borde de la caja para adentro, al darle mas empuja el contenido para adentro
+  - borde: es el borde alrededor del padding y el contenido
+  - margen: es el espacio desde el borde para afuera de la caja, es el espacio contra otros elementos
+
+* BOX SIZING
+  - box content ---> te da un comportamiento de cajas por defecto en css. Al darle un ancho le asigna todo el ancho al contenido, haciendo q medidas de margenes, paddings y bordes se le agreguen al final. Modificiando el tamaño
+  - border box ---> el padding y el border pasan a formar parte del calculo del width o heigth establecido, no se lo agrega
+
+* LAYOUT ---> el layout a menudo depende del target de los usuarios. El layout mas comun es 1 columna telefonos, 2 columnas tables, 3 columnas computadoras de escritorio. Arriba el header, en el medio el main y/o aside y abajo el footer
+
+* ESPECIFICIDAD ---> es el grado de importancia q tiene cada elemento para asi css pueda aplicar la mas importante al html. Los estilos en linea siempre sobreescriben cualquier otro tipo de atributo ya ingresado por los tipos de especificidad siguiente.
+  - ID ---> #esUnId
+  - clase, atributos, pseudoclases ---> .esUnaClase | [type='radio'] | :hover
+  - selectores de tipo, pseudo-elementos ---> h1 | ::before
+
+* !important ---> usando la regla del !important sobreescribimos cualquier estilo. El uso de esto deberia evitarse ya que rompe el estilizado en cascada
+
+* :is() and :not() and :where() ---> son pseudoclases
+
+* MEDIAQUERYS ---> son utiles cuando queres modificar dependiendo del tipo general de dispositivo usado o especificar caracteristicas o parametros. Una mediaquery esta compuesta por:
+  - opcional media tpye (all-default, screen, print)
+  - expresiones de medias o relaciones de pantallas. Puedes combinar varias
+  - operadores logicos (AND OR ONLY)
+Si usamos el not o only, debemos especificar el type media. Las media querys son case-insensitive, osea q no diferencia entre mayusculas y minusculas.
+
+* FLEXBOX ---> designa una dimension para el layout(x, y) y tiene metodos para la separacion entre sus elementos
+  - axis ---> hay dos ejes, el eje principal y el eje cruzado o secundario. La direccion de estos ejes no es fija, se puede cambiar con flex-direction. Las opciones en flex-direction son row, row-reverse, column, column-reverse
+  - flex container ---> es un area del documento html que le asignamos la propiedad display: flex o display: inline-flex. Despues de esto los elementos hijos se convierten en flex items y absorven las propiedades elegidas por el padre
+  - flex-wrap ---> permite que cuando no caben mas en una linea (determinada por flex-direction) genera otra en esa misma direccion para ubicarlos ahi. Si hay mas de una linea se puede usar align-content para ajustar el espaciado y la ubicacion.
+  - flex-flow ---> es un acortador que le asignas las propiedades flex-wrap y flex-direction juntas
+  - propiedades del flex item (hijo del container con display flex)
+    - flex basis ---> define la medida del elemento, si no lo tiene toma auto.
+    - Flex Grow ---> cuanto va a crecer el item con respecto a los hermanos (por defectos todos son 1, pero se pueden modificar y el q tenga mas toma mas espacio en la escala)
+    - flex Shrink ---> lo mismo q el grow pero en achicamiento
+    * Para el crecimiento o el achicamiento la cuenta es la siguiente.
+      1) se toman los flex-shirk o flex-grow de todos los hermanos y se los suma. Se lo pone como el denominador de la cuenta
+      2) unidades propias de cada item / el total de unidades con la propiedad * el tamaño total a ocupar
+      3) ejemplo: (2unidades / 5unidades) * ancho total
+  - propiedad flex ---> acortador q toma los valores de las propiedades flex-grow, flex-shrink, flex-basis
+    * inicial valores: 0 1 auto
+    * auto: 1 1 auto
+    * none: 0 0 auto
+  - align items ---> ordena los hijos del container en el eje secundario. Las opciones son: stretch(default), flex-start, flex-end, center
+  - justify content ---> ordena los hijos del container en el eje principal. las opciones son: flex-start(default), flex-end, center, space-around, space-evenly, space-between
+
+* JAVASCRIPT ---> EL navegador pone a disposicion cuando la pagina carga el DOM. Este dom esta expuesto a todos los script que realicemos. Con esto javascript puede crear y modificar elementos haciendo que las paginas se sientan dinamicas y vivas. El DOM esta jerarquizado en un objeto, pareciendose a un arbol. Ademas podemos definir propiedades, metodos y eventos html. Formas basicas de manipular el DOM
+  - method document.createElement(element)    - description Create an HTML element
+  - method document.removeChild(element)      - description Remove an HTML element
+  - method document.appendChild(element)      - description Add an HTML element
+  - method document.replaceChild(new, old)    - description Replace an HTML element
+
+* EVENT LISTENER ---> esto adjunta un evento a cualquier elemento del DOM.
+  - Ejemplo: elementoLi.addEventListener(event, function)
+  - para remover un evento: elementoLi.removeEventListener(event, function)
+
+* PROPAGACION DE EVENTOS ---> al hacer algun evento en alguna parte del DOM se ejecuta primero el mas cercano y va creciendo hacia sus padres, asi funciona la propagacion
+
+* UNDEFINED AND NULL EN CONTEXTO NUMERICO ---> undefined es mostrado como NaN (not a number, no es un numero) y null es mostrado como 0
+
+* VARIABLES ---> se pueden declarar con const, let o var. Los nombres de las variables pueden iniciar con letras, '_', '$'. No se puede iniciar con numeros
+
+* LET Y CONST ---> este tipo de declaracion viene desde ecmascript 6. Son de alcance local, y si se declaran en el ambito global(fuera de las funciones, osea que pueden ser usadas en cualquier parte del archivo script) no se añaden al objeto global
+  - CONST ---> las constantes deben ser inicializadas y no pueden cambiar su valor. En el tipo objeto el 'pointer' osea cursor q apunta a la direccion de memoria no puede cambiarse pero si sus valores internos. Para hacer un objeto profundamente inmutable debemos usar Object.freeze() , este es un metodo superficial asique podemos 'congelar' las propiedades del objeto pero no la referencia al objeto en las propiedades.
+  - LET ---> tienen un alcance local, relacionada al bloque en donde se definan. Pueden o no ser inicializadas. Es muy util para manejar variables privadas
+  - VAR ---> la diferencia de var con let es que si definimos var afuera de cualquier funcion no podemos volver a definir una var con el mismo nombre dentro de la funcion, ya que se pisarian los valores pq tiene alcance global. A las variables declaradas con VAR se le agregan los objetos globales window or node, en cambio a let no. (con var podemos usar this.NombreVariable, con let no)
+
+* ZONA MUERTA TEMPORAL ---> hace referencia al momento en el que inicia el script y las variables no estan definidas. La diferencia es que las variables una vez llegado el caso se declaren con var, antes de eso si la queremos usar nos devolvera undefined. En cambio las variables que llegado el momento se declaran con let si queremos acceder antes no dara un error de referencia. Esta zona antes de la declaracion de las variables es la (TDZ), zona muerta temporal. Las variables declaradas con let y const si no estan inicializadas no podes acceder, en cambio las variables declaradas con var y q no esten inicializadas toman el valor de undefined. Diferencia: error / undefined. Ademas si la funcion es declarada como function nombre variable (parametros) y llaves si te deja acceder antes de la escritura de la funcion. En cambio si ponemos const miVariable = una funcion, y queremos ejecutar miVariable() antes de q fue escrita te da error
+
+* TIPADO EN JAVASCRIPT ---> javascript es un lenguaje de tipado dinamico. Esto significa que no tenemos que especificarle el tipo de dato al declarar la variable y que ademas puede cambiar de un tipo de dato a otro en la ejecucion del programa
+
+* ARRAYS LITERALES Y GIT ---> la coma al final del ultimo elemento del array no hace que cambie nada. Y ademas eso ayuda a git a mantener los diff limpios ya que cuando agregamos un elemento no modifica la ultima linea sino que solo agregamos una mas
+
+* DECLARACION DE ENTEROS ---> tipos de enteros:
+  - Un 0 (cero) inicial en un literal entero, o un 0o (o 0O) inicial indica que está en octal. Octal sólo pueden incluir los dígitos 0-7
+  - Un 0x (o 0X) inicial indica un literal entero hexadecimal. Los enteros hexadecimales pueden incluir dígitos (0-9) y las letras a-f y A-F
+  - Un 0b inicial (o 0B) indica un literal entero binario. Los literales enteros binarios sólo pueden incluir los dígitos 0 y 1.
+  - Un sufijo n al final de un literal entero indica que se trata de un literal BigInt. El literal entero puede utilizar cualquiera de las bases anteriores
+
+* DECLARACIONES DE FLUJO DE CONTROL ---> son los que hacen variar o modifican el linea a linea del codigo. Existen varios de ellos. Los condicionales (if, switch), los loops o bucles (while, for), y las funciones.
+
+* FALSY VALUES ---> Estos valores dan falso en expresion logicas:
+  - false
+  - undefined
+  - null
+  - 0
+  - NaN
+  - string vacio ("")
+
+* SWITCH ---> el caso por defecto y el break son opcionales. Si no se pone el caso por defecto y no se matchea con ningun caso no se hace nada. El caso por defecto no es necesario tenerlo al final aunque es buena practica ponerlo ahi. Si se omiten los break en los casos, una vez q matchee en un caso seguira ejecutando lo siguientes tambien.
+
+* EXCEPCIONES ---> son condiciones que interrumpen el flujo normal del programa. Se pueden generar y enviar con la sentencia throw. La buena practica dice que hay que instanciar un nuevo Error. Ejemplo:
+  - throw new Error('El mensaje que quiero enviar para el error')
+
+* TRY / CATCH / FINALLY ---> JavaScript crea un identificador vinculado a la excepción que se lanzó antes de entrar en el bloque. En el ejemplo anterior es el identificador ex (No tiene regla de nomenclatura pero es una buena convención usar ex, err, o error). Cuando la sentencia catch termina su ejecución el identificador deja de existir. Basicamente decimos intenta esto y si falla en algun momento o se genera algun error empieza a correr las instrucciones dichas en el catch. Sirve para manejar errores. El finally se ejecuta siempre, no importa si no hay catch. Sirve para ejecutar algo luego de q haga el try catch. Si el finally retorna un valor este valor se convierte en el retorno de toda la produccion del try / catch / finally, no importa los returns del try y del catch
+
+* MANEJADOR DE EXCEPCIONES UNCAUCHT ---> para esto en nodeJs existe un event listener de process que se llama process.on('uncaughtException', funcion para manejar el error). Esto nos permite capturar los errores por fuera del trycatch y hacer algo antes de q el programa termine por un error
+
+* BUCLES Y ITERACIONES --->
+  - for ---> es un bucle que itera, se le pasan 3 parametros, el valor inicial, el final, y el sumador. Los 3 parametros son opcionales, si no se le pasa la condicion de la exprecion, osea el valor del medio. Por defecto le da true, si hacemos esto debemos asegurarnos de poner un break en el body del for para no crear un loop infinito. Incluso se puede llamar a la sentencia for sin una sección de sentencia. Esto se hace haciendo uso de la incrementExpression para dirigir la lógica deseada.
+  - do...while ---> Se ejecuta una vez antes de que la condicion sea checkeada. Luego si la condicion es true se vuelve a ejecutar. Al final de cada ejecucion se vuelve a checkear la condicion para ver si la ejecuta de nuevo o no.
+  - while ---> si la condicion se convierte en falsa el bloque de codigo dentro del while deja de ejecutarse y sigue con el codigo siguiente. Se checkea la condicion antes de ejecutar siquiera una vez el codigo de adentro, esa es la diferencia con el do...while
+  - sentencia etiquetada ---> podemos etiquetar un bucle y luego usarlo en continues o break para manejar el flujo de nuestro bucle. Si etiquetamos algo q no sea un bucle solo podemos usar el break. El continue se usa solo con las etiquetas de bucle
+  - si usamos break con una etiqueta de sentencia termina eso. Si la usamos sin una etiqueta termina el while, for, switch, do...while
+  - el continue puede usarse para resetear una nueva iteracion del bucle. Si pones continue vuelve a hacer la comparacion en el bucle y si da true lo recorre de nuevo, ignora las instrucciones q tiene abajo del continue
+
+* FOR ... IN ---> La declaración for...in itera una variable especificada sobre todas las propiedades enumerables de un objeto.
+
+* FOR...OF ---> Si tratamos de usar esto sobre un objeto dara un error. Para objetos for in, esto es para elementos iterables como arrays o strings. Podemos acceder al indice del array haciendo el codigo del siguiente ejemplo:
+  let colors = ['Red', 'Green', 'Blue'];
+  for (const [index, color] of colors.entries()) {
+    console.log(`${color} is at index ${index}`);
+  }
+
+* FUNCIONES ---> son un conjunto de ordenes que realizan una tarea o calculan un valor. Generalmente suelen necesitar un input y retornan un output. Para utilizar una función, debe definirla en algún lugar del ámbito desde el que deseas llamarla. Las funciones son objetos y tienen metodos, estos métodos nos son
+útiles cuando se necesita manipular el alcance de la función. Los parametros son los que recibe la funcion y podemos manipularlos dentro del bloque de la funcion sin tener interferencia fuera de ella. Esto pasa con variables simples pero al pasarle objetos o arrays si podemos modificarlos y q quere asi, ya q lo que es inmanipulable es la referencia a memoria
+
+* TIPOS DE VARIABLES
+  - DECLARACION DE FUNCIONES ---> se definen con la palabra reservada function
+  - FUNCIONES CON VARIABLES ---> se definen en una constante. Pueden ser nombradas o anonimas(flecha). Nombrarla es util para que pueda ser llamada a si misma y asi pueda iterarse
+
+* DIFERENCIAS CON RESPECTO A LAS DECLARACIONES ---> las que son declaradas con la palabra function pueden ser llamadas antes de su declaracion. En cambio las que guardamos en una variable pueden ser indefinidas si las almacenamos en una variable VAR o pueden dar error si son de tipo LET o CONST y las llamamos antes de ser declaradas
+
+* PILA DE FUNCIONES Y ALCANCE. RECURSIVIDAD ---> una funcion puede refereenciarse a si misma y llamarse. Existen 3 formas de llamarse:
+  - NombreDeLaFuncion()
+  - arguments.callee()
+  - foo()
+
+* ANIDACION DE FUNCIONES Y CLOUSURES(CIERRES) ---> cuando una funcion anida a otra funcion. La funcion interna es 'privada', osea q no pueden accederse desde fuera de la funcion. Esto es un clousure. Un clousure es una expresión (más comúnmente, una función) que puede tener variables libres junto con un entorno que une esas variables (que "cierra" la expresión). Un clousure es cuando una funcion utiliza una variable que esta fuera de su alcance. Una variable que esta por fuera de la funcion.
+  - Clousure:
+    * Solo se puede acceder a la función interna desde declaraciones en la función externa
+    * La función interna forma un cierre: la función interna puede usar los argumentos y variables de la función externa, mientras que la función externa no puede usar los argumentos y variables de la función interna
+
+* CLOUSURES ---> JavaScript permite el anidamiento de funciones y otorga a la función interna acceso completo a todos los variables y funciones definidas dentro de la función externa (y todas las demás variables y funciones que la función externa tiene acceso). Sin embargo, la función exterior no tiene acceso a la variables y funciones definidas dentro de la función interna. Esto proporciona una especie de encapsulación para las variables de la función interna. Además, dado que la función interna tiene acceso al alcance de la función externa, las variables y las funciones definidas en la función externa durarán más que la duración de la función externa ejecución, si la función interna logra sobrevivir más allá de la vida de la función externa. un cierre se crea cuando la función interna de alguna manera está disponible para cualquier ámbito fuera del exterior función
+
+* ARGUMENTS OBJETOS ---> Los argumentos de una función se mantienen en un objeto similar a una matriz. Dentro de una función, puede abordar los argumentos que se le pasan como argumentos[i].
+
+* FUNCIONES FLECHA ---> los 2 factores que influenciaron las funciones flechas son: que son mas cortas y q no tienen vinculaciones (no es necesario usar el this).
+
+* CARACTERISTICAS ES6 (ECMASCRIPT 6) --->
+  - Valores de parametros por defecto. Antes de ES6 se le debia pasar si o si por argumento un valor por defecto a la funcion para cada parametro. Desp de ES6 se le puede asignar valores por defecto en los parametros. Esto hace que al momento del llamar la funcion sean 'opcionales ?'. Por defecto se le puede asignar lo que sea. Desde datos comunes, hasta funciones o mismos parametros pasados en otros parametros. Tenemos que tener cuidado asignando parametros a otros parametros, ya q si asignamos uno que todavia no esta definido a otro, esto generara un error.
+
+	- Rest Params ---> ejemplo: function multiply(multiplier, ...theArgs){ // codigo // }. Esto hace q el ...theArgs se le pasen todos los parametros restantes como un array. Sirve para tener una cantidad de parametros indefinidos. Este ...theArgs debe aparecer SIEMPRE al final de la lista de parametros, sino generara un error
+
+	- Spread operator ---> Despliega los elementos de la variable en cuestion en un objeto iterable. ejemplo:
+    const odd = [1,3,5];
+    const combined = [2,4,6, ...odd];
+    - utilidades del spread operator:
+      - construir nuevos arrays --->
+        const odd = [1,3,5];
+        const combined = [2,...odd, 4,6];
+      - pasar argumentos desde un array --->
+        function compare(a, b) { return a - b }
+        let result = compare(...[1, 2]);
+      - concatenar arrays --->
+        let numbers = [1, 2];
+        let moreNumbers = [3, 4];
+        let allNumbers = [...numbers, ...moreNumbers];
+      - copiar arrays --->
+        let scores = [80, 70, 90];
+        let copiedScores = [...scores];
+      ** OBS el spread operator solo copia los elementos. Por lo tanto es una copia superficial
+
+	- mejora en nombramiento de objetos ---> permite en un objeto y la key y el value son el mismo no poner ejemplo: nombre: nombre. Basta con poenr nombre y lo entiende
+
+	- para acceder a un elemento de un objeto ---> antes de ES6 se debia poner solo una variable o un string, ahora se puede poner una expresion q javascript evalua. Ejemplo user['nam' + 'e']
+
+	- Hace que para declarar un metodo en un objeto ya no se necesiten los ':' ni la palabra function. Ejemplo:
+    let objetoCreado = {
+      name: 'nicolas',
+      'reseteo'(){ console.log('reseteamos')}
+    }
+    objetoCreado['reseteo']
+
+	- etiquetado de template strings ---> permite pasarle a una funcion un template string en el cual toma un array con los strings cortados por las variables utilizadas en el template (``). Ejemplo:
+
+    let variable = infoPersona `bienvenido ${nombre} ${apellidos} aqui trabajaras de ${profesion} gracias por habernos elegido`;
+
+    function infoPersona(strings ,nombre,apellidos, profesion) {
+      return strings[0]+ nombre + strings[1] +apellidos + strings[2] + `${profesion}` + strings[3];
+    }
+    ** se puede pasar los parametros asi: function format(literals, ...substitutions) {}
+		*** literals es un array con los strings y subtitutions es un array con los valores pasados en el template string
+
+	- destructuracion de array ---> Se toman los valores en el orden que llegan. Si le pasaramos entre los corcheres a la desestructuracion mas elementos de los q retorna la funcion, los excedentes, osea los ultimos quedarian como undefined. Ademas podemos agregarle valores por defecto. Ademas es posible usar el spread operator. Ejemplo:
+		function getScores() {
+			return [70, 80, 90];
+		}
+		const [x, y ,z = 130] = getScores();
+
+	- destructuracion de objetos ---> lo mismo con los arrays. Ademas podemos asignarle nombre. Ademas tambien podemos obtener solo los valores que queremos, no importa el orden. Ejemplo:
+		let { firstName, lastName } = person;
+		{ property1: variable1, property2: variable2 } = object;
+		let { firstName: fname, lastName: lname } = person;
+
+	- modulos ---> Un módulo ES6 es un archivo JavaScript que se ejecuta solo en modo estricto. Significa que cualquier variable o las funciones declaradas en el módulo no se agregarán automáticamente al alcance global.
+		* exportando ---> Se puede exportar una variable, una función o una clase. Tenga en cuenta que la palabra clave de exportación requiere la función o clase para tener un nombre para ser exportado. No puede exportar una función o clase anónima usando esta sintaxis. Ejemplos:
+			export let message = 'Hi';
+			export function getMessage() {
+				return message;
+			}
+			export function setMessage(msg) {
+				message = msg;
+			}
+			export class Logger {
+			}
+		* importando ---> Especifique qué importar dentro de las llaves, que se denominan enlaces y el modulo del cual lo hara. Tenga en cuenta que cuando importa un enlace desde un módulo, el enlace se comporta como si estuviera definido usando const. Significa que no puede tener otro identificador con el mismo nombre o cambiar el valor de la Unión. Notar que al importar una funcion y una variable desde un modulo si ejecutamos esa funcion puede cambiar el valor de la variable importada dentro.
+			- Ejemplo de import:
+				import { what, ever } from './other_module.js';
+
+			- Ejemplo de import con cambio de valores
+				import {message, setMessage } from './greeting.js';
+				console.log(message); // 'Hi'
+				setMessage('Hello');
+				console.log(message); // 'Hello'
+				** note que si poneemos messate = 'otrostring' daria error pq no podemos cambiar la variable directamente, sino que estamos llamando una funcion. JavaScript detras de escena cuando llamamos a esa funcion va al otro modulo y la ejecuta y ahi es donde tiene acceso a la otra variable
+		* importado de un modulo entero y renombrarlo ---> con el '*'. Ejemplo: import * as cal from './cal.js';
+		* debes usar los import y export fuera de condicionales o funciones. El motivo del error es que JavaScript debe determinar estáticamente qué se exportará y importado.
+		* alias ---> esato se hace con el 'as'. Ejemplo: export { add as sum }; Otro ejemplo: import {sum as total} from './math.js';
+		* podemos importar un modulo q no tenga ningun export simplemente poniendo: import './archivoAImportar'; Y luego podemos usar sus funciones
+		* para importar cosas por default y cosas q no son por default ---> debemos seguir estas reglas:
+			- los import por default deben ir primero y sin {}. Luego deben ir los que no son por default y deben ir entre llaves.
+			- Para renombrar un export por defecto debemos: import { default as quicksort, heapSort} from './sort.js';
+
+
+LLEGUE A OOP ---> PAGINA 44
+
+
+
+
+
+
+
+
+PREGUNTAR:
+que significa foo()
+array literales y git diff.
+que es la referencia a memoria y porque es inmutable pero lo de adentro de un objeto o de un array no lo es
+clousure

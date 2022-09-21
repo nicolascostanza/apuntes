@@ -1,0 +1,45 @@
+alt y flechita abajo o arriba mueve los elementos, y los intercambia con las lineas decodigo q ya estan
+ctrl + } comenta el codigo, y shift + alt + a comenta solo el codigo seleccionado
+ctrl + click derecho sobre el link crea directamente el link con las carpetas
+alt gr + click sobre la funcion o la variable y te lleva direcamtente
+f12 y click sobre la funcion te da mas informacion sobre elementos
+ctrl + shift + k borra la linea de codigo
+ctrl + shift + l selecciona todas las lineas q tengan la misma palabra donde esta el cursor, para luego con el comnand
+o de arriba borrarla
+ctrl + b oculta o pone la barra lateral
+ctrl + p buscas el directorio que queres
+ctrl + shift + z vuelve atras el deshacer
+ctrl + z borra la ultima accion
+ctrl + s guarda el archivo donde se esta trabajando
+ctrl + k y despues s guarda todos los archivos
+ctrl + k y despues z entras en modo zen(sin distraciones)
+ctrl + shif + ñ abre una nueva terminal
+seleccionas lo q queres y pones ctrl + shift + p y Buscas: Wrap with abbreviation y pones la etiqueta en la cual quere
+s encerrar todo ese codigo seleccionado
+ctrl + k despues ctrl + s , se te abre la consola de comjandos abreviados
+ctrl + w cierra la pestaña
+Ctrl + K Ctrl + W Cerrar todas las pestañas
+Ctrl + Shift + T Reabrir ultima pestaña
+Ctrl + TAB Cambiar de pestaña entre las q tenes
+alt + shift + flecha abajo copia la linea en la que estas automaticamente abajo
+alt + shift + flecha arriba copia la linea en la que estas automaticamente arriba
+Ctrl + Alt+ ↑ / ↓ para el multicursor al mismo tiempo en varias lineas
+li*4 hace cuatro lineas con li
+ctrl + d si estas arriba de una etiqueta y seguis apretando ctrl + d te va seleccionando las siguientes etiquetas con el
+mismo nombre
+ctrl + shift + O te muestra todas las variables y si le agregas ":" te las agrupa por tiempo. O podes poner ctrl + p y de
+spues le agregas el @
+ctrl + g y pones el numero de la linea a la que queres ir
+seleccionas la palabra q queres y apretas ctrl + shift + f y te muestra en todos los lugares q esta la misma palabra o va
+riable
+apretando f2 en una variable o funcion podemos cambiar el nombre de la misma
+para crear un snippet
+ctrl + shift + p
+pongo preference snippet y selecciono global
+y hago el snippet en el archivo q se te abre. Ejemplo clg y te abrira el console.log()
+descargar todo tree y todo highlight (son extenciones)
+TODO: por la extencion descargada te lo resalta y sirve para dejar tareas pendientes
+FIXME: lo mismo q el todo
+descargar bookmarks extencion
+ctrl + alt + k te deja una marca
+luego en la pestaña creada al costado izquierdo te deja volver al pedazo de codigo donde dejaste la marca 
