@@ -112,7 +112,7 @@ VENTAJAS:
 - Facilidad de despliegue
 - Respuesta rápida a un entorno en constante cambio que implica un entorno empresarial
 - Los módulos enchufables pueden probarse de forma aislada y pueden ser fácilmente burlados por el sistema central para demostrar o hacer un prototipo de una característica particular con poco o ningún cambio en el sistema central.
-- Alto rendimiento ya que puede personalizar y racionalizar las aplicaciones para incluir sólo las características que necesita. 
+- Alto rendimiento ya que puede personalizar y racionalizar las aplicaciones para incluir sólo las características que necesita.
 CASOS DE USO:
 - Aplicaciones que toman datos de diferentes fuentes, los transforman y los escriben a diferentes destinos
 - Aplicaciones de flujo de trabajo
@@ -132,8 +132,8 @@ CASOS DE USO:
 - El rápido desarrollo de nuevos negocios y aplicaciones web
 3) PATRON DE ARQUITECTURA EN CAPAS: El patrón de software más común es el patrón arquitectónico en capas. Los patrones de arquitectura en capas son patrones de n niveles donde los componentes están organizados en capas horizontales. Este es el método tradicional para diseñar la mayoría de los programas informáticos y está destinado a ser auto-independiente. Esto significa que todos los componentes están interconectados pero no dependen unos de otros. Cada capa del patrón de arquitectura en capas tiene un papel y una responsabilidad específicos dentro de la aplicación. Por ejemplo, una capa de presentación se encargaría de manejar toda la interfaz de usuario y la lógica de comunicación del navegador, mientras que una capa empresarial se encargaría de ejecutar las reglas empresariales específicas asociadas a la solicitud. Una de las características poderosas del patrón de arquitectura en capas es la separación de las preocupaciones entre los componentes. Los componentes dentro de una capa específica se ocupan sólo de la lógica que pertenece a esa capa.
 VENTAJAS:
-- Alta comprobabilidad porque los componentes pertenecen a capas específicas de la arquitectura, otras capas pueden ser burladas o desviadas, haciendo que este patrón sea relativamente fácil de comprobar.. 
-- Alta facilidad de desarrollo porque este patrón es muy conocido y no es excesivamente complejo de implementar, además la mayoría de las empresas desarrollan aplicaciones separando conjuntos de habilidades por capas, este patrón se convierte en una elección natural para la mayoría de los desarrollos de aplicaciones empresariales. 
+- Alta comprobabilidad porque los componentes pertenecen a capas específicas de la arquitectura, otras capas pueden ser burladas o desviadas, haciendo que este patrón sea relativamente fácil de comprobar..
+- Alta facilidad de desarrollo porque este patrón es muy conocido y no es excesivamente complejo de implementar, además la mayoría de las empresas desarrollan aplicaciones separando conjuntos de habilidades por capas, este patrón se convierte en una elección natural para la mayoría de los desarrollos de aplicaciones empresariales.
 - Mantenible.
 - Fácil de asignar «roles» separados.
 - Fácil de actualizar y mejorar las capas por separado
@@ -162,10 +162,10 @@ CASOS DE USO:
 - Redes sociales
 
 MIDDLEWARE: Un middleware es una función que se puede ejecutar antes o después del manejo de una ruta. Esta función tiene acceso al objeto Request, Response y la función next(). Las funciones middleware suelen ser utilizadas como mecanismo para verificar niveles de acceso antes de entrar en una ruta, manejo de errores, validación de datos, etc.
-FUNCION LAMBDA: es una funcion flecha que es pasada como parametro en otra funcion. Un callback(de una funcion flech) 
+FUNCION LAMBDA: es una funcion flecha que es pasada como parametro en otra funcion. Un callback(de una funcion flech)
 HTTP: significa protocolo de transferencia de hipertexto. Sirve para la transferencia de documentos hipermedia como html. Sigue el modelo cliente-servidor
-CORS HTTP: son peticiones http de un dominio a otro dominio distinto. Sirve para consumir cosas de otras paginas. Y hay veces q te lo deniegan. 
-METODOS DE PETICIONES HTTP: Son las distintas operaciones que se pueden realizar con http. Algunos ejemplos: get, post, put, patch, delete 
+CORS HTTP: son peticiones http de un dominio a otro dominio distinto. Sirve para consumir cosas de otras paginas. Y hay veces q te lo deniegan.
+METODOS DE PETICIONES HTTP: Son las distintas operaciones que se pueden realizar con http. Algunos ejemplos: get, post, put, patch, delete
 CODIGOS DE RESPUESTA HTTP: indican si una peticion http fue realizada con exito o surgio algun tipo de problema. Los 100 tienen informacion de responses. Los 200 mensajes de respuestas exitosas. Los 300 mensaje de redirecciones. Los 400 mensajes de errores del cliente. Los 500 mensajes de errores del servidor
 EXPRESSJS: es un framework q se usa en nodejs para la creacion de APIs. Se encarga del enrutamiento y las peticiones
 API: significa interfaz de programacion de aplicaciones. Es un conjunto de requests que permite la comunicacion de datos entre aplicaciones mediante request http. (POST, PUT, PATCH, DELETE, GET)
@@ -249,7 +249,7 @@ event loop, call stack, etc
 
 
 
-DECORADOR: es un patron que permite agregar funcionalidades a un objeto sin alterar el comportamiento de otras intancias de objetos de la misma 
+DECORADOR: es un patron que permite agregar funcionalidades a un objeto sin alterar el comportamiento de otras intancias de objetos de la misma
 
 
 SINGLETON: clases con solo una instancia. clase

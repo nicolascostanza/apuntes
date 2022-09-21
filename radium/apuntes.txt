@@ -268,18 +268,139 @@ Si usamos el not o only, debemos especificar el type media. Las media querys son
 			- los import por default deben ir primero y sin {}. Luego deben ir los que no son por default y deben ir entre llaves.
 			- Para renombrar un export por defecto debemos: import { default as quicksort, heapSort} from './sort.js';
 
+* PROGRAMACION ORIENTADA A OBJETOS ---> Describimos el problema en terminos de objetos. Para esto utilizamos las clases. Las clases son un modelo para crear objetos. Estas encapsulan la data y funciones que manipulan esa data.
+Las clases al igual que las funciones de expresiones (funciones asignadas a una variable) no pueden usarse antes de su inicializacion. Ademas es posible pasar una clase en una funcion o retornarla de la misma. La diferencia entre las clases y los custom types(antes de ES6) son las siguientes:
+  - las clases no se inicializan como las funciones
+  - todo el codigo dentro de la clase automaticamente se ejecuta en modo stricto y no podemos cambiar esto (como q estan encapsuladas ?)
+  - los metodos en las clases no son enumerables
+  - llamar al constructor de la clase sin el operador new antes dara un error
 
-LLEGUE A OOP ---> PAGINA 44
+* SINGLETON ---> es un patron de diseño que se asegura de que solo pueda crearse una instancia de esa clase. Por ejemplo una clase que se conecte al servidor, esta no tiene sentido q haya dos instancias de la misma. Ejemplo en codigo:
 
+  Class Singleton{
+      static instance;
+      nombre = '';
 
+      constructor(nombre = ''){
+          if(!!singleton.instance){
+              return singleton.instance;
+          }
+          singleton.instance = this;
+          this.nombre = nombre;
+      }
+  }
 
+  const instancia1 = new Singleton('Nicolas');
+  const instancia2 = new Singleton('Pedro');
+  // En el ejemplo el if con !! ---> significa q si no es la primera vez, osea undefined te lo retorna y corta ahi. Sino les asigna nombre. la instancia2 no modifica le nombre, no sirve para nada
 
+* METODOS ESTATICOS ---> Por definición, los métodos estáticos están vinculados a una clase, no a las instancias de esa clase. Por lo tanto, los métodos estáticos son útiles para definir métodos auxiliares o de utilidad. Ejemplo en codigo:
+  class Person {
+    constructor(name) {
+      this.name = name;
+    }
+    getName() {
+      return this.name;
+    }
+    static createAnonymous(gender) {
+      let name = gender == "male" ? "John Doe" : "Jane Doe";
+      return new Person(name);
+    }
+  }
+  let anonymous = Person.createAnonymous("male");
+  // si tratas de llamar al metodo createAnonymous desde una instancia de la persona te dara error, estos solo pueden ser llamados desde la clase (en este caso Person)
 
+* HERENCIA ---> hereda las propiedades de otra clase como padre. Ejemplo codigo:
+  class Animal {
+    constructor(legs) {
+      this.legs = legs;
+    }
+    walk() {
+     console.log('walking on ' + this.legs + ' legs');
+    }
+  }
+  class Bird extends Animal {
+    constructor(legs) {
+      super(legs);
+    }
+    fly() {
+      console.log('flying');
+    }
+  }
+  let bird = new Bird(2);
+  bird.walk();
+  bird.fly();
+  ** con la llamada super() hace referencia al constructor del padre. Y con la palabra extends <clase padre> hace referencia a q extienda todas las propiedades q tiene esa clase a esta nueva (herencia). Javascript necesita q si la clase hija tiene un constructor llame a la clase padre mediante super(parametros para el constructor del padre)
+  ** Podemos tener en la clase padre y en la hija metodos con el mismo nombre, pero al llamar cualquier cosa de la clase padre en alguna parte del hijo debemos usar super. <lo q vamos a traer>. Esto hace q podamos tener mismos nombres pero se puedan diferenciar una de otra con super. Ejemplo en codigo:
+    class Dog extends Animal {
+      constructor() {
+        uper(4);
+      }
+      walk() {
+        super.walk();
+        console.log(`go walking`);
+      }
+    }
 
+  * heredar statics ---> Además de las propiedades y métodos, la clase secundaria también hereda todas las propiedades y métodos estáticos de la clase padre.
 
+* FUNCIONES FLECHAS ---> Son funciones que llevan '=>'. Y si se escriben en una linea ni siquiera deben llevar '{}' Ejemplo:
+  let except = msg => {
+    throw msg;
+  };
+
+* TYPESCRIPT ---> amplia las funcionalidades de javascript, estoy significa que cualquier codigo en javascript puede ser interpretado por typescript. La caracteristica principal que nos da typescript es el sistema de tipado. Hace q a cada variable le asignemos un tipo de dato. Convierte de un tipado debil y dinamico como es el de javascript en uno fuerte y estatico. En el inicio javascript nacio para resolver problemas pequeños en el navegador y no para proyectos grandes y escalables, es ahi donde typescript es una gran solucion. Javascript es un lenguaje interpretado, por lo tanto cada linea de codigo es evaluada y ejecutada en tiempo de ejecucion por el motor de javascript. Hace imposible tener un control de errores de tipo o algunos errores que tal vez no te das cuenta al no ser tipado. Esto hace q sea importante usar typescript en lenguajes grandes y escalables, para que no salgan errores a produccion
+
+* LENGUAJES TIPADOS ESTATICOS VS DINAMICOS ---> los debilmente tipados son mas faciles de aprender, tambien son mas facil de trabajar con operaciones entre distintos tipos de datos. Pero por otra parte esto hace que este mas predispuesto a cometer errores. Y aun mas importante que al ser en runtime(tiempo de ejecucion) no podemos detectar estos errores al menos que corramos el programa o peor aun puede ya estar en produccion. En cambio los de tipado estatico y fuerte son mas verbosos (escribis mas) y requiren un codigo mas intrincado. Pero ofrecen un conjunto de ventajas que cobran importancia en grandes proyectos. Estos al ser compilado o transpilado(caso de typescript) muestran los errores pre-runtime(antes de la ejecucion del mismo). Esto hace q no se te pasen errores antes de sacarlo a produccion. Esto ayuda a la refactorizacion, mantenibilidad y escalabilidad del codigo.
+
+* TYPESCRIPT INFIERE TIPOS ---> En la mayoria de casos los tipos de datos primitivos typescript los puede inferir, tal como lo hace javascript. Los tipos de datos primitivos q podemos usar son: boolean, bigint, number, string, null, undefined, symbol. Ademas de esto typescript agrega otros como: any(permite cualquier tipo), unknown(por ahora no se sabe, pero cuando se inicialice se sabra), never(no es posible que este tipo pueda suceder) y void(una funcion q retorne undefined o q no retorne nada). Existen dos formas de construir tipos en ts, con interface y con types. Debemos intentar usar interface casi siempre, al menos que usemos type para expecificar alguna caracteristica espeficia
+
+* TIPOS VS INTERFACES ---> ambos pueden extenderse a otras interfaces y clases. Ejemplo en codigo. Es recomendable trabajar con interfaces en lo posible porque proporcionan mensajes de error mas especificos y utiles. Otras diferencia importante es que las interfaces son abiertas y los types cerrados. Esto quiere decir que una interfaz podemos extenderla o 'agrandarla' declarandola por segunda vez
+  type Owl = { nocturnal: true } & BirdType;
+  type Robin = { nocturnal: false } & BirdInterface;
+  interface Peacock extends BirdType {
+    colourful: true;
+    flies: false;
+  }
+  interface Chicken extends BirdInterface {
+    colourful: false;
+    flies: false;
+  }
+
+* TIPOS COMPUESTOS ---> se declaran con un operador Or '|' . Es una union entre diferentes tipos o opciones. Ejemplo:
+  const dias = 'lunes' | 'martes' | .... | 'domingo'
+  // Otro ejemplo
+  const dia: number | string = '12/12/2002'
+
+* GENERICOS ---> proveen variables a los tipos. Ejemplo: type NumberArray = Array<number>;
+
+* COMPONENTES DE TYPESCRIPT ---> son 3:
+  1) Language −--> se compone de la sintaxis, las palabras clave y las anotaciones de tipo.
+  2) compilador de typescriot ---> el (tsc) compila todo lo escrito en typescript a su equivalente en javascript
+  3) El servicio de lenguaje TypeScript ---> ???????
+
+* PROGRAMACION ORIENTADA A OBJETOS (POO) ---> La programación orientada a objetos consiste en modelar un sistema como una colección de objetos, donde cada objeto representa algún aspecto particular del sistema. Los objetos contienen funciones (o métodos) y datos. Un objeto proporciona una interfaz pública a otro código que quiere usarlo pero mantiene su propio estado interno privado; otras partes del sistema no tienen que preocuparse por lo que está pasando dentro del objeto
+
+* POLIMORFISMO ---> permite a un metodo ser diferente, segun que clase(hija, q lo hereda) lo este usando.
+
+* ENCAPSULAMIENTO ---> permite definir cuales de nuestros atributos y metodos van a ser privados. Define cual puede usarse desde fuera. Existen algunos metodos q manejan otros
 
 PREGUNTAR:
 que significa foo()
 array literales y git diff.
 que es la referencia a memoria y porque es inmutable pero lo de adentro de un objeto o de un array no lo es
 clousure
+Getter and Setter (pagina 46)
+3er componente de typescript al final de la pagina 60
+* en typescript se define una clase asi ?
+class Student : extends Person
+  properties
+   private year
+  constructor
+    Student(name, year)
+  methods
+  introduceSelf()
+  canStudyArchery() { return this.year > 1 }
+  student = new Student('Weber', 1)
+  student.year // error: 'year' is a private property of Student
+  In languages that don't enforce access like this, programmers use naming co
