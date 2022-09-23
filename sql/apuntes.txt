@@ -7,6 +7,12 @@
 * siempre separar las palabras con guiones bajos
 * con ctrl + espacio nos da autocompletado si no sabemos bien como puede ser el campo
 * es buena practica a los campos como codigo postal o los q son numeros pero sabes q no vas a hacer operaciones aritmeticas ponerlos como string o texto para evitar q alguien cometa errores queriendo hacer cuentas
+* para hacer una relacion de muchos a muchos entre dos tablas se hace una tabla intermedia generalmente llamada asi: nombre1Tabla_nombre2tabla. Y en esa solo contiene 2 columnas con los id de cada una apuntando a los ids de las otras(PK)
+* si en algun encabezado de alguna columna tiene el nombre con "_id" sirve para identificarlo a otra tabla, entonces hay q agarrar uno q exista o ver como lo agregas, para crear una fila en alguna tabla primero tenemos q crear filas en otras tablas q estan relacionadas
+* la clave foranea (FK) es la q apunta al id o PK de la tabla a la q vamos a referenciar
+* se usa el UNIQUE en una relacion de uno a uno
+* la pk es el identificador unico de la tabla q estamos declarando, en cambio la FK es el identificador de la tabla a la q vamos a referenciar en esta
+* PK ---> clave unica q no se puede repetir
 
 * TIPOS DE DATO
   ** BOOLEAN
@@ -76,14 +82,38 @@
   SELECT * FROM nombreTabla WHERE condicion1 AND condicion2 OR condicion3;
 
 * Selecionar los campos q tengan un cierto pedazo de string que queremos. En el ejemplo siguiente tenemos un like q es un 'como', y tenemos una expresion regular que empiece con A y que siga con cualquier cosa Ejemplo:
-  SELECT * FROM city WHERE ciudad LIKE 'A%'
+  SELECT * FROM city WHERE ciudad LIKE 'A%' ---> si ponemos "%palabrasQuequeremosBuscar%"  . sirve para q contengan ciertas palabras en el campo buscado
 
+* CONSTRAINT ---> sirve para hacer los checks o dar las PK(primary key) o FK(foranean key). Ejemplo:
+  CREATE TABLE nombreTabla(
+    id SERIAL,
+    name VARCHAR(50) NOT NULL,
+    num_employees INT,
+    id_manufacturer INT,
+    CONSTRAINT pk_NombreDeEstaTabla PRIMARY KEY(campoElegido, gralmente id),
+    CONSTRAINT fk_nombreDeEstaTabla_NombreDeLaTablaRelacionada FOREIGN KEY (nombre de uno de los campos en esta tabla q va a apuntar a la otra tabla, ej id_manufacturer) REFERENCES nombreDeLaOtraTabla(campoDeLaOtraTabla)
+  )
 
+* BORRADO EN CASCADA ---> Ejemplo:
+  CREATE TABLE nombreTabla(
+    id SERIAL,
+    name VARCHAR(50) NOT NULL,
+    num_employees INT,
+    id_manufacturer INT,
+    CONSTRAINT pk_NombreDeEstaTabla PRIMARY KEY(campoElegido, gralmente id),
+    CONSTRAINT fk_nombreDeEstaTabla_NombreDeLaTablaRelacionada FOREIGN KEY (nombre de uno de los campos en esta tabla q va a apuntar a la otra tabla, ej id_manufacturer) REFERENCES nombreDeLaOtraTabla(campoDeLaOtraTabla) ON UPDATE set null o cascade ON DELETE set null o cascade
+  )
+  ** el on update y on delete tenemos 2 opciones. set null o cascade ---> esto sirve para si en una llave foranea ponemos en cascada, si borramos la tabla de la cual estamos haciendo referencia con la clave foranea, automaticamente en cascada se borran en la tabla q estamos ahora. Y si ponemos set null si lo borramos solo este campo pasa a ser null en vez de borrarse en cascada
 
-
-
-
-
+* tabla intermedia es una tabla q se encarga de relacionar dos tablas por sus PK, y q ademas podemos agregarle algunos datos extras. En estas tablas la PK se suele hacer con los id de las dos tablas relacionadas. Ejemplo:
+  CREATE TABLE producto_marca (
+    id_producto INT,
+    id_marca INT,
+    precio NUMERIC NOT NULL CHECK(price >= 0),
+    CONSTRAINT pk_producto_marca PRIMARY KEY(id_producto, id_extra),
+    CONSTRAINT fk_producto_marca FOREIGN KEY (id_producto) REFERENCES productos(Campo con pk de la tabla productos) ON UPDATE cascade ON DELETE cascade,
+    CONSTRAINT fk_marca_producto FOREIGN KEY (id_marca) REFERENCES marca(Campo con pk de la tabla marca) ON UPDATE cascade ON DELETE cascade
+  )
 
 
 
