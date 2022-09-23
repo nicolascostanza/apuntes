@@ -385,6 +385,91 @@ Las clases al igual que las funciones de expresiones (funciones asignadas a una 
 
 * ENCAPSULAMIENTO ---> permite definir cuales de nuestros atributos y metodos van a ser privados. Define cual puede usarse desde fuera. Existen algunos metodos q manejan otros
 
+
+---------------------------------------- REACT -----------------------------------
+* JSX --->
+
+* COMPONENTES ---> Los componentes permiten dividir la interfaz de usuario en piezas independientes y reutilizables, y pensar en cada pieza de forma aislada. Conceptualmente los componentes son funciones de javascript que aceptan propiedades heredadas del componente padre y que retorna elementos de react describiendo como deberian aparecer en la pantalla
+
+* COMPONENTES FUNCIONALES Y COMPONENTES DE CLASE ---> los componentes funcionales son componentes que estan hechos como una funcion de javascript, en cambio, los de clase estan realizado mediante clases. En la actualidad los componentes de clases quedaron en desuso y se usan los funcionales
+
+* COMPONENTES SIN ESTADO Y CON ESTADO ---> la diferencia es si mantienen un estado o no. Ambos componentes pueden recibir props
+
+* PROPS ---> React es una biblioteca basada en componentes que divide la interfaz de usuario en pequeñas piezas reutilizables. En algunos casos estos componentes necesitan comunicarse y la forma de pasarse informacion entre ellos es a travez de las props. La palabra 'Props' es una palabra reservada de react. El pasaje de informacion es unidireccional. Solo se puede pasar del componente 'padre' al componente 'hijo'. Además, los datos de props son de sólo lectura, lo que significa que los datos procedentes del padre no deben ser modificados por los componentes hijos.
+
+* STATE ---> El state es similar a los props, pero es privado y totalmente controlado por el componente. El state contiene datos específicos de este componente que pueden cambiar con el tiempo. El state es definido por el usuario, y debe ser un objeto JavaScript simple.
+
+* CICLO DE VIDA --->
+  ** ShouldComponentUpdate ---> Use shouldComponentUpdate() para que React sepa si la salida de un componente no se ve afectada por el cambio actual en el estado o props. El comportamiento predeterminado es volver a renderizar en cada cambio de estado, y en la gran mayoría de los casos, debe confiar en el comportamiento predeterminado. shouldComponentUpdate() se invoca antes de renderizar cuando se están creando nuevos accesorios o estados recibió. El valor predeterminado es true. Este método no se llama para el renderizado inicial o cuando forceUpdate() está usó.
+
+  ** render ---> el metodo render es el unico requerido en los componentes de clase. Cuando se llama, examina los this.props y this.state y devuelve uno de los siguientes tipos:
+    *** React elements ---> Normalmente se crea a través de JSX. Por ejemplo, <div /> y <MyComponent />
+    *** arrays y fragments ---> permite devolver multiples elementos del renderizados
+    *** portales ---> ???
+    *** strings y numeros ---> estos son renderizados como nodos de texto en el DOM
+    *** booleans y null ---> no renderizan nada
+    *** la funcion render debe ser pura, lo q significa q no modifica el estado del componente y devuelve el mismo resultado cada vez q se invoca. No interactura directamente con el navegador
+
+  ** ComponentDidMount ---> se invoca inmediatamente despues de montar un componente. Si se necesita hacer una request este es un buen lugar para realizarla
+
+  ** ComponentDidUpdate ---> se invoca justo despues de que la actualizacion ocurra. este metodo no es llamado en el render inicial.
+
+  * ComponentWillUnmount ---> se invoca inmediatamente antes de que el componente sea desmontado y destruido. Sirve para hacer una limpieza previa a la destruccion con sus estados, limpiar temporizadores, etc.
+
+* COMPONENTES FUNCIONALES ---> no se pueden usar los ciclos de vida dentro del componente funcional. Pero podemos usar hooks, implementados en la version 16.8
+
+* CONTROLADORES DE EVENTOS ---> en react es casi lo mismo q manipulando el dom. Excepto con algunas diferencias.
+  ** los eventos en react se escriben en cammelCase
+  ** con react pasamos una funcion como evento, en vez de un string. Ejemplo:
+    For example, HTML:
+    <button onclick="activateLasers()">
+    Activate Lasers
+    </button>
+    React:
+    <button onClick={activateLasers}>
+    Activate Lasers
+    </button>
+  ** otra diferencia es que en react no podemos retornar false para prevenir el comportamiento por defecto. Tenemos que llamar a e.preventDefault() explicitamente para prevenirlo
+  ** en react no necesitas llamar al addEventListener para agregar manipulacion de dom. Solo basta con pasarle al la etiqueta el evento y lo escuchara cada vez q ocurra automaticamente.
+
+* RENDERIZADO CONDICIONAL ---> en react podemos encapsular algunos elementos del dom para usarlos o mostrarlos solo cuando nosotros necesitemos. Para eso condicionamos el return con un state. Se pone un if y un useState q varie entonces si pasa una cosa o la otra renderiza solo lo q este dentro de ese if
+
+* LISTAS Y KEYS ---> las keys deben ser unicas y deben proporcionarse adentro de un mapeo de elementos html. Esto ayuda a react a identificar cada elemento para saber si esta cambiando, siendo agregado o removido. Le da estabilidad. Si no tenemos elementos unicos dentro del array como para representar cada elemento del html podemos usar el index como segundo parametro y pasarselo. Ya que se ira incrementando en uno cada vez q renderice un elemento. No es recomendable usar index para pasar keys si los componentes pueden variar de lugar. Esto puede afectar negativamente el rendimiento y causar problemas en el componente
+
+* FORMULARIOS ---> a veces en el submit de un form necesitamos controlar la data y pasarle una funcion para ver q decision tomamos en base a la informacion ingresada. Aca aparecen los componentes controlados.
+
+  ** CONTROLLED COMPONENTS ---> en html comun las etiquetas como input, textarea o select tienen su propio estado y se actualizan en funcion de que ingrese el usuario. En cambio en react el valor se suele tomar en states y se pueden cambiar solo con el setState(). Podemos combinar el state y el setState para tener una "fuente de verdad". Esto hace que la reaccion del componente al ingresar informacion tambien controle lo que sucede en el formulario. A esto en react se le llama componente controlado. Osea, React le quita el control de estado a la implementación nativa del navegador y expone dicho control a ti, el desarrollador por medio de algunas simples API. Con esto logramos que pese a escribir un poco mas de codigo ahora podemos pasar los valores a otros elementos del dom o javascript
+
+  ** COMPONENTES NO CONTROLADOS ---> a veces puede ser tedioso trabajar con componentes controlados ya que se necesita escribir un manejador de eventos para cada vez que los datos cambien. Entonces usando componente no controlados los datos del formulario son manejados por el DOM. Para hacer una implementacion esta manera es las mas rapida y con menos codigo. Pero deberia hacerse con componentes controlados
+
+* FRAGMENTS ---> un patron comun en react es que un componente retorne varios elementos html. Los fragmentos que son como etiquetas vacias nos permiten devolverlas sin necesidad de poner una etiqueta o nodo padre en el dom. Ademas en caso de q se retornen 2 o mas elementos html como las etiquetas mas grandes del componente las usamos para que no de error, ya q el return solo permite tener una etiqueta html q englobe las etiquetas hijos
+
+* HIGH ORDER COMPONENTS ---> son funciones que permiten recibir componentes y retornan otros componentes. Usamos un componente de funcion flecha y se recomienta arrancar con la palabra with y seguida de lo que va a ser. Podemos encerrar a otros componentes con estos por ejemplo en el export default
+
+* React provee una api para que el renderizado de los elementos haga su magia por detras y se nos haga mas facil desarrollar una aplicacion. El metodo render() crea arboles en donde cada componente tiene sus hijos q son arboles anidados. Al diferenciar dos arboles react primero compara los elementos 'root' (raiz). El comportamiento es diferente dependiendo de los tipos de elemento raiz
+
+* ALGORITMO DE DIFERENCIACION --->
+  ** elementos de diferentes tipos --->
+  ** elementos de mismo tipo
+
+* VIRTUAL DOM ---> El DOM virtual (VDOM) es un concepto de programación en el que una representación ideal o "virtual" de una interfaz de usuario se mantiene en la memoria y se sincroniza con el DOM "real" mediante una biblioteca como ReactDOM. Este proceso se llama reconciliación.
+
+* REACT HOOKS ---> fueron agregados en la version 16.8 de react. Son funciones que permiten 'engancharse' de los estados y las caracteristicas y momentos del ciclo de vida de los componentes funcionales. Los hooks no funcionan dentro de componentes de clases. Reglas para los hooks:
+  ** solo llame hooks en el nivel superior del componente. No declare hooks dentro de funciones anidadas, condicionales o bucles
+  ** solo puede llamar hooks desde componentes funcionales, no desde funciones regulares de javascript. El otro lugar valido para llamar hooks son los custom hooks. Son los que creamos los desarrolladores para nuestras utilidades, generalmente empiezan con use cuando los declaramos.
+
+* USESTATE ---> sirve para agregarle algun estado local al componente que necesitamos. React conserva este estado entre las renderizaciones. Este hook devuelve un par: valor actual del estado y funcion para modificarlo. El unico argumento q le pasamos al useState es su valor inicial.
+
+* USEEFFECT ---> Las peticiones de data (fecheo de data), subscripciones o cambios manuales del dom. Son algunas de las acciones que no pueden realizarse mientras se renderiza un componente ya que podria afectarlo. Aca es donde entra en juego useEffect, que espera a q se rendericen todos los elementos y luego ejecuta las acciones que tiene dentro. Este hook tiene 2 parametros. El primero es una funcion flecha que tiene las intrucciones que queremos ejecutar luego del renderizado y si ademas le ponemos un return y algunas acciones, esas acciones se ejecutaran solo cuando el componente sea desmontado o removido. Y el segundo parametro es un array con los states que tiene q capturar si cambian para volver a lanzar las ordenes q tiene la funcion flecha. Por defecto ese hook se corre siempre, incluido desp de terminar el primer renderizado.
+
+* USECALLBACK ---> Un callback es una funcion que se pasa como argumento a otra funcion. Este hook memoriza el callback por lo tanto no vuelve a crear la funcion cada vez q renderiza. Cada vez q se modifica algo del dom, se vuelven a crear todas las constantes y funciones que estan en el cuerpo del componente(excepto los hooks). Entonces ahi entra este hook para memorizar un callback(funcion) para q no se vuelva a crear. Mejora le rendimiento. Usarlo cuando son funciones grandes q sabes q no van a cambiar. Ademas hay q tener cuidado pq al primer uso del a funcion la variables quedan seteadas y no cambian, para esto podemos usar setState(preState => preState + lo que queramos hacer). A este hook igual q el useEffect se le pasan 2 parametros, una funcion flecha con las cosas q queres q no cambien y el segundo un array con las dependencias, estas dependencias son las q si cambia la funcion cambia. De no varias estas dependencias memoriza la funcion y la renderiza 1 sola vez
+
+* USEMEMO ---> memoriza un valor y solo si una dependencia que le paso cambia volvemos a calcular el valor. Sirve para hacer una mejor performance, ya q hay operaciones que pueden ser pesadas y no es recomendado que se vuelvan a renderizar en cada renderizado. La funcion pasada al useMemo es ejecutada en el renderizado, no como el useEffect q espera a q termine el renderizado.
+
+LLEGUE A REACT ROUTER DOM PAGINA 15
+
+
+
 PREGUNTAR:
 que significa foo()
 array literales y git diff.
@@ -403,4 +488,10 @@ class Student : extends Person
   canStudyArchery() { return this.year > 1 }
   student = new Student('Weber', 1)
   student.year // error: 'year' is a private property of Student
-  In languages that don't enforce access like this, programmers use naming co
+
+PREGUNTAS REACT --->
+JSX
+COMPONENTES CON Y SIN ESTADO ---> la diferencia es si tienen renderizado condicional o si tienen useStates adentro ? pagina 3
+que son los portals ??? pagina 5
+high order component
+Reconciliation pagina 10

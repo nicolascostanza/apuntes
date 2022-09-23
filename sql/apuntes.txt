@@ -1,0 +1,77 @@
+* descargamos el mysql community server y tambien instalamos el workbench q te permite trabajar
+* workbench es la gui para el gestor de la base de datos, desp el shell para hacerlo desde la termina y el server para levantar el servidor de la base de datos
+* el puerto q nos da es 3306 y la password q puse es la dificil q uso siempre. El user es root
+* sentencias DDL ---> para creacion de bases de datos (la estructura)
+* sentencias DML ---> para manipular (hacer crud)
+* te conectas dandole al boton de mas dentro de workbench y le das el nombre que queres. Despues las bases de datos se ven en la tab schemas
+* siempre separar las palabras con guiones bajos
+
+
+* TIPOS DE DATO
+  ** BOOLEAN
+  ** CHAR(1) (es un caracter)
+  ** VARCHAR(longitud del string)
+  ** TEXT(para textos largos)
+  ** NUMERIC(cantidad de numeros, cantidad de decimales) sirve para numeros decimales
+  ** INT
+  ** DATE
+  ** TIME
+
+* COSAS QUE SE LE PUEDEN AGREGAR A CADA TIPO DE DATO
+  ** NOT NULL ---> para que sea requerido. Campo obligatorio
+  ** DEFAULT valor ---> pone un valor por defecto
+  ** CURRENT_DATE ---> fecha actual
+  ** SERIAL ---> le da un numero y lo autoincrementa cada vez q creo una nueva fila. Autoincremental
+  ** PRIMARY KEY ---> hace q no pueda repetirse el valor de ese campo en cada fila. Clave unica
+  ** UNIQUE ---> que ese campo de la fila sea unico.
+  ** CHECK ---> restriccion en rangos de datos, restringue un campo con una condicion. Ej: salary NUMERIC(5,2) CHECK (salary > 0). Tambien podemos checkear fechas con esto.
+
+* CREAR BASE DE DATOS
+  CREATE DATABASE IF EXISTS nombreBaseDeDatos;
+
+* BORRAR BASE DE DATOS
+  DROP DATABASE IF EXISTS nombreBaseDeDatos;
+
+* CREAR TABLA
+  CREATE TABLE IF NOT EXISTS nombreQlePonemos(
+    id INT,
+    name VARCHAR,
+  );
+
+* BORRAR TABLA
+  DROP DATABASE employees2;
+
+* RENOMBRAR TABLA
+  ALTER TABLE IF EXISTS nobreDeLaTabla RENAME TO nuevoNombreTabla;
+
+* AGREGAR COLUMNA A LA TABLA
+  ALTER TABLE nobmreTabla ADD COLUMN nombreParaLaColumna TipodeDato;
+
+* BORRAR COLUMNA DE UNA TABLA
+  ALTER TABLE nobmreTabla DROP COLUMN nombreParaLaColumna;
+
+************* CRUD *******************
+
+* INSERTAR DATOS / CREAR DATOS / POST
+INSERT INTO nombreTabla (nombre columnas) VALUES (values para las columnas nombradas antes);
+
+* GET ALL / LEER DATOS
+SELECT * FROM nombreTabla;
+
+* UPDATE / EDITAR / PUT
+
+* ELIMINAR / DELETE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
