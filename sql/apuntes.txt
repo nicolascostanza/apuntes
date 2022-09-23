@@ -5,7 +5,8 @@
 * sentencias DML ---> para manipular (hacer crud)
 * te conectas dandole al boton de mas dentro de workbench y le das el nombre que queres. Despues las bases de datos se ven en la tab schemas
 * siempre separar las palabras con guiones bajos
-
+* con ctrl + espacio nos da autocompletado si no sabemos bien como puede ser el campo
+* es buena practica a los campos como codigo postal o los q son numeros pero sabes q no vas a hacer operaciones aritmeticas ponerlos como string o texto para evitar q alguien cometa errores queriendo hacer cuentas
 
 * TIPOS DE DATO
   ** BOOLEAN
@@ -51,18 +52,31 @@
   ALTER TABLE nobmreTabla DROP COLUMN nombreParaLaColumna;
 
 ************* CRUD *******************
+* se les puede poner al final de cada sentencia un RETURNING *; para q te devuelva todo o por ejemplo RETURNING id; para q te devuelva el id
 
 * INSERTAR DATOS / CREAR DATOS / POST
-INSERT INTO nombreTabla (nombre columnas) VALUES (values para las columnas nombradas antes);
+  INSERT INTO nombreTabla (nombre columnas) VALUES (values para las columnas nombradas antes);
 
 * GET ALL / LEER DATOS
-SELECT * FROM nombreTabla;
+  ** con el '*' te trae todo, sino podemos poner el campo que queremos traernos
+  SELECT * FROM nombreTabla;
+  SELECT id, email FROM nombreTabla;
 
-* UPDATE / EDITAR / PUT
+* UPDATE / EDITAR / ACTUALIZAR / PUT
+  ** importantisimo poner siempre el where sino te modifica todas las filas
+  UPDATE nombreTabla SET campoElegido = ValorQueQueresPoner, campoElegido2 = ValorQueQueresPoner2 WHERE condicionParaElegirLaFila;   // ejemplo WHERE id = 5;
 
 * ELIMINAR / DELETE
+  ** obligatorio poner el where para condicionar y borrar solo las filas que queremos. Sino te borra todas
+  ** si queremos burrar algun campo que sea nulo en la condicion ponemos campoElegido IS NULL;
+  DELETE FROM nombreTabla WHERE condicion;
 
+* FILTROS
+  ** para traer solo las filas que queremos implementamos el WHERE. Separado por comas pasamos aquellas restricciones que querrramos. Podemos implementar AND y OR para agregas mas condiciones
+  SELECT * FROM nombreTabla WHERE condicion1 AND condicion2 OR condicion3;
 
+* Selecionar los campos q tengan un cierto pedazo de string que queremos. En el ejemplo siguiente tenemos un like q es un 'como', y tenemos una expresion regular que empiece con A y que siga con cualquier cosa Ejemplo:
+  SELECT * FROM city WHERE ciudad LIKE 'A%'
 
 
 
