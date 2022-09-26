@@ -13,6 +13,7 @@
 * se usa el UNIQUE en una relacion de uno a uno
 * la pk es el identificador unico de la tabla q estamos declarando, en cambio la FK es el identificador de la tabla a la q vamos a referenciar en esta
 * PK ---> clave unica q no se puede repetir
+* ambiguedad ---> es cuando dos nombre de tablas o campos te dan iguales
 
 * TIPOS DE DATO
   ** BOOLEAN
@@ -81,7 +82,7 @@
   ** para traer solo las filas que queremos implementamos el WHERE. Separado por comas pasamos aquellas restricciones que querrramos. Podemos implementar AND y OR para agregas mas condiciones
   SELECT * FROM nombreTabla WHERE condicion1 AND condicion2 OR condicion3;
 
-* Selecionar los campos q tengan un cierto pedazo de string que queremos. En el ejemplo siguiente tenemos un like q es un 'como', y tenemos una expresion regular que empiece con A y que siga con cualquier cosa Ejemplo:
+* LIKE ---> Selecionar los campos q tengan un cierto pedazo de string que queremos. En el ejemplo siguiente tenemos un like q es un 'como', y tenemos una expresion regular que empiece con A y que siga con cualquier cosa Ejemplo:
   SELECT * FROM city WHERE ciudad LIKE 'A%' ---> si ponemos "%palabrasQuequeremosBuscar%"  . sirve para q contengan ciertas palabras en el campo buscado
 
 * CONSTRAINT ---> sirve para hacer los checks o dar las PK(primary key) o FK(foranean key). Ejemplo:
@@ -115,7 +116,43 @@
     CONSTRAINT fk_marca_producto FOREIGN KEY (id_marca) REFERENCES marca(Campo con pk de la tabla marca) ON UPDATE cascade ON DELETE cascade
   )
 
+* FILTRADO QUE DEVUELVA ELEMENTOS UNICOS
+  SELECT DISTINCT nombreCampo FROM nombreTabla;  ---> los trae solo una vez, elimina los repetidos
 
+* ORDER BY ---> te los devuelve ordenados. Por defecto es asc, de a-z. Le podemos agregar DESC al final y lo cambia Ejemplo:
+  SELECT * FROM nombreTabla WHERE not nombreCampo = laCondicion ORDER BY nombreCampo;
 
+* FILTRADO CON AND OR Y NOT
+  ** NOT ---> EJEMPLOS:
+    SELECT * FROM nombreTabla WHERE nombreCampo != laCondicion;
+    SELECT * FROM nombreTabla WHERE not nombreCampo = laCondicion;
+    *** el != es distinto, tambien se puede poner not adelante del nombre del campo y cambiar el distinto en el medio de la condicion por un igual ('que no sea igual') y si ponemos = es solo los q cumplen la condicion
+  ** OR ---> cumple o 1 o la otra. Ejemplo:
+    SELECT * FROM nombreTabla WHERE Condicion OR otraCondicion;
+  ** AND ---> debe cumplir ambas. Ejemplo:
 
+* se pueden contar la repeticion de veces de capa elemento en una columna.
+  SELECT nombreCampo, count(mismoNombreCampo) FROM nombreTabla group by mismoNombreCampo;
 
+* JOINS ---> es para hacer consulta entre tablas relacionadas. Por ejemplo cuando en una tabla tenes el id de otra entonces tendrias q ir a la otra tabla a consultar tambien.
+  ** inner join hacemos q coincidan todos los registros. Hacemos q coincidan. Se pueden concatenar todos los joins q querramos
+  ** left, rigth hace q los resultados de las otras tablas sea derecha o izquierda no coincidan.
+  ** ejemplo inner join:
+    select camposQueQueresTablaElegida, camposQueQueresTablaRelacionada from TablaElegida INNER JOIN nombreTablaRelacionada ON nombreDeEstaTabla.NombreDelCampo = nombreDeLaTablaRelacionada.NombreDelCampoQueEsIgual
+
+* ALIAS ---> si es un campo se le pone el as y a las tablas en el from o innerjoin se le pone al lado del nombre de la tabla
+
+* CONCAT ---> podemos concatenar campos con espacios o como querramos en el medio. Ejemplo:
+  SELECT CONCAT(nombre1Campo, ' ', nombre2Campo) from NombreTabla;
+
+* IN ---> Sirve para dar las opciones por las cuales filtrar, si es que son varias. Ejemplo:
+  SELECT * FROM nombreTabla WHERE nombreCampo IN(opcionesQueQueres)
+
+* HAVING ---> Cuando tenemos funciones como el count por ejemplo que son funciones de agregacion podemos usar este comando para filtrarlo luego de obtener los resultados. Ya que el where no va a funcionar. Ejemplo de campo que te trae los q se repiten mas de una vez:
+  SELECT last_name count(last_name) FROM NombreTable GROUP BY last_name HAVING count(last_name) > 1;
+
+* SUM ---> es igual al count nada mas q en vez de contar suma
+
+* SUB QUERIES ---> En el ejemplo de abajo msotramos un select anidado, seleccionamos los titulos de las peliculas donde el lenguaje sea ingles. Ejemplo:
+  SELECT title FROM film
+  WHERE language_id = (SELECT language_id FROM language WHERE name = 'English')
