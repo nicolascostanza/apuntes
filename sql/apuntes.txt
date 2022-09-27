@@ -14,6 +14,8 @@
 * la pk es el identificador unico de la tabla q estamos declarando, en cambio la FK es el identificador de la tabla a la q vamos a referenciar en esta
 * PK ---> clave unica q no se puede repetir
 * ambiguedad ---> es cuando dos nombre de tablas o campos te dan iguales
+* left o rigth join ---> trae solo lo q coinciden entre las 2 tablas y la tabla q este en esa posicion
+* full outer join ---> te trae lo q no tiene intersecciuon entre las tablas (conjuntos)
 
 * TIPOS DE DATO
   ** BOOLEAN
@@ -156,3 +158,30 @@
 * SUB QUERIES ---> En el ejemplo de abajo msotramos un select anidado, seleccionamos los titulos de las peliculas donde el lenguaje sea ingles. Ejemplo:
   SELECT title FROM film
   WHERE language_id = (SELECT language_id FROM language WHERE name = 'English')
+* VIEWS ---> con este codigo, podemos crear como 'funciones' que hacen lo q queremos y luego llamando esa linea lo ejecuta directamente. Sirve para guardar consultas. Ejemplo:
+  create view numero_orden_por_empleados as
+  select e.first_name, e.last_name, count(o.order_id) as numero_orden from orders o
+  inner join employees e on o.employee_id = e.employee_id
+  group by e.first_name, e.last_name
+  order by numero_orden desc
+
+  // entonces despues usamos lo de abajo y listo
+  select * from numero_orden_por_empleados
+
+* VISTAS MATERIALIZADAS ---> guarda los datos de la consulta. Entonces cuando llamamos a la lista ya tenemos los datos precargados y se van actualizando a medida q le vamos diciendo. Es como tenerlos de antes. Sirve si no van a modificarse, esto hace q cargue mas rapido.
+  ** guardan fisicamente los resultados de una query y actualizan los datos periodicamente
+  ** cachean el resultado de una query compleja y perminten refrescarlo
+  ** para crear una vista materializada cargando datos tenemos la opcion WITH DATA. El no entre corchetes WITH [NOT] DATA es opcional.
+  ** ejemplo:
+    CREATE MATERIALIZED VIEW IF NOT EXISTS view_name AS
+    query
+    WITH [NOT] DATA;
+
+* GENERATE_SERIES ---> sirve para cargar una tabla con data, inyectarle muchos campos
+* EXPLAIN ANALYZE ---> nos devuelve q es lo q tiene encuenta el gestor de base de datos como mysql o postgress para las consultas
+* INDEX ---> podemos asignarle indices a una tabla para q el scaneo sea mas rapido y no sea secuencial. Ejemplo
+  create index idx_orders_pk on orders(order_id);
+* PARTICIONAMIENTO ---> divide las tablas en partes para optimizar las consultas. Hay 3 tipos:
+  ** Rango ---> fecha
+  ** Lista ---> una columna
+  ** hash ---> para repartirla equitativamente sin ninguna condicion
