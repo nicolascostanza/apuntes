@@ -42,4 +42,4 @@ TODO: por la extencion descargada te lo resalta y sirve para dejar tareas pendie
 FIXME: lo mismo q el todo
 descargar bookmarks extencion
 ctrl + alt + k te deja una marca
-luego en la pestaña creada al costado izquierdo te deja volver al pedazo de codigo donde dejaste la marca 
+luego en la pestaña creada al costado izquierdo te deja volver al pedazo de codigo donde dejaste la marca

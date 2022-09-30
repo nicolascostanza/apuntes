@@ -1,3 +1,4 @@
+* JSON TO TYPESCRIPT ---> Pagina que le pasas un json y te lo tipa todo en typescript
 * sintaxis tsx ---> const variable: <tipo de variable> = valor asignado a la variable
 * tsc --init   ---> crea el archivo tsconfig.json  (aca podemos desactivar el error any)
 * tipos primitivos ts --> boolean, number, string, enum, null, undefined
@@ -227,3 +228,30 @@ TUPLAS
 	* sirve para especificar q tipo de dato va a estar en cada elemento del array
 	* ejemplo:
 		let tup: [string, number, string, boolean] = ['nicol', 123, 'dfdfssd', true]
+
+-------------- CURSO OPEN BOOTCAMPO -----------------
+* para iniciar un proyecto
+	- en la carpeta de nuestro proyecto ponemos npm init -y
+	- npm i @types/node nodemon ts-node typescript
+	-- @types/node son los tipos de typescript para node
+	-- ts-node es como un node pero para typescript
+	- creamos el archivo config.json
+	-- npx tsc --init
+	-- el rootDir es la carpeta en donde vamos a dejar el codigo ya transpilado a js. En donde vamos a dejar el resultado
+	-- esModuleInterop true ---> para la importacion y exportacion de modulos
+	-- resolveJsonModule ---> nos permite trabajar con archivos json. Y se nos genera un archivo de configuracion json
+	-- lib ---> que versiones de js vamos a usar (es6)
+	-- module ---> para commonjs, para ver si usamos require o import segun la version
+	-- allowjs ---> permiten q convivan js con ts dentro del proyecto
+	-- noImplicitAny ---> no permite el any implicito.
+
+* la diferencia entre types y interaces es que los types se usan para cosas mas complejas cuando queremos crear algo propio
+
+
+
+
+----------------- TIPADO DE COSAS EN REACT -------------------------
+* el onchange (e: React.ChangeEvent<HTMLSelectElement>)
+* para un objeto ponemos Record<tipo de las keys, tipo de los values> ---> ej: const ojb Record<string, number>
+
+
