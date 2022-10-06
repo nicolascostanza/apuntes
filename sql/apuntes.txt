@@ -16,6 +16,7 @@
 * ambiguedad ---> es cuando dos nombre de tablas o campos te dan iguales
 * left o rigth join ---> trae solo lo q coinciden entre las 2 tablas y la tabla q este en esa posicion
 * full outer join ---> te trae lo q no tiene intersecciuon entre las tablas (conjuntos)
+* Diagrama UML ---> sirve para diseñar las tablas y sus relaciones
 
 * TIPOS DE DATO
   ** BOOLEAN

@@ -1,0 +1,21 @@
+*pasos
+  1) npm install eslint --save-dev
+  2) npx eslint --init
+  3) elijo la ultima de las 3 opciones, q es la de forzar un estilo de codigo
+  4) respondemos las preguntas si usamos typescript, react, blablabla
+  5) cuando te pregunta how would you like to define a style for your project ? le damos a la primera q es use a popular style guide
+  6) elegimos la standar y javascript y yes para q instale todo
+  7) para que arregle todas las cosas q pueda automaticamente cuando guardamos, vamos al settings.json y buscamos el editor.codeActionsOnSave:{} y lo q tiene adentro le damos "source.fixAll.esLint": true
+  8) en el archivo eslint.rc o algo asi q te genera con eslint. Para que te ponga las comas al final siempre ponemos en rules: {
+    semi: ['error','always']
+  }
+  9) para q si tenemos alguna prop q todavia no usamops le ponemos
+  rules: {
+    'react/prop-types': 'off'
+  }
+  10) para poner prettier con eslint hacemos npm install --save-dev eslint-plugin-prettier
+  11) en .eslintrc.json  (es la configuracion de eslint) ---> le ponemos
+    11.1) "plugins": ["prettier"],
+    11.2) rules: {'prettier/prettier': 'error'}
+
+quede en el minuto 41:20 de https://www.youtube.com/watch?v=jzmMa7WpREE

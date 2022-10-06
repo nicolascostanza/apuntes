@@ -233,3 +233,8 @@ DARSE DE BAJA DEL SISTEMA DE AUTENTICACION O DE LA BASE DE DATOS
     }
     // para desubscribirnos y q no la ejecuten mas hacemos
     unSubCollection()
+
+
+********************** PARA ROLES *********************************
+te pones la variable de firebaseapp inicializadas en el front, y para el back o donde creas los roles, te vas a: https://firebase.google.com/docs/database/rest/auth
+y donde dice cuentas de servicios y tenes las variables de entorno para el crear con 0auth
