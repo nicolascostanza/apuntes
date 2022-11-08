@@ -1,0 +1,153 @@
+------------------------------- Redux form ----------------------------
+* Wrapeamos nuestro input dentro de un componente de redux form llamado Field
+* Para usar ese componente wrapeamos el componente en el q usamos la data con reduxForm
+ejemplo:
+
+import {reduxForm} from 'redux-form';
+export default reduxForm({ form: 'NombreDelForm'})(Home);
+
+* Luego a la etiqueta Field le pasamos props, ejemplo
+<Field name='NombreComoSeGuardaEnRedux' component={componente q creamos con el input} />
+
+* Luego cuando tenemos el boton de submit le pasamos la propiedad q nos da redux-form.
+* handleSubmit(1 parametro). Este parametro q le pasamos es una funcion q recibe y la cual va a recibir los valores del formulario implementado por redux. ejemplo
+
+<form onSubmit={handleSubmit(FuncionX)}> field1, field2, ... </form>
+
+* FuncionX es la funcion que recibe los values directamente al hacer submit
+* existe una prop q destruye los valores cuando este componente se desmonta
+* Tambien se le puede pasar otras propiedad con las validaciones al form. Ejemplo
+
+import {reduxForm} from 'redux-form';
+export default reduxForm({
+  form: 'NombreDelForm',
+  validate: funcionQvalida,
+  warn: funcionQvalidaYDaWarnings,
+})(Home);
+
+* Para obtener los valores del input que quieras existe formValueSelector. Esto debe usarse medidamente, ya que re-renderiza todo de nuevo.
+* Para usarlo, debemos:
+1) import { formValueSelector } from 'redux-form'
+2) const selector = formValueSelector('NombreDelForm')
+Esto creará una función que obtendrá cualquier valor de ese formulario del estado global de Redux
+3) const value = selector(state, 'NombreDelInputQuePasamosAlField')
+
+* Para hacer un formulario con redux
+1) import { reduxForm } from 'redux-form'
+ reduxForm(
+  form,
+  asyncBlurFields,
+  asyncChangeFields,
+  asyncValidate,
+  destroyOnUnmount,
+  enableReinitialize,
+  forceUnregisterOnUnmount,
+  getFormState,
+  initialValues,
+  onChange,
+  onSubmit,
+  onSubmitFail,
+  onSubmitSuccess,
+  validate,
+  warn,
+ )
+
+form ---> 'nombre del formulario que vas a usar de redux'. Es el unico required
+
+asyncBlurFields ---> Array de strings, opcional. validacion asinscronicas q se hacen en el onBlur de los inputs
+
+asyncChangeFields  ---> Array de strings, opcional. nombres de campo en los cuales el onChange debería activar una llamada a la función asyncValidate.
+
+asyncValidate ---> una función que toma todos los values del form, los dispatch, las props del componente y el onBlur actual. Devuelve una Promesa que resolverá si se pasa la validación, o rechazará con un objeto de errores de validación en el formulario con el siguiente formato:
+{ campo1: <Cadena>, campo2: <Cadena> }
+Sintaxis de asyncValidate
+asyncValidate : (values:Object, dispatch:Function, props:Object, blurredField:String) => Promise<undefined, errors:Object> [optional]
+
+destroyOnUnmount ---> Es un booleano, opcional. Le decis si queres que destruya el state del formulario una vez se desmonta el componente, El valor por default es true
+
+enableReinitialize ---> Es un booleano, opcional. Cuando se establece en verdadero, el formulario se reinicializará cada vez que cambie la propiedad initialValues. El valor predeterminado es falso. Si también se establece la opción keepDirtyOnReinitialize, el formulario conservará el valor de los campos sin validar cuando se reinicie.
+
+forceUnregisterOnUnmount  ---> Es un booleano, opcional. Ya sea para forzar o no la anulación del registro de los campos: utilícelo junto con destroyOnUnmount. Útil para formularios de tipo asistente en los que desea destruir campos a medida que se desmontan, pero no el estado del formulario. El valor predeterminado es falso, ya que los formularios normalmente se destruyen al desmontarlos.
+
+getFormState ---> Funcion, opcional. Una función que toma todo el estado de Redux y devuelve el segmento de estado que corresponde a donde se montó el reductor de forma redux
+
+initialValues ---> Objeto, opcional. Recibe clave y valor de cada campo con sus valores iniciales
+
+onChange ---> Funcion, opcional. Un callback q se llamara cada vez que los valores de los inputs cambien
+
+onSubmit ----> Funcion, opcional. Es la función que tiene los values del formulario cuando handleSubmit() se activa desde dentro del componente del formulario. Si no lo especifica como prop, debe pasarlo como parámetro a handleSubmit() dentro de su componente de formulario.
+
+onSubmitFail ---> Funcion, opcional. Funcion que se llama cuando el submit falle.
+
+onSubmitSuccess ---> Funcion, opcional. Un callback q se ejecuta cuando el submit es exitoso.
+
+validate ---> Funcion, opcional. Es una funcion sincronica de validacion. Que toma los values y las props, en ese orden. Si la validacion pasa te devuelve un {} vacio, sino te da un objeto con los errores
+
+warn ---> Funcion opcional. Funciona igual q validate pero con warnings en vez de errores.
+
+** metodos q podemos acceder en el componente q conectamos con reduxForm.
+
+dirty ---> devuelve true cuando los valores del formulario actual son diferentes de los valores iniciales, devuelve false en caso contrario.
+
+fieldList ---> Un array de strings, con los nombres de los inputs
+
+invalid ---> true cuando el formulario no es válido (tiene errores de validación), false en caso contrario.
+
+valid ---> la contraria a invalid.
+
+pristine ---> true when the current form values are the same as the initialValues, false otherwise.
+
+reset() ---> Restablece el formulario a los valores iniciales.
+
+resetSection() ---> resetea solo los seleccionados.
+
+submit() ---> Cuando hacemos submit en el form. Devuelve una promesa q segun como se resuelva el submit te da reject o resolve.
+
+values ---> Los values actuales de los inputs
+
+* formValues() ---> selecciona los values de todos los inputs (creeeo)
+import { formValues } from 'redux-form'
+
+const allValues = formValues('nombreDelForm')(MyItemizedList)
+VER
+
+--------------------------------------- Provider -----------------------------
+* es la etiqueta q importamos de la libreria 'react-redux' y nos provee un store para obtener info
+
+import {Provider} from 'react-redux';
+
+return(
+  <Provider store={NuestroStoreQueDebemosImportar}>
+    .... Todos los componentes q van a tener la info del store
+  </Provider>
+)
+
+--------------------------------------- useDispatch ---------------------------------------
+* se importa de la libreria 'react-redux'. Sirve para despachar acciones o thunks q tengamos . La constante dispatch luego es una funcion q le pasamos la accion q vamos a ejecturar. Ejemplo
+
+const dispatch = useDispatch()
+--------------------------------------- useSelector ---------------------------------------
+* nos devuelve la porcion del state que queremos.
+* Los selectores sirven para derivar data , mapear o filtrar lo q recibimos
+
+const pokemones = useSelector(state => state.pokemones)
+
+--------------------------------------- CombineReducers ---------------------------------------
+* sirve para combinar nuestros reducers y luego tener uno solo q exportaremos y usaremos para encerrar toda nuestra app con el store. El metodo CombineReducers acepta un objeto con los nombres y como clave los reducers. Al final pasamos ese reducer root como el q vamos a usar
+
+import {CombineReducers}
+
+const rootReducer = CombineReducers({});
+const store = createStore(rootReducer);
+
+
+
+
+
+
+
+
+
+
+
+

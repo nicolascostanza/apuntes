@@ -1,1 +1,93 @@
------------------ REACT ROUTER DOM ------------
+R--------------------------------------- useContext ---------------------------------------
+1) asignamos a una variable el createContext y la exportamos para usarla donde querramos
+export const userContext = React.createContext();
+2) Agarramos ese userContext como un componente y encerramos toda nuestra app con el componente.Provider. Ademas le damos un value con el store q vamos a tener para almacenar datos q pueda leer cualquier coponente dentro. Esta logica del context es ideal sacarla a un archivo aparte con funciones para manejar esa informacion etc.
+return (
+  <userContext.Provider value={storeConDatosQVamosAProveer}>
+    <div></div>
+    <img />
+  </userContext.Provider>
+)
+3) En los componentes donde queremos leer esa data hacemos useContext
+const dataDelContext = useContext(NombreDelContextoQVamosALeer)
+
+--------------------------------------- useRef ---------------------------------------
+* Use ref crea un objeto. En el cual tiene una key q se llama current q tiene el valor actual. Sirve para mantener un valor al menos que le indiquemos q lo cambie
+* Seria como una variable que no se va a perder entre cambios de estados. Osea es una variable q se modifica pero no cambia en el render de la aplicacion, no va a volver a renderizarla.
+* Si nosotros cambiamos ese valor nuestra aplicacion NO SE VUELVE A RENDERIZAR.
+* Tambien podemos referenciar elementos del dom. En el elemento html ponemos la prop ref={variable q le ponemoss useRef()}
+
+1) definimos el useRef
+const name = useRef('valorPorDefecto')
+2) luego en los lugares que queremos le modificamos el valor. Al ser un objeto, debemos acceder al a propiedad current
+name.current = 'Cambio el nombre';
+
+--------------------------------------- useMemo ---------------------------------------
+* memorizamos un valor y solo si una dependencia q le pasamos en el segundo parametro cambia volvemos a memorizar el nuevo valor
+* Sirve para no hacer renders innecesarios. Ejemplo
+
+const prueba = useMemo(() => {}, [])
+el primer parametro se hace la logica q usamos para calcular, el array q esta en el 2do parametro del useMemo es un array de dependencias. Son los elementos q si cambian se vuelve a ejecutar la funcion del primer parametro
+
+--------------------------------------- useCallback ---------------------------------------
+* memorizamos una funcion para q no se vuelvan a generar y a ejecutar en cada render, solo cuando cambien las dependencias q le pasamos en el array que esta en el segundo parametro del hook.
+* La diferencia con useMemo es q el useCallback te devuelve la funcion memorizada, en cambio el useMemo te devuelve el valor calculado de la funcion. El callback, al devolvernos la funcion, podemos ejecutarla. Ejemplo
+
+const ejemplo = useCallback(() => {}, [])
+
+--------------------------------------- useParams ---------------------------------------
+* se importa de la libreria react-router. Sirve para extraer los parametros de la url. En el siguiente ejemplo en la constante params tenemos un objeto con cada param de la url con su nombre y valor. Ejemplo
+
+const params = useParams()
+
+--------------------------------------- useLocation ---------------------------------------
+* se importa de la libreria react-router. la constante del ejemplo es un objeto con propiedades especificas.
+
+const location = useLocation()
+
+* Pathname, que seria luego de wwww.nombrepag.com lo q le sigue en la ruta de la url.
+* Search son los query params q le pasamos a la url
+
+Ejemplo para obtener las querys de forma facil.
+const {search} = useLocation();
+const query = new URLSearchParams(search);
+
+// obtiene la query del precio q pasariamos
+const price = query.get('price');
+
+--------------------------------------- useHistory ---------------------------------------
+* se importa de la libreria react-router. Te devuelve un objeto con varias propiedades. Este hook tiene tambien dentro el useLocation
+* push, es una funcion q le pasas un string de parametro con el path al cual queres ir y te envia ahi
+* goFoward, para ir adelante en el historial
+* goBack, para ir atras en el historial
+* go, para que vaya a alguna pagina
+const history = useHistory()
+
+--------------------------------------- useNavigate ---------------------------------------
+* se importa de la libreria react-router. Es una funcion q le pasas el path y te navea a esa ruta.
+
+const navigate = useNavigate()
+navigate('/home')
+
+--------------------------------------- react router dom -----------------------------------
+* Link ----> es un componente q tiene esta libreria, es como una etiqueta <a> pero q tiene toda la logica que necesitamos. Para el href se reemplaza con un to={A donde nos redirije}. No puede usarse por fuera de una etiqueta Route
+* BrowserRouter ---> tiene toda la api del history. Debemos encerrar las etiquetas link dentro de un BrowserRouter
+* Route ---> Es un componente q le pasas path='Path al que vas a ir' y wrapeas el componente q vas a renderizar. Debemos pasarle el exact para q la ruta sea exacta en el path y renderice lo q queremos.
+* Switch ---> hace q solo se quede con el primero q coincida. Con esta etiqueta wrapeamos las etiquetas Route
+
+Ejemplo:
+
+<BrowserRouter>
+  <Link to='/contacto'>Contacto</Link>
+  <Switch>
+    <Route path='/contacto>
+      <ContactPage />
+    </Route>
+  </Switch>
+</BrowserRouter>
+
+
+
+
+
+
