@@ -35,6 +35,44 @@ el primer parametro se hace la logica q usamos para calcular, el array q esta en
 
 const ejemplo = useCallback(() => {}, [])
 
+--------------------------------------- useReducer ---------------------------------------
+* seria lo mismo q un useState pero si tiene muchas variantes para cambiar es preferible un useReducer. Serian para estados mas complejos. Tiene un state un dispatch q despacha las acciones y del otro lado le pasamos, el reducer y el inicial state. Ejemplo
+import {useReducer} from 'react';
+
+const initialState = {
+  contador = 10
+}
+
+interface actionType { type: 'incrementar' | 'decrementar'}
+
+const contadorReducer = (state: typeof initialState, action: actionType) => {
+  switch( action.type) {
+    case 'incrementar':
+      return {
+        ...state,
+        contador: state.contador + 1
+      }
+    case 'decrementar':
+      return {
+        ...state,
+        contador: state.contador - 1
+      }
+    default:
+      return state;
+  }
+}
+
+** luego en el componente o mas abajo definimos el reducer
+** el init sirve por si tarda en cargar la data q trae q muestre algo
+** y luego usamos el dispatch y le mandamos las acciones
+** el action es un objeto q mandas el nombre de la action y el payload con la data q podes usar
+** ademas en contadorState podemos desestructurar y traernos { contador }
+
+const [contadorState, dispatch] = useReducer(contadorReducer, initialState, init)
+
+() => dispatch({type: 'incrementar'})
+
+
 --------------------------------------- useParams ---------------------------------------
 * se importa de la libreria react-router. Sirve para extraer los parametros de la url. En el siguiente ejemplo en la constante params tenemos un objeto con cada param de la url con su nombre y valor. Ejemplo
 
@@ -86,8 +124,74 @@ Ejemplo:
   </Switch>
 </BrowserRouter>
 
+--------------------------------------- HOC ---------------------------------------
+* los high order component son las funciones que tienen la capacidad de recibir un componente como parametro y retornar un componente nuevo
+* se recomienda q al hacer estas funciones inicien con la palabra with y seguida de algo q represente
+* recibe un componente hace logica y retorna el mismo componente mejorado con la logica o otro. Ejemplo
+* son como los customHooks pero de antes
+
+const withConsoleLog = (Component, config?) => {
+  const WrappedComponent = () => {
+    // ACA HACEMOS LA LOGICA
+    return <Component />
+  }
+
+  return <WrappedComponent />
+}
+
+** despues wrapeamos nusetro componente con este HOC. Ejemplo
+export default withConsoleLog(App);
+
+--------------------------------------- Promesas ---------------------------------------
+* un callback es una funcion que pasas por parametro para q la ejecute cuando termine la funcion y eso sea lo que retorna
+* el constructor new Promises recibe una funcion con dos parametros q son resolve y reject
+* entonces en una funcion nos quedaria
+
+const funcWithPromises = (a, b ) => {
+  const resultado = a + b;
+  return new Promises((resolve, reject) => {
+    //hago cosas y retorno lo q quiero
+    resolve(funcionQueLePasoCuandoTerminaBien)
+    reject(funcionQueLePasoCuandoTerminaMal)
+  })
+}
+
+** el .then lo ejecuta  con el resolve y el .catch lo ejecuta con el reject
+funcWithPromises(1, 3)
+  .then((res) => console.log(res))
+  .catch((res) => console.log('Errorrrrr'))
 
 
+--------------------------------------- Promise All ---------------------------------------
+* Promise.all ---> es un array de promesas q se hacen en simultaneo entonces acortan el tiempo de espera. Si falla una, va al catch directo
+* Promise.allSettled devuelve un array en los q vas a poder saber si una de las promesas fallo o no. Siempre resuelve
 
+Promise.all([
+  ...array con las promesas
+]).then((response) => console.log(response))
+.catch(() => console.log('errrror'))
 
+Promise.allSettled([
+  ...array con las promesas
+]).then((values) => console.log('aca tenemos un array con cada promesa y errores o estado', values))
+.catch(() => console.log('errrror'))
 
+--------------------------------------- React Query ---------------------------------------
+* sirve para las peticiones
+* necesita un provider
+* podemos importar ReactQueryDevtools q sirve para debuggear las request
+
+const { data, status } = useQuery('ClaveQueRepresenteLoQueLePasamos', FuncionQueSeEjecutaCuandoQueremosLaInfo)
+
+** para el provider en el app.jsx hacemos lo siguiente
+1) import { QueryClientProvider, QueryClient} from 'react-query'
+
+2) const queryClient = new QueryClient();
+
+3) Envolvemos la aplicacion en <QueryClientProvider client={queryClient}>
+
+Preguntarle a tito:
+cuando renderizamos un fragment q se renderiza ? q conviene usar un div o un fragment ?
+Que beneficios te da ReactQuery
+
+aprender react query o swr
