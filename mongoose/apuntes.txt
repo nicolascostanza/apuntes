@@ -1,0 +1,33 @@
+* Todo en Mongoose comienza con un schema. Cada esquema se asigna a una colección MongoDB y define la forma de los documentos dentro de esa colección.
+* tipos de datos permitidos para un schema: String, Number, Date, Buffer, Boolean, Mixed, ObjectId, Array, Decimal128, Map
+* el tipo mixed es para q se le pueda poner cualquier cosa, le podes poner Schema.Types.Mixed o pasarle un objeto vacio
+* Te podes conectar con mongodb usando el metodo mongoose.connect('url', options)
+* existen eventos de connecion como por ejemplo connecting, connected, close, disconnected, etc
+* mongoose soporta conexiones a cluster con SSL, ademas se le pueden agregar validaciones -->
+  const username = 'myusername';
+  await mongoose.connect(`mongodb://${encodeURIComponent(username)}@localhost:27017/test`, {
+    ssl: true,
+    sslValidate: true,
+    sslCA: `${__dirname}/rootCA.pem`,
+    authMechanism: 'MONGODB-X509'
+  });
+* Los modelos son constructores, sirven para leer o crear instancias de algo y trabajar con mongodb
+* cuando llamamos mongoose.model() en el schema, mongoose nos compila el modelo por nosotros. Ejemplo:
+
+  const schema = new mongoose.Schema({ name: 'string', size: 'string' });
+  const Tank = mongoose.model('Tank', schema);
+
+** El primer argumento es el nombre singular de la colección para la que es tu modelo. Mongoose automatically looks for the plural, lowercased version of your model name. Por lo tanto, para el ejemplo anterior, el modelo Tank es para la colección de tanques en la base de datos.
+
+* Document y Model son clases distintas en Mongoose. La clase Model es una subclase de la clase Document. Cuando usa el constructor de modelos, crea un nuevo documento.
+
+--- llegue hasta documentos apenas empieza
+
+
+
+
+
+
+
+
+
