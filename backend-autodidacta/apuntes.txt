@@ -271,3 +271,669 @@ principios solid
 
 
 
+----------------------------------------------- Coderhouse ---------------------------
+
+CLASE 04:
+    * setTimeout(): tiene 2 parametros obligados, el primero es un callback(funcion pasada por parametro) y el segundo la cantidad de tiempo a esperar. Ademas seguidos a estos dos podes pasarle mas parametros q son los q va a recibir el callback por parametro. Este metodo ejecuta SOLO UNA VEZ la funcion que recibe en el primer parametro
+    * setInterval(): lo mismo q setTimeout pero ejecuta varias veces el CB, cada vez q pase el contador de timer pasado en el segundo lugar. Esto pasa hasta q se llama a clearInterval() o q se cierre la ventana
+    * El modulo File System (fs) solo esta presente en nodejs, no existe en el navegador
+    * const fs = require("fs")
+    * Tiene opciones para manejar archivos sincrona y asincronamente. Para usar tus estos metodos, le pasamos primero el path y segundo el encoding('utf-8')
+    * Siempre mejor usar rutas relativas con el ./
+    * readFileSync, es bloqueante, espera a terminarla, la q no tiene sync sigue con la ejecucion
+CLASE 05:
+    * npm init en consola para crear el package-json, donde instalar todas las librerias necesarias
+    * npm install solo te instala en dependencias generales, si le pones npm install --save--dev {nombre de la libreria} o npm install -D te la instala en dev dependencies
+    * cors libreria, nos permite aceptar request en el server desde cualquier punto del planeta, aunque sea raro
+    * en el package-json si tenemos antes de la version de la libreria un:
+        1) ~ significa q cuando cuando hagamos npm install solo se actualizara a las veriones con un cambio de patch example: '1.13.14', en este caso el 14
+        2) ^ significa q actualiza los patch y los cambios menores, example: 1.13.14 ---> actualizaria en el .13 y .14
+        3) * significa q actualiza todoo, los patchs, los minor releases o major releases
+        4) si no hay ninguna de las 3 de arriba, se acepta solo la version puesta
+    * para correr el archivo vamos a la parte de scripts en package-json y ponemos "start": "node index.js" ---> luego en consola se corre con node start
+VER CORS EN MOZILLA: https://developer.mozilla.org/es/docs/Web/HTTP/CORS
+CLASE 06:
+    * http: hiper text transfer protocol
+    * el modulo http:
+        es nativo
+        trabaja con el protocolo HTTP
+        para usarlo require('http')
+        para crear un servidor hacemos: http.createServer()
+        para linkear un puerto al codigo hhtp.server.listen(3000, ()=> {}), asi ? ver bien
+    * payload ---> informacion q se reciba o se envie en una API
+    * para hacer import .... from ... en vez de const ... = require('...') tenemos q ir al package.json y ponerle antes de los script "type": "module",
+    * la diferencia entre res.send() y res.end() es q res.end() da como finalizada la ejecucion, osea ya no hace mas nada. Ademas no pueden enviar todos los tipos de datos. Tambien existe el res.render() q manda un html a renderizar
+    * para iniciar con exprees en ves de html (ademas hay q instalarlo, pq no es un modulo nativo):
+        1) let express = require('express'); o import express from 'express'
+        2) let app = express()
+    * exiten dos tipos de API ---> tipo rest, q trabaja con endpoints, y graphQl que es un solo endpoint q devuelve una red con todo
+    * https://glitch.com/ sirve para deployar un servidor rudimentario
+CLASE 07:
+    * una api restful tiene q usar base de datos o archivos para q sea persistente pq se debe resetear todo al recargar
+    * status code:
+        1xx ---> informativos
+        2xx ---> exito
+        3xx ---> redireccion
+        4xx ---> cliente error
+        5xx ---> server error
+    * swagger es una pagina para documentar y hacer peticiones
+    * rest indica ademas los formatos de transferencia de archivos. Los mas comunes. XML y JSON
+    * API REST:
+        1) no tiene interfaz grafica
+        2) utiliza protocolo http
+        3) arquitectura cliente servidor: cada mensaje http contiene toda la info necesaria para hacer la peticion. Esto hace que cliente y servidor esten debilmente acoplados (importante)
+        4) cacheable: para almacenar informacion en una memoria y asi no tenes q consultar todo el tiempo. Esto hace q sea mas performante
+        5) operaciones comunes (operaciones crud)
+        6) interfaz uniforme
+        7) utilizacion de hipermedios
+    * una app de chatting no se hace con api rest. Se hace con otra api de comunicacion en tiempo real, q se hacen con otro protocolo. Usan socket io.
+    * capas en arquitectura de api restful: routing, capa de negocios, orm (capa de conexion con la base de datos)
+    * para pasar parametros por la url tenes params, y query params:
+        query params: empiezan en el momento en el q la url tiene '?' y siguen con "clave=valor", si se quieren agregar mas ponemos un "&"
+        params: se les pasa desp de un "/:params"
+    * lazy loading, sirve para la paginacion.
+    * para q el server con express pueda interpretar de forma automaticva los mensajes de tipo JSON en formato urlencoded al recibirlos, debemos agregarle lo siguiente al crearlo:
+        1) app.use(express.json())
+        2) app.use(express.urlencoded({extended: true}))
+    * para aplicar un middleware a nivel de aplicacion ponemos app.use()
+CLASE 08:
+    * para el manejo de rutas express tiene una clase llamada Router. Sirve para modularizar la api rest
+    * para usarlo ponemos --->
+    const express = require('express')
+    const { Router } = express
+    const app = express()
+    const router = Router()
+    * las clases siempre se llaman con mayusculas
+    * los middleware tienen el parametro next, donde lo usamos poniendo next() y hace q se ejecute siemrpe la siguiente funcion en la lista
+    *middlewares tipos:
+        ** a nivel de aplicacion
+        ** a nivel de router
+        ** manejo de errores
+        ** incorporados
+        ** de terceros
+    * module exports para exportar en el back siempre
+    * cuando usas import es pq te queres traer todo sino en require para traerte solo una cosa
+
+CLASE 09:
+    * handlebars es un lenguaje de plantillas
+    * tienen un template, una data base y con eso genera un template
+
+clase 10:
+    * pug y ej son motores de templates como handlebars
+    * pug esta diseñado para hacer cosas mas pequeñas. Funciona como python mediante tabs e identaciones. Se le pasan las vistas y el motor para setearlo
+    * la extension del template es .pug
+    * en el endpoint ponemos res.render('la vista', {un objeto con los datos q necesita el template para pintarlo})
+    * seteo:
+        app.set('views', './views'); el segundo parametro es el path raiz donde estan los archivos de las vistas
+        app.set('view engine', 'pug');
+    * para las props en pug se hace div() y entre los parentesis le pones lo q le queres dar
+    * la etiqueta meter de html es una barra con min max y value para mostrrar
+    * ejs es un motor de plantillas ---> npm install ejs
+    *para seteo:
+        app.set('view engine', 'ejs')
+        el res.render busca dentro de la carpeta views. Osea q esto lo hace por defecto
+    * sintaxis:
+        <%= incrusta en plantilla el valor tal cual esta
+        <%- incrusta en la plantilla el valor renderizado como html
+        <% admite js
+    * poniendo <%- inclue('./partials/header.ejs')-%> incluimos los partials q son como las partes q podemos reutilizar en los templates
+Clase 11:
+    * Websocket es un protocolo de red basado en TCP que establece cómo deben intercambiarse datos entre redes.
+    * Es un protocolo fiable y eficiente, utilizado por prácticamente todos los clientes.
+    * El protocolo TCP establece conexiones entre dos puntos finales de comunicación, llamados sockets.
+    * De esta manera, el intercambio de datos puede producirse en las dos direcciones
+    * websockets tiene conexiones bidireccionales, tenes acceso a los datos de forma rapida y permite una comunicacion directa y en tiempo real
+    * handshake ?? (es la conexion)
+    * Para iniciar el intercambio con Websocket el cliente envía una solicitud, al igual que en el clásico HTTP. Sin embargo, la conexión se establece mediante TCP y permanece abierta tras el handshake entre el cliente y el servidor.
+    * El nuevo esquema URL de Websocket para las páginas web mostradas se define con el prefijo ws en lugar de http. El prefijo que corresponde a una conexión segura es wss, de forma análoga a https.
+    * web sockets es un protocolo de comunicacion
+    * Socket.IO es una biblioteca de JavaScript para aplicaciones web en tiempo real. Permite la comunicación bidireccional en tiempo real entre servidores y clientes web.
+    * Tiene dos partes:
+        - Una biblioteca del lado del cliente que se ejecuta en el navegador.
+        - Una biblioteca del lado del servidor para Node.js.
+    * Ambos componentes tienen una API casi idéntica. Al igual que Node.js, está impulsado por eventos.
+    * caracteristicas de socket.io:
+        - Fiabilidad: Las conexiones se establecen incluso en presencia de:
+            proxies y balanceadores de carga.
+            firewall personal y software antivirus.
+        - Soporte de reconexión automática: A menos que se le indique lo contrario, un cliente desconectado intentará siempre volver a conectarse, hasta que el servidor vuelva a estar disponible.
+        - Detección de desconexión: Se implementa un mecanismo de heartbeat, lo que permite que tanto el servidor como el cliente sepan cuando el otro ya no responde.
+        - Soporte binario:  Se puede emitir cualquier estructura de datos serializable, que incluye:
+            - ArrayBuffer y Blob en el navegador
+            - ArrayBuffer y Buffer en Node.js
+    * Utilizando el método io.sockets.emit enviamos un mensaje global a todos los clientes conectados al canal de Websocket
+Clase 12:
+    * io.on('connection', function(socket) {
+        console.log('Un cliente se ha conectado');
+        });
+    * io.on('connection'. funcion) indica cuando alguien se conecta al servidor
+    * con io.sockets.emit, que notificará a todos los sockets conectados.
+    * emit el primer parametro es el nombr del evento
+    * socket esta basado en eventos, entre on y emit (on recibe, emit envia)
+Clase 13:
+    * Un transpilador es un tipo especial de compilador que traduce de un lenguaje fuente a otro fuente. Se diferencia de los compiladores tradicionales ya que estos últimos reciben como entrada archivos conteniendo código fuente y generan código máquina del más bajo nivel.
+    * La diferencia radica en la relación entre los lenguajes origen y destino de la traducción. El transpilador traduce código entre dos lenguajes que están al mismo nivel de abstracción, mientras que el compilador lo hace entre lenguajes de diferente nivel de abstracción
+    * babel es un transpilador
+    * Babel es un transpilador que nos permite transformar nuestro código JS de última generación (o con funcionalidades extras) a JS que cualquier navegador o versión de Node.js entienda.
+    * Babel funciona mediante plugins con los cuales le indicamos cuál es la transformación que vamos a efectuar.
+    * El código escrito en origen.js pertenece a ES6 ya que usa const y las nuevas arrow functions y queremos que Babel lo convierta a JS5. Para ello, definimos un script en el package.json:
+        ----> "build": "babel ./origen.js -o ./destino.js -w" La opción -w nos permite transpilar automáticamente ante los cambios en origen.js
+    * Los archivos de TypeScript se compilan en JavaScript mediante TSC: el compilador de TypeScript. TSC se puede instalar como paquete TypeScript a través de npm
+    * Conversion mediante transpilador de typescript a js:
+        1- Creamos un proyecto de Node.js con npm init -y
+        2- Instalamos el TSC mediante npm: npm i typescript
+        3- Creamos un archivo index.ts con contenido en Typescript
+        4- Transpilamos con el comando: node_modules/.bin/tsc ./index.ts -w
+        5- Verificamos que en nuestra carpeta de proyecto se encuentre index.js
+    * A partir de ES6 de Node.js admite definir archivos y proyectos como módulos. A diferencia de los archivos y proyectos comunes en JavaScript (“commonJs”), los módulos permiten ser importados en forma asincrónica en lugar de sincrónica, lo cual libera el hilo principal y mejora la performance de los programas (entre otras ventajas). Cuando se trata de proyectos, este cambio se puede realizar fácilmente desde el archivo package.json, agregando el siguiente par clave-valor: "type": "module".
+    * ARCHIVO TSCONFIG ---> TypeScript utiliza un archivo llamado tsconfig.json para configurar las opciones del compilador para un proyecto. Para crear el archivo tsconfig.json ejecutamos el siguiente comando:  ./node_modules/.bin/tsc --init. Este comando generará un archivo tsconfig.json bien redactado.
+    * Algunas de las claves más importantes de tsconfig.json
+        - module: Especifica el método de generación de código del módulo.
+        - target: Especifica el nivel de lenguaje de salida.
+        - rootDir: Especifica el directorio raíz de los archivos de entrada. Se usa sólo para controlar la estructura del - directorio de salida con outDir.
+        - outDir: Esta es la ubicación para los archivos .js tras la transpilación.
+    * Mediante los scripts creados en package.json ponemos en acción los mecanismos de transpilación manual y automática junto con la puesta en marcha del proyecto.
+        - "build": "tsc" -> transpilación manual.
+        - "watch": "tsc -w"-> transpilación automática.
+        - "start": "node ./dist/index.js" -> ejecución de código transpilado.
+    * cuando usamos import en vez de require estamos usando asincronismo, eso hace q no bloquee el hilo de ejecucion. Con el require lo importa sincronicamente
+Clase 14:
+    * Webpack es un empaquetador de módulos (module bundler), que genera un archivo único con todos los módulos que necesita la aplicación para funcionar. Permite encapsular todos los archivos JavaScript en un único archivo, por ejemplo bundle.js
+    * npm install webpack webpack-cli para instalar webpack
+    * "scripts": {
+            "build": "webpack ./rutaDelArchivoQueQueresEmpaquetar"
+        }, ----> esto genera una carpeta dist con el archivo main.js empaquetado
+    * En caso de no especificar, buscará un archivo index.js dentro de una carpeta src por defecto, e incluirá en forma recursiva todas las dependencias de ese archivo y de sus dependencias.
+    * El modo modo desarrollo o producción define si el código generado tendrá formato de lectura amigable y comentarios, o si estará minificado, respectivamente. Ejemplo scripts dentro del package.json:
+        - "build": "webpack ./a1.js ./a2.js ./a3.js --mode=production",
+        - "dev": "webpack ./a1.js ./a2.js ./a3.js -w --mode=development",
+    * creacion del proyecto de nodejs con typescript y webpack. Pasos:
+        - Generamos la carpeta de proyecto
+        - Inicializamos un proyecto de node con npm init -y
+        - Dentro del proyecto creamos un carpeta src con un archivo index.ts.
+        - Instalamos las dependencias de desarrollo:
+        - npm i -D typescript ts-loader webpack webpack-cli webpack-node-externals
+        - Instalamos las dependencias del proyecto:
+        - npm i express @types/express
+        - Creamos el archivo tsconfig.json (configuración del transpilador typescript) con el comando ./node_modules/.bin/tsc --init
+        - Modificamos tsconfig.json dejando la clave "noImplicitAny" en false (deshabilita la generación de errores en expresiones y declaraciones con cualquier tipo implícito)
+        - Creamos el archivo webpack.config.js y le agregamos el siguiente contenido:
+            const path = require('path');
+            const nodeExternals = require('webpack-node-externals');
+
+            module.exports = {
+            mode: 'production',
+            entry: './src/index.ts',
+            target: "node",
+            externals: [nodeExternals()],
+
+            output: {
+                path: path.resolve(__dirname, 'dist'),
+                filename: 'main.js',
+            },
+            resolve: {
+                extensions: ['.ts', '.js'],
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.tsx?/,
+                        use: 'ts-loader',
+                        exclude: /node_modules/
+                    }
+                ]
+            }
+        }
+        * en el package.json agregamos lo siguiente:
+            -  "main": "dist/main.js",
+            - "scripts": {
+                "build": "webpack",
+            },
+    * Propiedades que podemos configurar:
+        - mode: para el modo de trabajo (development ó production)
+        - entry: para definir el punto de entrada de nuestro código.
+        - externals: permite el correcto funcionamiento con algunas librerías externas (en este caso, express)
+        - output: para definir el punto de salida.
+        - resolve: configura cómo se resuelven los módulos
+        - module: sirve para aclararle a Webpack cómo debe procesar los loaders que queramos usar para un proyecto.
+    * Los loaders son transformaciones que se aplican en el código fuente de nuestras aplicaciones. Existen decenas de ellos, para usar cantidad de tecnologías y transformar código de preprocesadores, código HTML, Javascript, etc. Son como una especie de tareas que Webpack se encargará de realizar sobre nuestro código, cada una especializada en algo en concreto. ts-loader es un TypeScript loader para webpack. Mediante las rules definidas dentro de la entrada module, podemos establecer a qué archivos se aplican los loaders que sean necesarios.
+Clase 15:
+    * importante: poner ; en los comandos q ingreso por la consola
+    * La sigla que se conoce como SQL corresponde a la expresión inglesa Structured Query Language (en español “Lenguaje de Consulta Estructurado”)
+    * SQL es un tipo de lenguaje vinculado con la gestión de bases de datos de carácter relacional, que permite la especificación de distintas clases de operaciones entre éstas.
+    * Gracias a la utilización del álgebra y de cálculos relacionales, el SQL brinda la posibilidad de realizar consultas con el objetivo de recuperar información de las bases de datos de manera sencilla
+    * MySQL es un sistema de gestión de bases de datos relacional desarrollado bajo licencia dual: Licencia pública general/Licencia comercial por Oracle Corporation y está considerada como la base de datos de código abierto más popular del mundo.
+    * MariaDB es un sistema de gestión de bases de datos derivado de MySQL con licencia GPL (General Public License).
+    * MySQL y MariaDB son compatibles entre sí a nivel funcional.
+    * SQL es un LENGUAJE
+    * MySQL es un gestor de base de datos relacionales
+    * XAMPP es un paquete de software libre, que consiste principalmente en el sistema de gestión de bases de datos MySQL
+    * PASOS PARA USARLO:
+        1) abrimos XAMPP y le damos a start en el de MySQL
+        2) apretamos el boton de shell y en consola ponemos myqsl -u root
+        3) ahi se deberia poder usar ya y sino buscamos https://onecompiler.com/mysql
+    * CREACION DE TABLA:
+        CREATE TABLE NombreQueQueremosPonerle (
+            id INTEGER PRIMARY KEY AUTO_INCREMENT,
+            nombre TEXT(255) NOT NULL,
+            apellido TEXT(255) NOT NULL,
+            email TEXT(255) NOT NULL,
+            edad numeric NOT NULL
+        )
+        PRIMARY KEY significa q es unica y q con ese campo vamos a hacer las relacionales
+        AUTO_INCREMENT quiere decir q sola se va incrementando
+        NOT NULL para q no sea nullo
+        INTEGER se le dice de q tipo de dato es, en este caso entero
+        varchar(255) significa q es de tipo string y q tiene maximo 255 caracteres
+    * CREATE, INSERTAR DATOS A LA TABLA:
+        INSERT INTO <nombre de la tabla>(<nombre de las props q queremos insertar, ej: 'nombre'>) VALUES(<valores de los campos q pusimos antes, se asignar en orden de nombramiento, ej: 'nicolas'>)
+    * UPDATEAR
+        UPDATE nombreTabla
+        SET colum1 = value1, colum2 = value2, ...
+        WHERE condition
+
+        SET es para decir q valores voy cambiando, par clave valor. Aca si poenmos ej: edad = 20. Directamente se los cambia a todos
+        WHERE sirve para condicionar. Es opcional
+    * LEER
+        SELECT * from nombreDeLaTabla
+    * DELETE
+        ** por lo general cuenta con una condicion (WHERE)
+        delete from nombretabla ----> elimina todo de la tabla
+    * COMANDOS
+        * show tables ----> te muestra las tablas
+        * describe table <nombredelatabla> ----> te muestra algunos datos de la tabla
+        * select * from nombreDeLaTabla ---> te muestra toda la tabla con los datos
+    * MODIFICAR LA ESTRUCTURA DE LA TABLA. OSEA LA CABECERA:
+        * ALTER TABLE nombre_table ADD column_name datatype(ejjemplo TEXT);
+    * ELIMINAR UNA TABLA
+        * drop table nombre_tabla;
+    * es importante poner ; al final de cada sentencia
+CLASE 16:
+    * Knex.js es un generador de consultas SQL con "baterías incluidas" para Postgres, MSSQL, MySQL, MariaDB, SQLite3, Oracle y Amazon Redshift, diseñado para ser flexible, portátil y fácil de usar.
+    *Cuenta con una interfaz basada en callbacks y en promesas.
+    *Knex se puede utilizar como un generador de consultas SQL en Node.JS.
+    *Se puede instalar desde npm con el comando npm i knex
+    *Además debemos instalar las dependencias de las base de datos con la cual vamos a trabajar: npm i -> pg para PostgreSQL y Amazon Redshift, mysql para MySQL y MariaDB, sqlite3 para SQLite3 ó mssql para MSSQL.
+    * inicialización del proyecto e instalación de dependencias:
+        - Creamos un proyecto Node.js con npm init -y
+        - Instalamos la dependencias Knex y mysql con npm i knex mysql (mysql es el plugin necesario para trabajar con MariaDB)
+        - Levantamos el motor de base de datos MariaDB con XAMPP.
+        - Creamos los archivos necesarios para probar los comandos SQL necesarios en acciones CRUD.
+    * un ORM abstrae la base de datos para q el programador haga consultas en el lenguaje que esta programando sin necesitar usar el lenguaje SQL. Mapea la data q viene de la base de datos para que la podamos usar facilmente en codigo
+    * El mejor ORM para typescript o javascript es: TypeORM
+    * para instalar knex hacemos:
+        1) npm install knex --save y npm install y la base de datos q usemos (mysql, pg, etc)(ver documentacion oficial knex)
+        2) para conectarlo hacemos:
+            const knex = require('knex')({
+                client: 'mysql',
+                connection: {
+                    host: '127.0.0.1',
+                    port: 3306,  <puerto por defecto para las bases de datos>
+                    user: 'mi_usuario_database',  <nombre de usuarios q tenemos en la base de datos creada>
+                    password: 'mi_contraseña_database',  <password q tenemos en la base de datos creada>
+                    database: 'my_app_test'  <nombre q le dimos al a base de datos>
+                }
+            })
+            OBS: podemos ver la docu oficial de knex q lo explica
+    * los seeds nos permiten meterle info a la base de datos en su primera carga, tambien sirve como mock para probar
+    * tambien poseen migraciones. Que te permite volver atras si hiciste algo mal(rollback)
+    * los orm tienen mecanismo para proteger las bases de datos
+    * knex cheetsheets ---> https://devhints.io/knex
+    * PARA DARLE UN NOMBRE A LA BASE DE DATOS PONEMOS:
+        create database NOMBREQLEPONEMOS;
+        use NOMBREQLEPUSIMOS;
+    * SQLITE es una libreria en lenguaje C, es un motor de bases de datos como mysql. Es multiplataforma, su principal virtud. Es de dominio publico y lo tienen casi todos los dispositivos ya instalados
+CLASE 17:
+    * MongoDB es una base de datos No relacional, NoSQL, orientada a documentos que ofrece una gran escalabilidad y flexibilidad, y un modelo de consultas e indexación avanzado.
+    * El modelo de documentos de MongoDB resulta muy fácil de aprender y usar, y proporciona a los desarrolladores todas las funcionalidades que necesitan para satisfacer los requisitos más complejos a cualquier escala.
+    * MongoDB dispone de dos variantes de despliegue:
+        1) Local: con Mongo Server, a través de sus opciones Community y Enterprise.
+        2) Remota: mediante una plataforma configurada en la nube, lista para usar, llamada Mongo Atlas.
+    * Caracteristicas:
+        1) Almacena datos en documentos flexibles similares a JSON: la estructura de datos puede cambiarse con el tiempo.
+        2) El modelo de documento se asigna a los objetos en el código de su aplicación para facilitar el trabajo con los datos.
+        3) Las consultas ad hoc, la indexación y la agregación en tiempo real ofrecen maneras potentes de acceder a los datos y analizarlos.
+        4) MongoDB es una base de datos distribuida en su núcleo, por lo que la alta disponibilidad, la escalabilidad horizontal y la distribución geográfica están integradas y son fáciles de usar.
+        5) MongoDB es de uso gratuito.
+    * El concepto NoSQL define sistemas que difieren del modelo clásico SQL: Sistema de bases de datos relacionales. Lo más destacado de NoSQL es que no usan SQL como lenguaje principal de consultas.
+    * MongoDB es una base de datos orientada a documentos. No se basa en el concepto de Tabla Fila y Registro sino que se apoya en el concepto de Colección, Documento y Propiedad.
+    * Una colección en MongoDB es muy similar a una tabla de una base de datos. La tabla almacena registros (filas) mientras que las colecciones almacenan documentos.
+    * Aquí comienzan las diferencias importantes entre una base de datos SQL y una NoSQL. El concepto de fila y de documentos son bastante diferentes. Una fila está compuesta de columnas y siempre son las mismas para todas ellas. En cambio un documento está compuesto por claves y valores (key,value) y cada documento puede tener variaciones importantes con respecto al anterior dentro de una colección.
+    * Un documento embebido es un documento que está insertado dentro de otro y que ambos están ligados a la misma colección (podemos popular collecciones dentro de otras, como meter tablas dentro de otras tablas)
+    * en esta clase se muestra en las diapositivas la instalacion de mongo
+    * ventajas de mysql:
+        - Podemos ejecutar sentencias SQL directamente en nuestra base de datos.
+        - Posibilidad de abstracción de nuestra base de datos con algún ORM estilo Doctrine o Hibernate.
+        - Almacenamiento de datos totalmente organizado y jerarquizado con claves primarias y foráneas.
+        - Nos permite evitar la duplicidad de registros.
+        - Mejora notable en mantenimiento de datos en relación a la seguridad requerida de los mismos.
+    * desventajas de mysql:
+        - Si nuestro sistema escala y evoluciona, tendremos que haber diseñado nuestra base de datos según los posibles nuevos requerimientos.
+        - Requiere más espacio de almacenamiento que una base NoSQL.
+        - Las transacciones de datos son más pesadas frente a las bases de datos NoSQL.
+        - Los límites en los campos de las tablas nos pueden hacer perder datos si no los configuramos adecuadamente según el tamaño del dato que nos puedan introducir los usuarios.
+    * ventajas de mongodb:
+        - La escalabilidad y su carácter descentralizado hacen que soporte estructuras distribuidas.
+        - Permiten realizar sistemas más abiertos y flexibles debido a su fácil adaptación de nuevas evoluciones de nuestras aplicaciones web.
+        - No se requieren potentes recursos para poder trabajar con bases de datos NoSQL.
+        - Optimización de las consultas en base de datos para grandes cantidades de datos almacenados.
+    * desventajas de mongodb:
+        - Problemas con sentencias SQL ya que no admiten el 100% de las consultas existentes.
+        - No es capaz de realizar transacciones. Si bien en nuestra web o en una aplicación que hemos desarrollado podemos simular una transacción, MongoDB no tiene esa opción entre sus tantas capacidades.
+        - La principal desventaja de MongoDB es que carece de algo tan fundamental como los Joins.
+        - Falta de estandarización entre las diferentes bases de datos NoSQL.
+CLASE 18:
+    * mongodb comandos:
+        - db.coll.drop() : borra una colección y sus índices respectivos.
+        - db.dropDatabase() : elimina la base de datos actual.
+        - db.createCollection("contacts") : crea una colección en forma explícita.
+        - db.coll.stats() : refleja estadísticas del uso de la base.
+        - db.coll.storageSize() : tamaño de almacenamiento de la colección.
+        - db.coll.totalIndexSize() : tamaño total de todos los índices de la colección.
+        - db.coll.totalSize(): tamaño total en bytes de los datos de la colección más el tamaño de cada índice de la colección.
+        - db.coll.validate({full: true}) : comprueba la integridad de una colección.
+        - db.coll.renameCollection("new_coll", true) : renombra una colección, el  2do parámetro para borrar la colección destino si existe.
+    * Comando Create (insert). Detalle de comandos:
+        - db.coll.insertOne( {key:value} ) : inserta un documento en la colección.
+        - db.coll.insert( {key:value} ) : inserta un documento en la colección (en desuso).
+        - db.coll.insertMany( [ {key:value}, {key:value}, {key:value} ] ) : inserta un array de documentos la colección en modo Bulk.
+    * Comando Read (find). Detalles de comandos:
+        - db.coll.findOne() : busca un documento dentro de una colección.
+        - db.coll.find() : busca todos los documentos dentro de una colección.
+        - db.coll.find( {key:value} ) : busca los documentos dentro de una colección que satisfacen el filtro de búsqueda.
+        - db.coll.find().pretty() : devuelve todos los documentos conservando el formato de objeto de salida.
+    * Cuando insertamos un documento en MongoDB, el motor de base de datos crea un campo adicional llamado ObjectID identificado con la clave _id. Este es un número compuesto por 12 bytes que asegura un identificador único para cada documento. Se considera clave primaria y contiene tres secciones:
+        - unix timestamp
+        - random value
+        - contador
+    * Comandos Count ---> Son funciones que cuentan la cantidad de documentos presentes en una colección. Algunas de ellas pueden tener la opción de filtro.
+        - db.coll.estimatedDocumentCount() ---> Devuelve la cantidad total de documentos encontrados en la colección.
+        - db.coll.countDocuments( {key: val} ) ---> Devuelve la cantidad de documentos encontrados en la colección (con filtro de query).
+    * Comando Read con filtros de búsqueda
+        - db.coll.find( {key: {$operator: val}} ) : devuelve los documentos según el operador de filtro utilizado.
+        - Operadores para filtros de query:
+            $and : Realiza operación AND -> sintaxis: {$and: [ {},{} ] }
+            $or : Realiza operación OR -> sintaxis: {$or: [ {},{} ] }
+            $lt : Coincide con valores que son menores que un valor especificado.
+            $lte : Coincide con valores menores o iguales a un valor especificado.
+            $gt : Coincide con valores mayores a un valor especificado.
+            $gte : Coincide con valores mayores o iguales a un valor especificado.
+            $ne : Coincide con valores que no son iguales a un valor especificado.
+            $eq : Selecciona los documentos que son iguales a un valor especificado.
+            $exists : Selecciona los documentos según la existencia de un campo.
+            $in : Selecciona los documentos especificados en un array.
+            sintaxis: {key:{$in: [array of values] } }
+            $nin : Coincide con ninguno de los valores especificados en un array.
+            $size : Coincide con el número de elementos especificados.
+            $all : Coincide con todos los valores definidos dentro de un array.
+            $elemMatch : Coincide con algún valor definido dentro del query.
+            db.coll.distinct( val ) ---> devuelve un array con los distintos valores que toma un determinado campo en los documentos de la colección.
+            db.coll.find({doc.subdoc:value}) ---> Se utiliza para filtrar subdocumentos.
+            db.coll.find({name: /^Max$/i}) ---> filtra utilizando expresiones regulares
+    * Proyecciones en mongodb
+        - La proyección se utiliza para devolver un conjunto determinado de campos de un documento. En general devolvemos todos los campos de un documento, pero es posible que no necesitemos todos.
+        - Es equivalente en SQL de pasar de hacer un SELECT * a realizar SELECT nombrecampo.
+        - Las proyecciones deben ser incorporadas en el segundo parámetro del comando find. Por ej. db.coll.find({},{"nombre":1}) muestra sólo el campo nombre y el _id de todos documentos de la coll
+        - Las proyecciones se realizan indicando el nombre del campo, con valor 1 si queremos mostrarlo y 0 por el contrario.
+    * MongoDB: sort limit skip
+        - sort( { campoA: 1 ó -1 , campoB: 1 ó -1 , ... } ) : Especifica el orden en el que la consulta devuelve documentos coincidentes. El ó los campos por los cuales ordena pueden contener los valores 1 y -1, estableciendo orden ascendente y descendente respectivamente. El orden se evalúa de izquierda a derecha en caso que los valores coincidan.
+        - limit(num): Especifica el número máximo de documentos devueltos.
+        - skip(offset) : Saltea la cantidad de documentos especificada.
+        - Se pueden utilizar en forma combinada. Ejemplo: db.Employee.find().skip(2).limit(3).sort({Employeeid:-1})
+    * Update:
+        - db.collection.updateOne(query, update, options)
+        query: especifica el filtro de documentos a ser actualizados.
+        update: contiene los datos a ser actualizados con sus operadores respectivos: $set, $unset, $inc, $rename, $mul, $min, $max, etc.
+        options: contiene varias opciones para la actualización, entre ellas:
+        upsert (true ó false) : Es una opción para hacer un insert en caso de que el registro no exista.
+        - db.coll.updateMany(query, update, options) Igual que el anterior, pero hace una actualización múltiple en caso de que el filtro de query devuelva varios resultados
+    * Delete:
+        - db.coll.deleteOne( {key: val} ): Elimina un sólo documento (el primero) que coincide con el filtro especificado.
+        - db.coll.deleteMany( {key: val} ): Elimina todos los documentos que coinciden con el filtro especificado.
+        - db.coll.remove( {key: val} ): Elimina documentos de una colección.
+        - db.coll.findOneAndDelete( filter, options ): Elimina un solo documento según el filtro y los criterios de clasificación. Algunas de las options pueden ser
+            -- sort: para establecer orden para el filtro
+            -- projection: para elegir campos de salida.
+    * creacion de usuarios y permisos:
+        - En MongoDB es posible crear usuarios y asignarles acceso mediante roles. Veremos cómo crear un usuario y asignarle un rol para que tenga ciertos accesos limitados a una base de datos.
+        - Crearemos dos usuarios para una base de datos
+            - Usuario lector: tendrá acceso de lectura a la base de datos.
+            - Usuario escritor: tendrá acceso de lectura y escritura a la base de datos.
+            - usuario lector ---> Utilizaremos el método createUser. Este acepta como parámetro un objeto con las siguientes propiedades:
+                user: nombre del usuario. Le asignaremos lector.
+                pwd: contraseña para el usuario.
+                roles: arreglo de objetos. Sirve si el usuario tendrá acceso a múltiples bases de datos, estableciendo permisos para cada acceso.
+                IMPORTANTE: Ejecutar el servidor con acceso root: mongod. Ejecutar en el cliente use admin antes de createUser(...)
+                MongoDB viene con roles predefinidos. Uno de ellos es el role read, que permite ejecutar métodos de sólo lectura.
+                La propiedad db es donde se  indica a qué base de datos se le asignará dicho rol.
+            - - Usuario escritor ---> Crearemos el usuario escritor. El proceso es similar, pero en este caso el role ya no será read sino readWrite. Con el rol readWrite el usuario tendrá acceso a los métodos de lectura y escritura de la base de datos. A continuación debemos verificar que cada usuario cuenta con los accesos correctos.
+CLASE 19:
+    * Mongoose es una dependencia Javascript que realiza la conexión a la instancia de MongoDB. Pero la magia real del módulo Mongoose es la habilidad para definir un esquema del documento. MongoDB usa colecciones para almacenar múltiples documentos, los cuales no necesitan tener la misma estructura. Cuando tratamos con objetos es necesario que los documentos sean algo parecido. En este punto nos ayudan los esquemas y modelos de Mongoose.
+    * Mongoose usa un objeto Schema para definir una lista de propiedades del documento, cada una con su propio tipo y características para forzar la estructura del documento.
+    * Después de especificar un esquema deberemos definir un Modelo constructor para así poder crear instancias de los documentos de MongoDB
+    * Mongoose es un Object Document Mapper (ODM). Esto significa que permite definir objetos con un esquema fuertemente tipado que se asigna a un documento MongoDB.
+    * Mongoose proporciona una amplia cantidad de funcionalidades para crear y trabajar con esquemas.
+    * Actualmente contiene ocho SchemaTypes definidos para una propiedad:
+        String (Cadena)
+        Number (Número)
+        Date (Fecha)
+        Buffer
+        Boolean (Booleano)
+        Mixed (Mixto)
+        ObjectId
+        Array (Matriz)
+    * configuracion del proyecto con Mongoose. Pasos a seguir
+        Creamos un proyecto Node.js con npm init -y
+        Instalamos la dependencia mongoose con npm i mongoose
+        Describimos nuestro modelo de datos ( Schema + Model ) con las validaciones necesarias.
+        Levantamos el motor de base de datos MongoDB.
+        Creamos la función de conexión mediante mongoose, con las opciones configuradas.
+        Con mongoose realizamos las operaciones CRUD hacia MongoDB: Read, Create, Update y Delete.
+        Mostramos consultas con distintos filtros de Query y con el uso de projection, funciones sort, limit y skip
+CLASE 20:
+    * DBaaS significa database as a service. Con esto nos referimos a la ejecución y gestión de las bases de datos, optimizadas y alojadas en la infraestructura de un proveedor de servicios cloud. De esta manera, para gestionar las bases de datos en el cloud debemos contar con un servicio «por detrás» como PaaS o IaaS, para estar seguros de tener la infraestructura necesaria.
+    * modalidades de servicio:
+        - Modelo clásico: el cliente hace uso de la infraestructura física del proveedor para alojar sus bases de datos.
+        - Alojamiento gestionado: el cliente se desentiende de cualquier tarea de mantenimiento y gestión avanzada de la base de datos, que asumirá el proveedor.
+    * ventajas de DBaaS:
+        - Se elimina la infraestructura física de la ecuación ahorrando en costos, ya que el proveedor es responsable del mantenimiento y la disponibilidad de los sistemas. Los usuarios son responsables de sus propios datos.
+        - Ahorro de costos generalizado. Además de prescindir de las inversiones físicas, con DBaaS se puede tener menos personal dedicado a esta tarea, ahorrar en energía y aprovechar mejor el espacio físico.
+        - Escalabilidad. Con DBaaS podemos acceder a diferentes tarifas basadas principalmente en el rendimiento deseado y nuestras necesidades.
+        - Personal cualificado. A través de DBaaS se accede a expertos en bases de datos que se encargarán de todas las tareas de mantenimiento, actualización, seguridad y gestión.
+    * MongoDB Atlas es un servicio de Cloud Database (Base de Datos en la Nube), que nos permite crear y administrar nuestra MongoDB desde cualquier lugar del mundo a través de su plataforma.
+    * MongoDB Atlas está orientado a ser accesible desde el navegador y fue desarrollado con el objetivo de aliviar el trabajo de los desarrolladores, al quitarles la necesidad de instalar y administrar entornos de Base de Datos.
+    * Caracteristicas principales de MONGODB Atlas:
+        - Automatización: una manera fácil de crear, lanzar y escalar aplicaciones en MongoDB.
+        - Flexibilidad: DBaaS con todo lo necesario para las aplicaciones modernas.
+        - Seguridad: varios niveles de seguridad disponibles.
+        - Escalabilidad: gran escalabilidad sin interrumpir la actividad.
+        - Alta disponibilidad: implementaciones con tolerancia a errores y autoreparación predeterminadas.
+        - Alto rendimiento: el necesario para las cargas de trabajo exigentes.
+    * Ventajas MongoDB Atlas:
+        1) Ejecución
+            - Puesta en marcha de un clúster en segundos.
+            - Implementaciones replicadas y sin interrupción.
+            - Total escalabilidad: escalado horizontal o vertical sin interrumpir la actividad.
+            - Revisiones automáticas y actualizaciones simplificadas.
+        2) Protección y seguridad
+            - Autenticación y cifrado.
+            - Copias de seguridad continuas con recuperación temporal.
+            - Supervisión detallada y alertas personalizadas.
+        3) Libertad de movimiento
+            - Modelo de planes de precio según demanda: se factura por hora.
+            - Compatible con diferentes tipos de de servicios de nube (AWS, GCP, Azure).
+            - Parte de un paquete de productos y servicios para todas las fases de la aplicación.
+    * configuracion de cuenta en MongoDB Atlas
+        1) Nos dirigimos a la página oficial de MongoDB Atlas
+        2) Seleccionamos START FREE y nos registramos con un correo. También podemos ingresar con Google.
+        3) Luego nos redireccionará a la próxima ventana donde continuamos haciendo click en Create cluster.
+        4) Nos redireccionará a un dashboard donde el clúster aún se seguirá creando, pero podemos explorar mientras se crea en segundo plano.
+        5) le damos a connect y despues a add your cluster ip address
+        5.1) MongoDB Atlas nos ofrece una seguridad de conexión por IP, esto quiere decir que podemos configurarlo de 2 maneras
+            - Add Your Current IP Address: opción para poner nuestra IP, pero cada vez que cambiemos la PC tenemos que volver a configurar.
+            - Add a Different IP Address: para configurar una IP que permita las conexiones de cualquier PC, podemos colocar la IP 0.0.0.0/0.
+        6) Configuración de usuario de acceso. Ingresamos usuario y contraseña
+        7) Opciones de coneccion. Elegimos la q queremos entre CLI, nodeJS o Mongo Compass GUI. Y luego nos da el codigo a copiar para realizar la conexion
+    * Firebase es una plataforma para el desarrollo de aplicaciones web y móviles desarrollada por James Tamplin y Andrew Lee en 2011 y adquirida por Google en 2014, empezando con su producto base: base de datos en tiempo real. Firebase permite que, en lugar de hacer peticiones AJAX, el usuario se conecte a la base de datos y automáticamente envíe los datos. Firebase puede ser administrado por cualquier aplicación backend y hay múltiples dependencias disponibles para lograr la conexión en cualquier plataforma. No necesitamos casarnos con Firebase, se usa lo que se necesita . Usa Cloud Storage: base de datos para que usuarios puedan compartir ficheros e imágenes, sin necesidad de hacer bases de datos propias, que para imágenes a veces puede ser un poco ‘tedioso’. Usa Cloud Functions: con esto nos ahorramos toda la infraestructura de backend. Es lo que más cobra Google, ya que sabe que es en lo que más ahorramos. Con el plan Blaze con las CF puedes hacer llamadas a tu API, no hay firewalls.
+    * creacion de proyecto con nodejs y firebase:
+        1) Creamos un proyecto Node.js con npm init -y
+        2) Instalamos el paquete npm para trabajar con Firebase en la carpeta de nuestro proyecto: npm i firebase-admin
+        3) Incluimos en el proyecto el archivo JSON descargado desde el botón 'generar nueva clave privada' de la configuración de nuestro servidor en modo admin.
+        4) Generamos el archivo server.js y escribimos el código de conexión hacia la base de datos Firebase como se detalla a continuación:
+CLASE 21:
+    * TDD o Test-Driven Development (desarrollo dirigido por tests) es una práctica de programación que consiste en escribir primero las pruebas (generalmente unitarias), después escribir el código fuente que pase la prueba satisfactoriamente y, por último, refactorizar el código escrito. Con esta práctica se consigue entre otras cosas un código más robusto, más seguro, mantenible y una mayor rapidez en el desarrollo.
+    * Mocking es la técnica utilizada para simular objetos en memoria con la finalidad de poder ejecutar pruebas unitarias.
+    * Los Mocks son objetos preprogramados con expectativas que forman una especificación de las llamadas que se espera recibir.
+    * Los Mocks se pueden servir desde un servidor web a través de una Mock API.
+    * los mocks se utilizan tanto en back, como en front
+    * Faker.js es una librería Javascript que nos permite generar varios tipos de datos aleatorios como nombres, dirección de correo electrónico, perfil de avatar, dirección, cuenta bancaria, empresa, título del trabajo y mucho más. Faker.js se puede utilizar dentro de un proyecto Node.js para generar un mocking de datos para ser servidos desde un proyecto implementado con Express.
+    * mocks data se usa para simular datos q sirven para testear los enpoints y ver las respuestas
+    * para obtener de la url usamos req.query
+    * para obtener data del body samos req.body
+    * y si en la url es un param usamos req.param
+    * para q el param sea opcional le ponemos '?' al final del nombre del parametro. Ejemplo ':id?'
+CLASE 22:
+    * Es un proceso de estandarización y validación de datos que consiste en eliminar las redundancias o inconsistencias, completando datos mediante una serie de reglas que actualizan la información, protegiendo su integridad y favoreciendo la interpretación, para que así sea más fácil de consultar y más útil para quien la gestiona.
+    * como y cuando debemos normalizar ?
+        ** La normalización de datos es útil cuando un repositorio de datos es demasiado grande, contiene redundancias, tiene información profundamente anidada y/o es difícil de usar.
+        ** la normalizacion de datos debe seguir ciertas reglas:
+            *** la estructura de datos debe ser plana (no podemos tener objetos anidados)
+            *** cada entidad debe almacenarse como propiedad de objeto diferente
+            *** las relaciones con otras entidades deben crearse basadas en ids (unicos, claves primarias). No es necesario guardar todo el objeto con el id ya alcanza (en sql para esto se hacen tablas intermedias con ids de las dos tablas para tener estas relaciones y no tener informacion redundante)
+    * normalizacion de datos se basa en el modelo entidad relacional
+    * normalizacion es el proceso de estandarizar y validar datos que consiste en eliminar las redundancias y repeticion de data. Con esto hacemos q sean precisos unicos y integridad
+    * normalizr es una libreria q sirve para normalizar
+    * la normalizacion es un proceso pesado. Hay q ver en que casos es conveniente
+    * Node.js proporciona una función inspect provista en el módulo util con fines de depuración. Esta devuelve una representación de cadena de un objeto que puede ser grande, complejo y con un alto nivel de anidamiento. Ejemplo
+        Ejemplo: util.inspect(myObj,true,7,true)
+        ** El primer parámetro es el objeto a inspeccionar.
+        ** El segundo parámetro muestra todas las propiedades ocultas y no ocultas.
+        ** El tercer parámetro indica hasta qué profundidad es analizado el objeto.
+        ** El cuarto parámetro colorea la salida.
+CLASE 23:
+    * en la res de un endpoint podemos setear una cookie con res.cookie('clave', 'valor')
+    * npm i cookie-parser. Luego lo importamos en el archivo q queremos y despues ponemos app.use(cookieParser()). Esto antes de los endpoints
+    * podemos setear una cookie con un tiempo de expiracion. Ejemplo:
+    res.cookie(clave, valor, { maxAge: numeroDeTiempoParaQueExpireEnMilisegundos })
+    * podemos leer cookies q tenemos almacenadas. Con la propiedad req.cookies
+    * req.cookies es un objeto con todas las cookies.
+    * Para borrar una cookie ---> res.clearCookie('key')
+    * no existe un metodo q borre todas las cookies de una
+    * las cookies pueden ser cambiadas por el cliente, pero podemos darnos cuentas si las cambio
+    * singed cookie ---> al momento de crear cookies podemos darle un hash luego del valor para q si el usuario la cambia nos demos cuenta porque se va a modificar el hash (con el cookie parser). Ejemplo:
+        app.use(cookieParser('El string o tambien array secret que va a usar para hashear las cookies para detectar si el usuario la cambio'))
+        res.cookie(clave, valor, { signed: true })
+    * las signed cookies se separan de las cookies comunes. tenemos req.cookies y req.signedCookies
+    * si la signed cookies fue modificada da false
+    * session memory --> sesion q se guarda en memoria
+    * Session es un paquete de nodejs, el cual permite que una variable se accesible desde cualquier lugar del sitio. Se almacena del lado del SERVIDOR, esta es la principal diferencia con la cookie, ya q esta esta almacenada del lado del cliente
+    * para instalar session hacemos npm i express-session. Despues lo importamos y abajo ponemos:
+    import {session} from 'express-session'
+    app.use(session({secret: 'secretOElStringQueQuierasParaHashearLaKey', revase: true, saveUninitialized: true}))
+    * para acceder a las session es req.session
+    * connect.sid ---> connection session id. Esto es lo q permite darse cuenta q son ventanas distintas o navegadores distintos. Esto se hace automaticamente por detras con el paquete de express-session
+    * para eliminar datos de una variable de session se utiliza req.destroy(El Parametro q le pasamos es un callback (con el err como param))
+    * las session se manejan en memoria por lo tanto si se apaga y prende el servidor se pierde
+CLASE 24:
+    * redis es una base de datos q se caracteriza por guardar clave-valor. Sirve para cache, cookies, etc
+    * Cuando nos manejamos con session-memory, de forma predeterminada estaremos utilizando el almacenamiento en memoria: el memoryStore. Al reiniciar el servidor, estos datos se borran, de modo que no tienen persistencia. Por eso, memoryStore solo está disponible en desarrollo (nunca en producción).
+    * Se utiliza igual que memoryStore, con la diferencia de que se crea una carpeta de archivos en donde se almacenan los datos de session. Estos tendrán persistencia, ya que quedarán guardados en el servidor
+    * Además de tener instalado el express-session habrá que instalar session-file-store:
+    * en el middleware de la clase pasada tenemos que incluir sore: new FileStore({path: ,tll: ,retries: 0});
+    * redis ---> Almacén de datos clave-valor en memoria de código abierto que se puede utilizar como base de datos, caché y agente de mensajes.
+    * Caracteristicas redis
+    * Los datos de Redis se almacenan en memoria del servidor, por lo que el acceso a los mismos es muy rápido.
+        * Tiene mucha flexibilidad en cuanto a las estructuras de datos que admite (strings, listas, hashes, sets, entre otros). De esta forma, el código queda mucho más simple y con menos líneas.
+        * Por persistencia, Redis admite copias de seguridad puntuales (guarda el conjunto de datos en el disco).
+        * Crea soluciones con un alto nivel de disponibilidad, lo que ofrece fiabilidad y rendimiento estables
+    * comandos redis
+        * Las Redis Keys son binarias y seguras. Esto significa que puede usar cualquier secuencia binaria como clave, ya sea un string o un archivo de imagen.
+        * El tipo más usado y recomendado por su mayor simpleza es un string como Redis Keys.
+        * Con el uso de los comandos SET y GET configuramos y recuperamos un valor de un string.
+    * set ---> Es el comando con el que se pueden setear nuevos key value. Se le puede especificar un tiempo de expiración en segundos o milisegundos. Da como respuesta “OK” si el comando SET se ejecutó correctamente y, si hubo algún problema, devuelve “Null”.
+    * get ---> Es el comando con el que se puede leer el valor de la key. Devuelve un error si el valor de la key es distinto de un string. Si se ejecuta correctamente devuelve el valor de la key. Si esta no existe, devuelve la palabra reservada nil.
+    * ttl ---> Devuelve el tiempo de vida que le queda a la key, si es que tiene seteado un timeout. Permite al cliente chequear por cuánto tiempo más esa key va a ser parte del conjunto de datos. Devuelve -1 si la key no existe o no tiene un tiempo de expiración.
+    * RedisLab es lo mismo que Redis, pero los datos se guardan en la nube.
+    * Redis-cli es la interfaz de línea de comandos de Redis, un programa simple que permite enviar comandos a Redis y leer las respuestas enviadas por el servidor, directamente desde la terminal
+CLASE 25:
+    * autenticacion ---> autentica quien sea q es el usuario q esta entrando, ejemplo nicolas costanza. Existen diversos métodos para probar la autenticación, siendo la contraseña el más conocido y utilizado.
+    * autorizacion ---> le da los permisos al usuario q fue previamente autenticado
+    * metodos de autenticacion ---> usuario y contraseña, sin contraseña (envia un link al mail por ejemplo), por redes sociales, Datos biométricos, JWT(Este método open source permite la transmisión segura de datos entre las distintas partes. Comúnmente se utiliza para la autorización a partir de un par de claves que contiene una clave privada y una pública), OAuth 2.0(Permite que mediante una API, el usuario se autentique y acceda a los recursos del sistema que necesita.)
+    * passport ---> Passport es un middleware de autenticación de NodeJS. Cumple únicamente la función de autenticar solicitudes, por lo que delega todas las demás funciones a la aplicación. Esto mantiene el código limpio y fácil de mantener. Passport reconoce los distintos métodos de login utilizados actualmente, por lo que sus mecanismos de autenticación se empaquetan como módulos individuales. Entonces, no es necesario crear dependencias que no se vayan a utilizar. Cada uno de estos mecanismos se llaman strategies.
+    * strategies ---> Cada strategy tiene un módulo distinto de NodeJS para instalar. Las disponibles son: passport-local(usuario y contraseña), passport-openid, passport-oauth.
+    * npm install passport ; npm install passport-local. Se requiere el módulo de passport, junto con el módulo de passport-local, que nos da control para implementar manualmente el mecanismo de autenticación.
+    * Se define una nueva instancia de LocalStrategy y se la carga mediante el método passport.use( ).
+    * El primer parámetro es el nombre de la strategy (“login” en este caso) y el segundo es una instancia de la estrategia que se desea usar (LocalStrategy en este caso). LocalStrategy espera encontrar por defecto las credenciales de usuario en los parámetros nombre de usuario ‘username’ y contraseña ‘password’ (si se definen con otros nombres, no los encontrará!).
+    * Serializar y deserializar ---> Para restaurar el estado de autenticación a través de solicitudes HTTP, Passport necesita serializar usuarios y deserializarlos fuera de la sesión.
+    * Esto se hace de modo que cada solicitud subsiguiente no contenga las credenciales del usuario anterior. Se suele implementar proporcionando el ID de usuario al serializar y consultando el registro de usuario por ID de la base de datos al deserializar. Los métodos que proporciona Passport para esto son serializeUser y deserializeUser.
+    * inicializacion y rutas ---> Debemos inicializar con app.use( ) express y express-session. Además, debemos inicializar passport como se muestra en el código.
+CLASE 26:
+    * JSON Web Token es un método estándar y abierto para representar reclamaciones de forma segura entre dos partes. JWT.IO nos permite decodificar, verificar y generar JWT.Básicamente, los JWT son cadenas de datos que se pueden utilizar para autenticar e intercambiar información entre un servidor y un cliente.
+    * El flujo de funcionamiento es el siguiente:
+        1) El cliente envía credenciales al servidor.
+        2) El servidor verifica las credenciales, genera un JWT y lo envía como respuesta.
+        3) Las solicitudes posteriores del cliente tienen un JWT en los headers de la solicitud.
+        4) El servidor valida el token y, si es válido, proporciona la respuesta solicitada.
+    * Las solicitudes posteriores del cliente tienen un JWT en los headers de la solicitud. El servidor valida el token y, si es válido, proporciona la respuesta solicitada. Si no se valida el token, se niega el acceso.
+CLASE 27:
+    * el process.argv ---> es como el .env pero de node. Por defecto si no le pasamos nada ya tiene dos cosas. En primer lugar tiene el ejecutable de node, y el segundo es la direccion del archivo q estamos ejecutando. Del tercero en adelante son los argumentos que queremos usar. Estos se pasan en formato string. Ejemplo process.argv[2]
+    * minimist ---> libreria q permite trabajar con argumentos o variables de entorno mas facil q con process.argv. Se le puede pasar options, q es un objeto y la prop default es un objeto con claves y valores por defecto de cada variable q deseamos. En las options tenemos otro elemento q es alias: q es un objeto con claves y valores para renombrar variables
+    * yargs ---> es otra libreria como minimist
+    * las variables de entorno son variables sensibles q pueden ser usadas para violar la seguridad de la aplicacion o para elegir los modos y ejecutar ciertas porciones de codigo
+    * el process.env tiene variables por defecto de la computadora
+CLASE 28:
+    * Como ya hemos visto, el objeto process es una variable global disponible en NodeJS que nos ofrece diversas informaciones y utilidades acerca del proceso que está ejecutando un script Node. Contiene diversos métodos, eventos y propiedades que nos sirven no solo para obtener datos del proceso actual, sino también para controlarlo. Al ser un objeto global quiere decir que lo puedes usar en cualquier localización de tu código NodeJS, sin tener que hacer el correspondiente require().
+    * A veces, se necesita salir de la ejecución de un programa en Node. Esto lo podemos conseguir mediante el método exit del objeto process. Provocará que el programa acabe, incluso en el caso que haya operaciones asíncronas que no se hayan completado o que se esté escuchando eventos diversos en el programa.  El método exit puede recibir opcionalmente un código de salida. Si no indicamos nada se entiende "0" como código de salida. Ejemplo: process.exit(3)
+    * La mayor funcionalidad de process está contenida en la función ‘.on()’. Dicha función está escuchando durante todo el proceso que se ejecuta, es por eso que solo se puede actuar sobre su callback. Se define como se definen los eventos en Javascript. En el método on, indicando el tipo de evento que queremos escuchar y un callback que se ejecutará cuando ese evento se dispare. Ejemplo: process.on('event', callback)
+    * Normalmente, el proceso de Node se cerrará cuando no haya trabajo programado, pero un oyente registrado en el evento beforeExit puede realizar llamadas asincrónicas y, por lo tanto, hacer que el proceso de Node continúe. No debe usarse como una alternativa al evento de exit a menos que la intención sea programar trabajo adicional. Ejemplo: process.on('beforeExit', callback)
+    * Evento ‘uncaughtException’ ---> Se emite cuando una excepción es devuelta hacia el bucle de evento. Si se agregó un listener a esta excepción, no se producirá la acción por defecto (imprimir una traza del stack y salir). Es un mecanismo muy básico para manejar excepciones.
+    * ‘process.execPath’ ---> Esta propiedad devuelve el nombre de la ruta absoluta del ejecutable que inició el proceso Node. Los enlaces simbólicos, si los hay, se resuelven.
+    * process.stdout.write’ ---> La propiedad process.stdout devuelve una secuencia conectada a stdout. Es un stream de escritura para stdout.
+    * child process ---> Cuando ponemos en marcha un programa escrito en NodeJS se dispone de un único hilo de ejecución. Una ventaja de esto es que permite atender mayor demanda con menos recursos. Todas las operaciones que NodeJS no puede realizar al instante (operaciones no bloqueantes), liberan el proceso, es decir, se libera para atender otras solicitudes. El hilo principal podrá estar atento a solicitudes, pero una vez que se atiendan, Node podrá levantar de manera interna otros procesos para realizar todo tipo de acciones que se deban producir como respuesta a esas solicitudes. Estos procesos secundarios pueden crearse con el módulo child_process.
+    * Un proceso hijo es un proceso creado por un proceso padre. Node nos permite ejecutar un comando del sistema dentro de un proceso hijo y escuchar su entrada / salida. Los desarrolladores crean de forma habitual procesos secundarios para ejecutar comandos sobre su sistema operativo cuando necesitan manipular el resultado de sus programas Node con un shell. Podemos crear procesos hijo de 4 formas diferentes: exec(), execFile(), spawn(), fork()
+    * el exec() ejecuta un comando en consola, se le pasa como primer parametro un string con el comando a eejecturar y el segundo es un callback para manejar errores. Lo mismo el execFile
+    * La función fork() es una variación de spawn() que permite la comunicación entre el proceso principal y el secundario. Además de recuperar datos desde el proceso secundario, un proceso principal puede enviar mensajes al proceso secundario en ejecución. Del mismo modo, el proceso secundario puede enviar mensajes al proceso principal. Si un servidor web está bloqueado, no puede procesar ninguna nueva solicitud entrante hasta que el código de bloqueo haya completado su ejecución. Fork evita el bloqueo corriendo el proceso secundario bloqueante en un hilo aparte.
+CLASE 29:
+    * Cuando hablamos de Cluster nos referimos al uso de subprocesos que permite aprovechar la capacidad del procesador del servidor donde se ejecute la aplicación. Node se ejecuta en un solo proceso (single thread), y entonces no aprovechamos la máxima capacidad que nos puede brindar un procesador multicore. Al usar el cluster, lo que hacemos es, en el caso de estar ejecutando sobre un servidor multicore, hacer uso de todos los núcleos del mismo, aprovechando al máximo su capacidad.
+    * Node nos provee un módulo llamado cluster para hacer uso de esto. Lo que hace es clonar el worker maestro y delegarle la carga de trabajo a cada uno de ellos, de esa manera se evita la sobrecarga a un solo núcleo del procesador.
+    * modulo forever ---> Cuando ejecutamos un proyecto de Node en un servidor en el que lo tengamos desplegado, dejamos la consola “ocupada” con esa aplicación. Si queremos seguir haciendo cosas o arrancar otro proyecto no podemos, ya que tendríamos que detener la aplicación pulsando Ctrl+C quedando la consola libre nuevamente. Por otro lado, si el servidor se parara por un fallo, nuestra aplicación no se arrancaría de nuevo. Ambos problemas se pueden resolver con el módulo Forever de Node.
+    * la ventaja de Forever es que puede utilizarse en produccion. En cambio nodemon no
+    * comandos de forever en la terminal:
+        forever start <filename> [args]: inicia un nuevo proceso
+        forever list: lista todos los procesos activos
+        forever stop <PID>: detiene un proceso según su id de proceso
+        forever stopall: detiene todos los procesos activos
+        forever --help: muestra la ayuda completa
+    * modulo PM2 ---> Es un gestor de procesos (Process Manager), es decir, un programa que controla la ejecución de otro proceso. Permite chequear si el proceso se está ejecutando, reiniciar el servidor si este se detiene por alguna razón, gestionar los logs, etc. Lo más importante es que PM2 simplifica las aplicaciones de Node para ejecutarlas como cluster. Es decir, que podemos escribir nuestra aplicación sin pensar en el cluster, y luego PM2 se encarga de crear un número dado de worker processes para ejecutar la aplicación. Es capaz de aguantar cantidades enormes de tráfico con un consumo de recursos realmente reducido y con herramientas que permiten realizar la monitorización de las aplicaciones de manera remota. La ventaja principal sobre el módulo forever es el tema del cluster embebido en este módulo, como mencionamos antes.
+CLASE 30:
+    * Proxy ---> Es un servidor que hace de intermediario entre las conexiones de un cliente y un servidor de destino, filtrando todos los paquetes entre ambos. Sin el proxy, la conexión entre cliente y servidor de origen a través de la web es directa. Se utiliza para navegar por internet de forma más anónima ya que oculta las IP, sea del cliente o del servidor de origen. Por ser intermediario, ofrece funcionalidades como control de acceso, registro del tráfico, mejora de rendimiento, entre otras.
+    * existen 2 tipos de proxy ---> FORWARD PROXY y REVERSE PROXY
+    * Proxy directo (forward) ---> Es el q usamos normalmente los clientes, para acceder por ejemplo a netflix de otro lado para ver otras pelis. Es un servidor proxy que se coloca entre el cliente y la web. Recibe la petición del cliente para acceder a un sitio web, y la transmite al servidor del sitio, para que este no se entere de qué cliente está haciendo la petición. Lo utiliza un cliente cuando quiere anonimizar su IP. Es útil para mejorar la privacidad, y para evitar restricciones de contenido geográfico (contenido bloqueado en cierta región).
+    * Proxy inverso (reverse) ---> Sirve para hacer una mejor seguridad del servidor, que no se tengan que conectar los clientes directamente al servidor. Es este caso, el servidor proxy se coloca entre la web y el servidor de origen. Entonces, el que se mantiene en el anonimato es el servidor de origen. Garantiza que ningún cliente se conecte directo con él y por ende mejore su seguridad. En general el cifrado SSL de un sitio web seguro se crea en el proxy (y no directamente en el servidor). Además, es útil para distribuir la carga entre varios servidores web.
+    * Es conveniente en el backend usar un proxy inverso. Tiene varias ventajas:
+        ** Balancear la carga: Un solo servidor de origen, en una página con millones de visitantes diarios, no puede manejar todo el tráfico entrante. El proxy inverso puede recibir el tráfico entrante antes de que llegue al servidor de origen. Si este está sobrecargado o cae completamente, puede distribuir el tráfico a otros servidores sin afectar la funcionalidad del sitio. Es el principal uso de los servidores proxy inverso.
+        ** Seguridad mejorada: Al ocultar el proxy inverso la IP del servidor de origen de un sitio web, se puede mantener el anonimato del mismo, aumentando considerablemente su seguridad. Al tener al proxy como intermediario, cualquier atacante que llegue va a tener una traba más para llegar al servidor de origen
+        ** Potente caching: Podemos utilizar un proxy inverso para propósitos de aceleración de la web, almacenando en caché tanto el contenido estático como el dinámico. Esto puede reducir la carga en el servidor de origen, resultando en un sitio web más rápido.
+        ** Compresión superior: Un proxy inverso es ideal para comprimir las respuestas del servidor. Esto se utiliza mucho ya que las respuestas del servidor ocupan mucho ancho de banda, por lo que es una buena práctica comprimirlas antes de enviarlas al cliente.
+        ** Cifrado SSL optimizado: Cifrar y descifrar las solicitudes SSL/TLS para cada cliente puede ser muy difícil para el servidor de origen. Un proxy inverso puede hacer esta tarea para liberar los recursos del servidor de origen para otras tareas importantes, como servir contenido.
+        ** Monitoreo y registro del tráfico: Un proxy inverso captura cualquier petición que pase por él. Por lo tanto, podemos usarlos como un centro de control para monitorear y registrar el tráfico. Incluso si utilizamos varios servidores web para alojar todos los componentes de nuestro sitio web, el uso de un proxy inverso facilitará la supervisión de todos los datos entrantes y salientes del sitio.
+    * NGINX ---> Nginx es un servidor web, orientado a eventos (como Node) que actúa como un proxy lo que nos permite redireccionar el tráfico entrante en función del dominio de dónde vienen, hacia el proceso y puerto que nos interese. Se usa para solucionar el problema que se genera al correr nuestra app Node en el puerto 80, para que sea accesible desde una IP o dominio, y queremos utilizar el mismo puerto con otro proceso.
+    * deberia aprender como hacer un proxy inverso con nginx
+CLASE 31:
+    * Una de las cosas que podemos hacer en el código para mejorar el rendimiento de una aplicación Express al desplegarla en producción es utilizar la compresión de gzip.
+    * Su uso puede disminuir significativamente el tamaño del cuerpo de respuesta y, por lo tanto, aumentar la velocidad de una aplicación web. Utilizamos gzip, un middleware de compresión de Node para la compresión en aplicaciones Express.
+    * No resulta la mejor opción para una aplicación con tráfico elevado en producción.
+    * Que podemos hacer para optimizar nuestra aplicacion:
+        ** Utilizar la compresión de gzip
+        ** No utilizar funciones síncronas
+        ** Realizar un registro correcto
+        ** Manejar las excepciones correctamente
+    * Cosas para hacer en el entorno o configuracion
+        ** Establecer NODE_ENV en producción
+        ** Que la App se reinicie automáticamente
+        ** Ejecutar la App en un Cluster
+        ** Almacenar en caché los resultados de la solicitud
+        ** Utilizar el balanceador de carga
+        ** Utilizar un proxy inverso
+    * Un log o historial de log refiere al registro secuencial de cada uno de los eventos que afectan un proceso particular constituyendo una evidencia del comportamiento del sistema.
+    * Existen para esto libreria como log4js, pino, winston
