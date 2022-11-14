@@ -17,13 +17,79 @@
   const schema = new mongoose.Schema({ name: 'string', size: 'string' });
   const Tank = mongoose.model('Tank', schema);
 
-** El primer argumento es el nombre singular de la colección para la que es tu modelo. Mongoose automatically looks for the plural, lowercased version of your model name. Por lo tanto, para el ejemplo anterior, el modelo Tank es para la colección de tanques en la base de datos.
+** El primer argumento es el nombre singular de la colección para la que es tu modelo. Mongoose busca automáticamente la versión plural en minúsculas del nombre de su modelo. Por lo tanto, para el ejemplo anterior, el modelo Tank es para la colección de tanques en la base de datos.
 
 * Document y Model son clases distintas en Mongoose. La clase Model es una subclase de la clase Document. Cuando usa el constructor de modelos, crea un nuevo documento.
 
---- llegue hasta documentos apenas empieza
+* find, findById, findOne, where, deleteOne, deleteMany, save, update, updateMany, updateOne, findOneAndUpdate, validate
+
+* Existen modelos de solo lectura
+
+* Para sobreexcribir un documento existen 2 metodos, el .save() y Model.replaceOne() . Ejemplo del replaceOne:
+
+  await Person.replaceOne({ _id }, { name: 'Jean-Luc Picard' });
+
+* se puede usar el .create()y el .remove() para agregarle o quitarle propiedades a un documento
+
+* .pull() sirve para borrar un array del objeto (o para borrar un subdocumento de tipo array)
+
+* .remove() deja el subdocumento o propiedad en null
+
+* .parent() sirve para asignarlo en una propiedad y acceder al padre. Ejemplo child.parent()
+
+* .ownerDocument() sirve por si hay un subdocumento muy anidado agarrar el padre principal, el del nivel superior
+
+* .countDocument() ---> cuenta todos los documentos de un Modelo. Se le puede pasar como parametro un filtro
+
+* .lean() --->  le dice a Mongoose que omita la hidratación de los documentos de resultados. Esto hace que las consultas sean más rápidas y requieran menos memoria, pero los documentos de resultados son objetos JavaScript. Te borra por ejemplo el __v o todas las props q agrega mongoose y mongodb. Si se usa el populate y luego el lean, el lean se propaga a los objetos populados. Es conveniente usar .lean() cuando el documento no sea modificado. Por ejemplo usarlo en los get o getById, pero no en los put, post, patch o delete
+
+* Operaciones para CRUD. Todos tienen 3 parametros, (filtros o condiciones, objeto actualizado, opciones)
+
+Model.deleteMany()
+Model.deleteOne()
+Model.find()
+Model.findById()
+Model.findByIdAndDelete()
+Model.findByIdAndRemove()
+Model.findByIdAndUpdate()
+Model.findOne()
+Model.findOneAndDelete()
+Model.findOneAndRemove()
+Model.findOneAndReplace()
+* Model.findOneAndUpdate() --> busca el primer documento y lo devuelve actualizado. Por defecto mongoose devuelve el documento sin ser actualizado, para q devuelva el nuevo debemos pasarle en las options new: true .Ejemplo
+
+await Character.findOneAndUpdate(filter, update, {
+  new: true
+});
+
+Model.replaceOne()
+Model.updateOne()
+Model.updateMany()
+
+* .aggregate(<Condiciones de mongodb para trabajar un documento>)
+
+* .getFilter() sirve para extraer el filtro de la consulta realizada. Ejemplo
+
+* .exec() o execPopulate() sirve para ejecutar la query o el populado
+
+const query = Character.find({ name: 'Jean-Luc Picard' });
+query.getFilter(); // { name: 'Jean-Luc Picard' }
 
 
+** llegue hasta aca, las validaciones.
+https://mongoosejs.com/docs/validation.html
+
+
+
+** consultar
+que es el .cursor() en mongoose
+https://mongoosejs.com/docs/queries.html
+
+que es hydrate()
+
+que es agregacion bien
+
+** estudiar mongoDB consultas y querys
 
 
 
