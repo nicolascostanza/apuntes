@@ -75,9 +75,91 @@ Model.updateMany()
 const query = Character.find({ name: 'Jean-Luc Picard' });
 query.getFilter(); // { name: 'Jean-Luc Picard' }
 
+* mongoose tiene varios validadores integrados. Estos son:
+required
+min
+max
+enum
+match
+minlength
+maxlength
 
-** llegue hasta aca, las validaciones.
-https://mongoosejs.com/docs/validation.html
+* unique no es un validador, es para crear indices unicos
+
+* se pueden personalizar los mensajes de error. Existen dos formas, con array o con objetos. Ejemplo
+
+const breakfastSchema = new Schema({
+  eggs: {
+    type: Number,
+    min: [6, 'Must be at least 6, got {VALUE}'],
+    max: 12
+  },
+  drink: {
+    type: String,
+    enum: {
+      values: ['Coffee', 'Tea'],
+      message: '{VALUE} is not supported'
+    }
+  }
+});
+
+* mongoose tiene 4 tipos de middleware ---> document middleware, model middleware, aggregate middleware, and query middleware.
+
+* para popular primero en el schema debes referencias q la propiedad se referencia a otra. Ejemplo
+
+const personSchema = Schema({
+  _id: Schema.Types.ObjectId,
+  name: String,
+  age: Number,
+  stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }]
+});
+
+* Se puede hacer un populado con: objectId, string, number, buffer
+
+* populate ---> popula un documento dentro de otro
+* populated() ---> pregunta si un documento esta populado dentro de otro
+* depopulate() ---> le saca el campo populado a un documento
+
+* en el populate (que campo queremos popular, propiedad q queremos q traiga( por defecto si no ponemos nos trae todas)). Se pueden nestear populados. Ejemplo
+
+* otra forma de usar el populate es con un objeto q puede tener las siguientes propiedades
+
+populate({
+  path: 'fans',
+  match: { age: { $gte: 21 } },
+  // Explicitly exclude `_id`,
+  select: 'name -_id',
+  options: { limit: 2 } // solo los primeros dos,
+  populate: { objeto anidado para volver a popular}
+}).
+
+* Mongoose permite si ponemos la opcion timestamps: true setear dos valores en cada documento.
+
+createdAt: una fecha de cuando se creo el documento
+updatedAt: una fecha q se va actualizando de cada vez q cambiamos alguna propiedad del documento
+
+* esto luego nos permite acceder al .createdAt() en el codigo para saber cuando fue
+
+* para el tipado de los schemas se le pone extends Document. Ejemplo
+
+import { Document, Schema, model, connect } from 'mongoose';
+
+interface IUser extends Document {
+  name: string;
+  email: string;
+  avatar?: string;
+}
+
+
+
+Quede aca en api apenas empieza
+
+https://mongoosejs.com/docs/api/mongoose.html
+
+
+
+
+
 
 
 
