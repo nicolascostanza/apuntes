@@ -150,11 +150,7 @@ interface IUser extends Document {
   avatar?: string;
 }
 
-
-
-Quede aca en api apenas empieza
-
-https://mongoosejs.com/docs/api/mongoose.html
+* aggregate es bueno cuando necesitas data dinamica, q cambia siempre. Por ejemplo la edad, esta la podemos sacar desde la fecha de nacimiento q es algo estatico.
 
 
 

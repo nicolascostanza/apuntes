@@ -1,0 +1,207 @@
+--------------------------------- string metodos ------------------------------------------------------------------
+* .charAt(number) ---> accede al caracter en el numero pasado por parametro, esto tambien se puede hacer con la variableDelTexto[numero]
+* .localeCompare(stringAComparar, local, options) ---> compara dos string y devuelve un numero segun cual fue primera o si son iguales. Si da negativo es porque el primer string esta antes q el string pasado por parametro. Local seria el idioma que queres comparar y sino toma por defecto el del navegador, como ultimo las opciones para ver si queres diferencia entre mayuscula o minuscula, etc.
+* .valueof() ---> se usa para retornar el valor primitivo de un numero
+* .length ---> te dice el tamaño del string
+* .at(indice) ---> devuelve el string en la posicion del parametro
+* .charCodeAt(indice) ---> devuelve el numero del caracter en el codigo ascii
+* .codePointAt(indice) ---> retorna el numero en el codigo unicode. Sirve para los emojis
+* .concat(stringAConcatenar) ---> concatena el string con el q le pasamos por parametro. Convierte el parametro a string si no lo es
+* .endsWith(searchString, endPosition) ---> devuelve true o false segun si el string de referencia termina con el searchString y el segundo parametro es el indice del final, este seria un numero
+* String.fromCharCode(numeros) ---> devuelve un string formado con los numeros en base a su codigo en UTF-16
+* includes(stringABuscar) ---> realiza una búsqueda que distingue entre mayúsculas y minúsculas para determinar si una cadena se puede encontrar dentro de otra cadena y devuelve verdadero o falso, según corresponda. Este metodo es caseSensitive por lo que conviene antes hacerle un .toLowerCase()
+* .indexOf(string) ---> busca el string pasado por parametro en la variable de tipo string y devuelve el indice de la posicion en la que lo encuentra. Este metodo tambien es caseSensitive
+* .lastIndexOf(string) ---> lo mismo que el indexOf pero busca el ultimo q cumpla
+* .match(regex) ---> devuelve true o false segun si el string cumple con el regex
+* .matchAll(regexp) ---> devuelve un array con todos los substring q cumplan esa condicion del regex
+* .padEnd(El maximo de length hasta el que completa, string con el que completa) ---> Completa el string con el nuevo q le pasamos, y podemos elegir hasta cuando de maximo
+* .padStart(El maximo de length hasta el que completa, string con el que completa) ---> lo mismo q el padEnd pero al principio del string q hacemos referencia
+* .repeat(numero de veces q vamos a repetir) ---> repite el string de referencia la cantidad de veces q le digamos
+* .replace(string que vamos a reemplazar, string por el cual lo vamos a reemplazar) ---> reemplaza un string donde lo encuntre por el que le digamos pero solo la primera vez
+* .replaceAll() ---> lo mismo q el replace pero todas las veces q lo encuentre
+* .search(regex) ---> busca en una cadena por un regex y devuelve la posicion (creeeo)
+* .slice(numero del q inicia, numero q termina q es opcional) ---> extrae una sección de una cadena y la devuelve como una nueva cadena, sin modificar la cadena original.
+* .split(string) ---> divide el string en un array de string separados por el string q le pasamos por parametro
+* .startsWith(string, desde q indice empieza a buscar [es opcional]) ---> determina si una cadena comienza con los caracteres de una cadena específica, devolviendo verdadero o falso según corresponda.
+* .substring(inicio en numero, final en numero) ---> corta el string en un string mas pequeño con principio y final opcional
+* .toLocaleLowerCase('en-US' idioma que lo devuelve) ---> devuelve el string a minuscula segun el idioma q le hayamos dicho
+* .toLocaleUpperCase() ---> lo mismo q el de arriba pero a mayuscula
+* .toLowerCase() ---> devuelve el string en minuscula
+* .toUpperCase() ---> devuelve el string en mayuscula
+* .toString() ---> convierte la variable de referencia a string
+* .trim() ---> devuelve el string de referencia sin espacios al principio y final del string
+* .trimEnd() ---> lo mismo q trim pero solo al final
+* .trimStart() ---> lo mismo q trim pero solo al principio
+
+--------------------------------- numeros metodos ------------------------------------------------------------------
+
+* Number(variableReferencia) ---> convierte la variable a numero
+* 123 === 123.0  // true ---> js no diferencia entre flotantes con cero y enteros
+* Number.EPSILON ---> diferencia entre 1 y el número de punto flotante más pequeño mayor que 1
+* Number.MAX_SAFE_INTEGER ---> el numero mas grande en js 'seguro' ?
+* Number.MAX_VALUE ---> representa el valor numérico máximo representable en JavaScript.
+* Number.MIN_SAFE_INTEGER ---> lo mismo q max_safe_integer pero en negativo
+* Number.MIN_VALUE ---> lo mismo q max_value pero en negativo
+* Number.NEGATIVE_INFINITY ---> representa el infinito negativo
+* Number.POSITIVE_INFINITY ---> representa el infinito positivo
+* Number.isFinite(variableNumerica) ---> determina si el valor pasado es un número finito, es decir, verifica que un valor dado sea un número y que el número no sea infinito positivo, infinito negativo ni NaN.
+* Number.isInteger(variableNumerica) ---> devuelve true o false si el numero es entero
+* Number.isNaN(variableNumerica) ---> devuelve true o false si la variable es NaN
+* Number.isSafeInteger(varialbe) ---> devuelve true o false si la variable es un entero seguro
+* Number.parseFloat(variable) ---> devuelve un número de coma flotante. Si no se puede analizar un número del argumento, devuelve NaN.
+* Number.parseInt(variable, tipo de base[ejempl decimal 10, hexadecimal 16]) ---> devuelve un numero en entero en esa base. Pör defecto la base es 10
+* .toExponential(variable) ---> devuelve la variable en notacion exponencial
+* .toFixed(variable) ---> retorna un numero formateado en la notacion de punto fijo. Ejemplo: .toFixed(123.456) ---> 123.46
+* .toPrecision(numero) ---> devuelve un numero con la precision q le pasamos como parametro, es la cantidad de numeros desp del ultimo numero encontrado
+
+--------------------------------- objetos metodos ------------------------------------------------------------------
+
+* Object.createObject(null) ---> crea un objeto podemos por parametro pasarle como lo inicializamos, ej: {} o null
+* Object.keys(variableQueEsUnOBjeto) ---> devuelve un array con los nombres de cada elemento del objeto
+* Object.values() ---> devuelve un array con los valores de cada elemento del objeto
+* Object.entries() ---> devuelve un array de arrays. Un array bidimensional, en el cual el primer valor es el nombre del elemento y el segundo el valor
+* Object.assign(obj1, obj2) ---> sirve para hacer una copia de un objeto y ademas para juntar objetos en uno solo. Esto tambien se puede hacer con spread operator(...obj1, ...obj2)
+* Object.freeze(objetoQSeFrezea) ---> impide la modificación de propiedades y valores de un objeto, y evita que se agreguen propiedades a un objeto o que se eliminen de él.
+* Object.isFrozen(objetoQPasamos) ---> determina si un objeto se congeló o no, y muestra un booleano.
+* Object.seal() ---> impide la adición de nuevas propiedades a un objeto, pero permite la modificación de propiedades existentes.
+
+--------------------------------- array metodos ------------------------------------------------------------------
+
+* .length ---> devuelve el tamaño del array
+* .forEach(callback) ---> recorre el array y ejecuta una funcion q le pasamos por parametro
+* .concat(otroArray) ---> se usa para unir dos o más arrays. Este método no cambia los arrays existentes, sino que devuelve un nuevo array. Ejemplo: const array3 = array1.concat(array2);
+* .copyWithin(inicio, final, en que posicion lo ponemos) ---> creo q copia algo en otra parte del array pero no se bien q hace
+* .entries() ---> devuelve un nuevo array en los cuales vamos a tener un array de arrays con 2 posiciones, el primero es el indice y el segundo el valor
+* .every(condicion) ---> Determina si todos los elementos en el array satisfacen una condición. y devuelve un booleano
+* .some(callback) ---> devuelve true o false si la condicion del callback se cumple al menos una vez. y devuelve un booleano
+* .fill(valor con el q lo llena, posicionInicialDelArray, posicionFinalArray) ---> rellena con lo q indicamos por parametro. Ejemplo: array1.fill(0, 2, 4) ---> // expected output: [1, 2, 0, 0]
+* .filter(callback) ---> filtra el array con una funcion flecha q le pasamos con las condiciones
+* .find(callback) ---> devuelve el primer elemento del array q cumpla con la condicion q le pasamos a la funcion del parametro
+* .findIndex(callback) ---> devuelve el indice del primer elemento del array q cumpla con la condicion q pasamos en el callback
+* .findLast(callback) ---> devuelve el valor del ultimo elemento del array q cumpla con la condicion q pasamos en el callback
+* .findLastIndex(callback) ---> devuelve el indice del ultimo elemento del array q cumpla con la condicion q pasamos en el callback
+* .flat(numero de veces) ---> Si el array contiene algunos valores q son array sirve para aplanarlo. El numero de veces es la cantidad de veces q lo aplana, sirve para dejarlo de una dimension
+* .flatMap(callback) ---> primero mapea el array con el callback q le pasamos y luego lo aplana. Seria como hacer un .map y despues un .flat
+* Array.from(Mi Array) ---> crea una copia superficial del array que le pasamos por parametro
+* .includes(condicion) ---> devuelve true o false si algun elemento del array cumple la condicion
+* .indexOf(valor) ---> devuelve el indice del primer elemento q tenga el valor q pasamos por parametro. Si no encuentra devuelve -1
+* Array.isArray(mi array) ---> devuelve true o false si el array q pasamos por parametro es un array. Sirve para checkear si es un array
+* .join(string con lo q vamos a unirlos) ---> concatena los valores del array con lo q le pasemos como parametro al metodo, si no le pasamos nada pone una ,
+* .lastIndexOf(variable a buscar) ---> devuelve el numero del indice q sea igual a la variable q pasamos por parametro
+* .map(callback) ---> devuelve un array mapeado q sirve para trabajar la data o obtener solo una parte. Devuelve una copia del array original
+* .pop() ---> saca el ultimo elemento del array
+* .push(variableAAgregar) ---> le agrega un elemento que le pasamos como parametro del metodo al array en la ultima posicion
+* .reduce(callback, valor inicial del acumulador) ---> sirve para acumular o tener un array indexado por algun valor, Es para REDUCIR el array a un valor. El callback tiene como parametros (acumular O variable q debemos retornar, valor anterior, valor actual, el array entero)
+* .reverse() ---> da vuelta el array
+* .shift() ---> elimina el primer elemento del array
+* .slice(indice inicial, indice final) ---> hace una copia superficial del array cortandolo,
+* .splice(indice inicial, indice final, por que lo reemplazamos) ---> cambia el contenido del array desde un indice inicial a uno final y se lo cambia por lo q le pasamos por el 3er parametro q es opcional
+* .sort() ---> ordena el array
+* unshift(valor a agregar) ---> agrega uno o más elementos al comienzo de una matriz y devuelve la nueva longitud de la matriz.
+
+--------------------------------- SET ------------------------------------------------------------------
+
+* El objeto Set le permite almacenar valores únicos de cualquier tipo, ya sea valores primitivos o referencias a objetos. Un valor en un Set solo puede ocurrir una vez.
+* el set tiene valores unicos hablando de valores primitivos, no de objetos
+* el set es un OBJETO CON VALORES UNICOS. Ejemplo:
+const arr = [1, 1, 2, 3, true, false, false, 'a', 'b', 'a'];
+const set = new Set(arr) // ---> {1, 2, 3, true, false, 'a', 'b'}
+* props del set
+** .size ---> devuelve la longitud del set
+** .add(variable a agregar) ---> la agrega a mi variable de tipo set pero si ya esta agregada lo ignora
+** .delete(variable a borrar) ---> borra la variable del set
+** .has(valor a comprobar si esta) ---> devuelve true o false si esta o no en el set
+** .clear() ---> borra todo, lo deja como objeto vacio
+** .entries() ---> devuelve un array con los valores en tuplas con [valor, valor] . Esto lo hace js para mantener una coherencia con los demas entries. como no hay keys lo deja en value value
+** .keys() ---> existe pero no devuelve nada
+** .values ---> devuelve un array de values del set
+
+* para recorrer un set se puede hacer con un for of o con un foreach. Ejemplo:
+for (item in set){ ... }
+
+* para acceder a un elemento del set primero debemos convertirlo a un array. Ejemplo:
+const setHechoArr = Array.from(My set) // entonces ahora podemos acceder en un array
+
+--------------------------------- MAP ------------------------------------------------------------------
+
+* un Map no contiene ninguna key por defecto. No tiene prototipe
+* las keys pueden ser cualquier cosa, boolean, string, number, funciones, objetos, etc
+* Sirve para asegurarte el orden de las keys, valores indexados. SIEMPRE TIENEN EL MISMO ORDEN
+* metodos del map:
+const map = new Map()
+* map.set('nombre', 'nicolas') ---> agrega un elemento con key name y value nicolas
+* map.size ---> te dice el tamaño
+* map.delete(clave) ---> borra la clave
+* map.get('nombre del elemento') ---> te devuelve el valor del elemento
+* map.has('nombre del elemento') ---> devuelve true o false si lo tiene o no
+* map.keys() ---> mismo q en objetos
+* map.values() ---> mismo q en objetos
+* map.entries() ---> mismo q en objetos
+* con el foreach se puede iterar
+* Array.from(map) ---> lo pasa a un array con clave y valor
+
+
+--------------------------------- SYMBOL ------------------------------------------------------------------
+
+--------------------------------- URLPattern ------------------------------------------------------------------
+
+* sirve para obtener la info de la url facilmente. Ejemplo
+let pattern2 = new URLPattern(
+  '/books/:id',
+  'https://example.com',
+);
+// or
+let pattern3 = new URLPattern({
+  protocol: 'https',
+  hostname: 'example.com',
+  pathname: '/books/:id',
+});
+// or
+let pattern4 = new URLPattern({
+  pathname: '/books/:id',
+  baseURL: 'https://example.com',
+});
+
+* todas las posibles opciones de urlPattern:
+let pattern = new URLPattern({
+  protocol: 'http{s}?',
+  username: ':username',
+  password: ':password',
+  hostname: ':subdomain.example.com',
+  port: ':port(80|443)',
+  pathname: '/:path',
+  search: '*',
+  hash: '*',
+});
+
+* opciones q podemos usar
+* .hash() ---> te devuelve lo q sobra del string desde '#'
+* .hostname() ---> devuelve el 'www.nombrePagina.org'
+* password ---> nose bien, creo q la url puede tener una password
+* pathname  ---> devuelve la parte de la url q sigue desp del '/'
+* port ---> devuelve los puertos q pueden tener la pagina
+* protocol ---> devuelve el protocolo de la pag, ej https
+* search ---> devuelve las 2 '//' y todo lo q le sigue creo
+* username ---> creo q podes tener un username
+* .exec('url con la q buscamos matchear nuestras props') ---> nos devuelve un objeto de todas las cosas q buscamos en nuestro objeto q le aplicamos el .exec() a una url q buscamos
+* .test(url q queremos testear) ---> lo mismo q el exec pero lo testea, creo q puede devolver false o true
+
+--------------------------------- URLSEARCHPARAMS ------------------------------------------------------------------
+
+* Ejemplo: let url = new URL('https://example.com?foo=1&bar=2');
+* url.search ---> te pasa los parametros de la url
+* params.append(nombre, valor) ---> le agrega un query param a la url
+* params.delete(nombre) ---> lo borra del query param
+* entries()
+* foreach()
+* get(nombre) ---> te devuelve lo q tiene ese valor
+* getAll()
+* has()
+* keys()
+* set()
+* sort()
+
+--------------------------------- DATOS ------------------------------------------------------------------
+
+* hacer delete de un elemento de un objeto tiene problemas de rendimiento y lo hace mas lento. Es preferible ponerle obj.clave = undefined. El problema es q con el undefined, seguis teniendo un elemento en el objeto y el tamaño no baja y con el delete no esta optimizado.
+
