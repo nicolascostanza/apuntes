@@ -190,8 +190,50 @@ const { data, status } = useQuery('ClaveQueRepresenteLoQueLePasamos', FuncionQue
 
 3) Envolvemos la aplicacion en <QueryClientProvider client={queryClient}>
 
-Preguntarle a tito:
-cuando renderizamos un fragment q se renderiza ? q conviene usar un div o un fragment ?
-Que beneficios te da ReactQuery
+--------------------------------------- Portals ---------------------------------------
+* sirve para renderizar componentes en otro lado de la app, los "transporta" independientemente de quien sea el padre
 
-aprender react query o swr
+* ReactDOM.createPortal(child, container)
+* El primer argumento (child) es cualquier hijo renderizable por React, como un elemento, cadena de caracteres o fragmento. El segundo argumento (container) es un elemento DOM.
+* este metodo de createPorta esta dentro de la libreria react-dom
+* en el return del html del componente q lo quiero hacer portal pongo:
+return ReactDOM.createPortal(1,2)
+1 ---> todo mi html del return del componente, normal como en cualquier otro
+2 ---> de segundo parametro se le pasa getDocumentById con el div q tengamos en el index.html por fuera del id=root para q lo cargue ahi. Osea creariamos otro div vacio para esto
+
+--------------------------------------- react lazy y suspense ---------------------------------------
+
+* React.lazy facilita la división de código de una aplicación React a nivel de componente mediante importaciones dinámicas. Ejemplo
+
+const MyComponente = lazy(() => import('./MyComponente'));
+
+return (
+  <>
+    <MyComponente />
+  </>
+)
+
+* sirve para cargar solo los modulos q necesitamos cuando los necesitemos. Es util en aplicaciones utiles
+* Luego puede encargarse de los estados de carga cuando lo acopla con el componente Suspense
+* el Suspense ayuda a que cuando este cargandose el js necesario te aparezca otro componente como cargando. Ejemplo
+
+const MyComponente = lazy(() => import('./MyComponente'));
+
+const loader = () => <p>Loading</p>;
+
+const DetailsComponent = () => (
+  <Suspense fallback={loader()}>
+    <MyComponente />
+  </Suspense>
+)
+
+* el fallback es donde se le pasa lo q va a mostrar cuando esta cargando el js que necesita
+* para manejar los errores cargando informacion esta <ErrorBoundary /> ---> debemos wrapear el <Suspense /> con el ErrorBoundary para manejar los errores
+* ErrorBoundary es un componente de clase normal q tiene un booleano y unas props para saber si hubo o no error y renderiza el error cuando termina la carga en caso de haber fallado
+
+
+
+
+
+
+
