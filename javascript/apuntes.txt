@@ -201,7 +201,33 @@ let pattern = new URLPattern({
 * set()
 * sort()
 
+--------------------------------- PROXY ------------------------------------------------------------------
+
+* este objeto recibe un objeto al cual vas a tomar de referencia y un handler q sirve por ejemplo para validaciones
+* el proxy instancia un objeto pero queda vinculado con el inicial
+* A diferencia de Reflect, el Proxy de JavaScript no tiene ninguna propiedad. En cambio, envuelve otro objeto e intercepta sus operaciones. Mientras tanto, Reflect es un objeto incorporado que simplifica la creación de Proxy y hace posible llamar a métodos internos.
+* Ejemplo
+const persona = {
+  nombre: '',
+  apellido: ''
+}
+
+const handlerValidator = {
+  set(obj, prop, valor) {
+    return console.error('mal')
+  }
+  // arriba hago todas las valiaciones y sino lo devuelvo normal
+  obj[prop] = valor;
+}
+
+const jon = new Proxy(persona, handlerValidator)
+
+--------------------------------- REFLECT ------------------------------------------------------------------
+
+* JavaScript Reflect es un objeto global ES6 incorporado que brinda la capacidad de manipular propiedades, variables y métodos de objetos en tiempo de ejecución. No es un constructor, por lo tanto, no puede usar el operador new con él
+
 --------------------------------- DATOS ------------------------------------------------------------------
 
 * hacer delete de un elemento de un objeto tiene problemas de rendimiento y lo hace mas lento. Es preferible ponerle obj.clave = undefined. El problema es q con el undefined, seguis teniendo un elemento en el objeto y el tamaño no baja y con el delete no esta optimizado.
 
+Me quede en los metodos del proxy
