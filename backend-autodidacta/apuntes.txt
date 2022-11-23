@@ -937,3 +937,46 @@ CLASE 31:
         ** Utilizar un proxy inverso
     * Un log o historial de log refiere al registro secuencial de cada uno de los eventos que afectan un proceso particular constituyendo una evidencia del comportamiento del sistema.
     * Existen para esto libreria como log4js, pino, winston
+CLASE 32:
+    * Artillery es una dependencia de Node moderna, potente, fácil y muy útil para realizar test de carga a servidores. Cuenta con un conjunto de herramientas para tests de performance que se usa para enviar aplicaciones escalables que se mantengan eficaces y resistentes bajo cargas elevadas. Podemos usar Artillery para ejecutar dos tipos de pruebas de rendimiento: Pruebas que cargan un sistema, o sea, pruebas de carga, de estrés. Pruebas que verifican que un sistema funciona como se esperaba, es decir, pruebas funcionales continuas.
+    * Profiling en español es análisis de rendimiento. Es la investigación del comportamiento de un programa usando información reunida desde el análisis dinámico del mismo. El objetivo es averiguar el tiempo dedicado a la ejecución de diferentes partes del programa para detectar los puntos problemáticos y las áreas donde sea posible llevar a cabo una optimización del rendimiento (ya sea en velocidad o en consumo de recursos).​ Un profiler puede proporcionar distintas salidas, como una traza de ejecución o un resumen estadístico de los eventos observados.
+    * Curl es una herramienta de línea de comandos y librería para transferir datos con URL. Se usa en líneas de comando o scripts para transferir datos. Es utilizado a diario por prácticamente todos los usuarios de Internet en el mundo. Además, se utiliza en automóviles, televisores, teléfonos móviles, tabletas, entre otros y es el motor de transferencia de Internet para miles de aplicaciones de software en más de diez mil millones de instalaciones.
+    * Autocannon es una dependencia de Node (similar a Artillery) que nos ayuda a realizar los test de carga. Es una herramienta de evaluación comparativa HTTP / 1.1.
+    * 0x es una dependencia que perfila y genera un gráfico de flama (flame graph) interactivo para un proceso Node en un solo comando. En este caso, vamos a hacer los test de carga por código, en lugar de por consola como hicimos con Artillery.
+CLASE 33:
+    * control de versiones ---> Es una manera de registrar los cambios realizados sobre un archivo (o conjunto de archivos) a lo largo del tiempo, permitiendo recuperar versiones específicas más adelante.
+    * Sistemas de Control de Versiones Distribuidos ---> Su idea parte de que cada desarrollador de un proyecto tenga una copia local de todo el proyecto. De esta manera se construye una red distribuida de repositorios, en la que cada desarrollador puede trabajar de manera aislada pero teniendo un mecanismo de resolución de conflictos mucho mejor que en versiones anteriores.
+    * en resumen:
+    ** Podemos volver a cualquier estado anterior de nuestro proyecto.
+    ** Podemos tener una historia de cuáles fueron los cambios en el tiempo.
+    ** Sobre estos podremos saber cuándo, cómo y quién los realizó.
+    ** Permite la colaboración en un proyecto.
+    ** Permite desarrollar versiones de un mismo proyecto a la vez.
+    * PAAS ---> plataform as a service. Paas (plataforma como servicio) es un entorno de desarrollo e implementación completo en la nube. Cuenta con recursos que permiten generar “de todo”: desde aplicaciones sencillas basadas en la nube hasta aplicaciones empresariales sofisticadas habilitadas para la nube. Se compran los recursos que necesitamos a un proveedor de servicios en la nube, a los que accedemos a través de internet, pero solo pagamos por el uso que hacemos de ellos. PaaS incluye infraestructura (servidores, almacenamiento y redes), tanto como middleware, herramientas de desarrollo, servicios de inteligencia empresarial (BI), sistemas de administración de bases de datos, etc. Está diseñado para sustentar el ciclo de vida completo de las aplicaciones web: compilación, pruebas, implementación, administración y actualización. Nos permite evitar el gasto y la complejidad que suponen la compra y la administración de licencias de software, la infraestructura de aplicaciones y el middleware subyacentes, los orquestadores de contenedores o las herramientas de desarrollo y otros recursos.  Administramos las aplicaciones y los servicios que desarrollamos y, normalmente, el proveedor de servicios en la nube administra todo lo demás.
+    * Heroku es una plataforma en la nube que ofrece servicio para alojar e implementar aplicaciones web en varios lenguajes de programación, como Node.js, entre otros. Las aplicaciones se corren desde un servidor Heroku usando Heroku DNS Server para apuntar al dominio de la aplicación (nombreaplicacion.herokuapp.com). Cada aplicación corre sobre un motor a través de una “red de bancos de prueba” que consta de varios servidores. El servidor Git de Heroku maneja los repositorios de las aplicaciones que son subidas por los usuarios.
+    * para realizar un deploy es importante q en el package este el script "start": "node index.js" (index.js o la carpeta q sea la raiz del proyecto)
+CLASE 34:
+    * Amazon Web Services (AWS) es una plataforma en la nube muy adoptada y completa. Ofrece más de 200 servicios integrales de centros de datos a nivel global. Muchas empresas lo utilizan y con esto reducen los costos, aumentan su agilidad e innovan de forma más rápida.
+    * utilizaremos la plataforma Elastic Beanstalk de AWS para implementar aplicaciones NodeJS en la nube. Administra de manera automática la implementación de nuestra aplicación (desde el aprovisionamiento de la capacidad, el balanceo de carga y el auto escalamiento hasta la monitorización del estado) ingresando únicamente el código. Ajusta el escalado de la aplicación automáticamente en función de las necesidades específicas de las aplicaciones. Para ello utiliza una configuración de Auto Scaling que se puede adaptar con facilidad.
+    * Usaremos también Amazon DynamoDB que es un servicio de base de datos NoSQL rápido y flexible, completamente administrado en la nube, compatible con modelos de almacenamiento de valor de clave y de documentos.
+    * en esta clase enseña como crear cuenta y deployar en aws
+    * Instancia EC2 ---> Máquina virtual de Amazon Elastic Compute Cloud (Amazon EC2) configurada para ejecutar aplicaciones web en la plataforma que elija. Cada plataforma ejecuta un conjunto específico de software, archivos de configuración y scripts compatibles con una determinada versión de lenguaje, marco de trabajo y contenedor web (o una combinación de estos). La mayoría de las plataformas utilizan Apache o nginx como un proxy inverso que se sitúa delante de la aplicación web, reenvía las solicitudes a esta, administra los recursos estáticos y genera registros de acceso y errores.
+    * Recursos del entorno de Elastic Beanstalk:
+    * Grupo de seguridad de la instancia ---> Grupo de seguridad de Amazon EC2 configurado para permitir el tráfico entrante en el puerto 80. Este recurso permite que el tráfico HTTP procedente del balanceador de carga llegue a la instancia EC2 en la que se ejecuta la aplicación web. De forma predeterminada, el tráfico no está permitido en otros puertos.
+    * Balanceador de carga ---> Balanceador de carga de Elastic Load Balancing que está configurado para distribuir solicitudes a las instancias que se ejecutan en la aplicación. También permiten que las instancias no estén expuestas directamente a Internet.
+    * Grupo de seguridad del balanceador de carga ---> Grupo de seguridad como el de la instancia.
+    * Grupo de Auto Scaling ---> Está configurado para reemplazar una instancia si termina o deja de estar disponible.
+    * Bucket de Amazon S3 ---> Ubicación de almacenamiento para el código fuente, los registros y otros artefactos que se crean al utilizar Elastic Beanstalk.
+    * Alarmas de Amazon CloudWatch ---> Dos alarmas de CloudWatch que monitoriean la carga recibida por las instancias y que se activan si la carga es demasiado alta o demasiado baja. Cuando se activa una alarma, en respuesta, el grupo de Auto Scaling aumenta o reduce los recursos.
+    * Plataforma de AWS CloudFormation ---> Elastic Beanstalk utiliza AWS CloudFormation para lanzar los recursos del entorno y propagar los cambios de configuración.
+    * Nombre de dominio ---> Nombre de dominio que direcciona el tráfico a la aplicación web con el formato subdominio.region.elasticbeanstalk.com.
+
+
+********************** ME QUEDA VER LA CLASE GRABADA 34
+
+
+
+
+
+
+
