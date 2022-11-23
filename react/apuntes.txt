@@ -231,9 +231,40 @@ const DetailsComponent = () => (
 * para manejar los errores cargando informacion esta <ErrorBoundary /> ---> debemos wrapear el <Suspense /> con el ErrorBoundary para manejar los errores
 * ErrorBoundary es un componente de clase normal q tiene un booleano y unas props para saber si hubo o no error y renderiza el error cuando termina la carga en caso de haber fallado
 
+--------------------------------- ERROR BOUNDARY ------------------------------------------------------------------
+
+* sirve para manejar los errores de la aplicacion. Estos no capturan errores de manejo de eventos, setTimeOut, renderizado del servidor, etc.
+* los error boundary funcionan solo con catch de javascript
+* se podria usar haciendo un HOC de boundary error, q se llame WithBoundaryError y lo wrapeamos al componente
+
+--------------------------------- PRINCIPIOS SOLID ------------------------------------------------------------------
+
+* Single responsibility principle ---> cada componente debe tener una sola tarea. Para esto usamos CustomHooks
+* open close principle ---> cada entidad q tengamos deben estar abiertas para extender y cerradas para modificar. Osea tendriamos q tener un componente q no se toque y retocarlo de afuera para agregarle funcionalidades. Para esto usamos los children
+* liskov ---> cada prop, deberia poder intercambiarse por una prop o metodo del elemento q lo hereda. Osea el componente padre y el hijo deben tener props con los mismos nombre y q hagan las cosas, por si algun dia queres cambiarlo no te daria problema de funcionalidad
+* interface segregation principle ---> los clientes no deben depender de interfaces q no necesitan. Solo le tenemos q pasar a los componentes las cosas q necesitan, no todo el objeto data por ejemplo. Hacer el pasaje de solo lo q necesita
+* dependency inversion principle ---> los componentes deben depender de abstracciones y no de implementaciones. Q haya parametros, no dejar nada fijo por ejemplo la url del fetch y poner parametro q se llame url
+
+--------------------------------- INTERSECTION OBSERVER ------------------------------------------------------------------
+
+* La API Intersection Observer le permite configurar una función callback que es llamada cuando alguna de las siguientes circunstancias ocurren:
+* Un elemento target intersecta ya sea al viewport del dispositivo o un elemento especificado. Ese elemento especificado es llamado el elemento root o root a los propósitos de la API Intersection Observer.
+* La primera vez que se pide inicialmente al observador que observe un elemento target.
+* Ejemplo
+** Cree el intersection observer llamando a su constructor y pasándole una función callback para que se ejecute cuando se cruce un umbral (threshold) en una u otra dirección:
+
+  let options = {
+    root: document.querySelector('#scrollArea'),
+    rootMargin: '0px',
+    threshold: 1.0
+  }
+
+  let observer = new IntersectionObserver(callback, options);
+* opciones:
+* root ---> el elemento q es usado como viewporta
+* rootMargin ---> margen al rededor del elemento root
+* threshold ---> Es un número o un array de números que indican a que porcentaje de visibilidad del elemento target, la función callback del observer debería ser ejecutada. Si usted quiere que se detecte cuando la visibilidad pasa la marca del 50%, debería usar un valor de 0.5. Si quiere ejecutar la función callback cada vez que la visibilidad pase otro 25%, usted debería especificar el array [0, 0.25, 0.5, 0.75, 1]. El valor por defecto es 0 (lo que significa que tan pronto como un píxel sea visible, la función callback será ejecutada). Un valor de 1.0 significa que el umbral no se considera pasado hasta que todos los pixels son visibles.
 
 
-
-
-
-
+Para hacer un loading en un state hacemos un fetch y en el .finally le cambiamos el loader a false,
+ ESTUDIAR EL OBSERVER DE JS
