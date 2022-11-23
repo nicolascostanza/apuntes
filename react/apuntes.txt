@@ -1,239 +1,233 @@
-R--------------------------------------- useContext ---------------------------------------
-1) asignamos a una variable el createContext y la exportamos para usarla donde querramos
-export const userContext = React.createContext();
-2) Agarramos ese userContext como un componente y encerramos toda nuestra app con el componente.Provider. Ademas le damos un value con el store q vamos a tener para almacenar datos q pueda leer cualquier coponente dentro. Esta logica del context es ideal sacarla a un archivo aparte con funciones para manejar esa informacion etc.
-return (
-  <userContext.Provider value={storeConDatosQVamosAProveer}>
-    <div></div>
-    <img />
-  </userContext.Provider>
-)
-3) En los componentes donde queremos leer esa data hacemos useContext
-const dataDelContext = useContext(NombreDelContextoQVamosALeer)
+--------------------------------- string metodos ------------------------------------------------------------------
+* .charAt(number) ---> accede al caracter en el numero pasado por parametro, esto tambien se puede hacer con la variableDelTexto[numero]
+* .localeCompare(stringAComparar, local, options) ---> compara dos string y devuelve un numero segun cual fue primera o si son iguales. Si da negativo es porque el primer string esta antes q el string pasado por parametro. Local seria el idioma que queres comparar y sino toma por defecto el del navegador, como ultimo las opciones para ver si queres diferencia entre mayuscula o minuscula, etc.
+* .valueof() ---> se usa para retornar el valor primitivo de un numero
+* .length ---> te dice el tamaño del string
+* .at(indice) ---> devuelve el string en la posicion del parametro
+* .charCodeAt(indice) ---> devuelve el numero del caracter en el codigo ascii
+* .codePointAt(indice) ---> retorna el numero en el codigo unicode. Sirve para los emojis
+* .concat(stringAConcatenar) ---> concatena el string con el q le pasamos por parametro. Convierte el parametro a string si no lo es
+* .endsWith(searchString, endPosition) ---> devuelve true o false segun si el string de referencia termina con el searchString y el segundo parametro es el indice del final, este seria un numero
+* String.fromCharCode(numeros) ---> devuelve un string formado con los numeros en base a su codigo en UTF-16
+* includes(stringABuscar) ---> realiza una búsqueda que distingue entre mayúsculas y minúsculas para determinar si una cadena se puede encontrar dentro de otra cadena y devuelve verdadero o falso, según corresponda. Este metodo es caseSensitive por lo que conviene antes hacerle un .toLowerCase()
+* .indexOf(string) ---> busca el string pasado por parametro en la variable de tipo string y devuelve el indice de la posicion en la que lo encuentra. Este metodo tambien es caseSensitive
+* .lastIndexOf(string) ---> lo mismo que el indexOf pero busca el ultimo q cumpla
+* .match(regex) ---> devuelve true o false segun si el string cumple con el regex
+* .matchAll(regexp) ---> devuelve un array con todos los substring q cumplan esa condicion del regex
+* .padEnd(El maximo de length hasta el que completa, string con el que completa) ---> Completa el string con el nuevo q le pasamos, y podemos elegir hasta cuando de maximo
+* .padStart(El maximo de length hasta el que completa, string con el que completa) ---> lo mismo q el padEnd pero al principio del string q hacemos referencia
+* .repeat(numero de veces q vamos a repetir) ---> repite el string de referencia la cantidad de veces q le digamos
+* .replace(string que vamos a reemplazar, string por el cual lo vamos a reemplazar) ---> reemplaza un string donde lo encuntre por el que le digamos pero solo la primera vez
+* .replaceAll() ---> lo mismo q el replace pero todas las veces q lo encuentre
+* .search(regex) ---> busca en una cadena por un regex y devuelve la posicion (creeeo)
+* .slice(numero del q inicia, numero q termina q es opcional) ---> extrae una sección de una cadena y la devuelve como una nueva cadena, sin modificar la cadena original.
+* .split(string) ---> divide el string en un array de string separados por el string q le pasamos por parametro
+* .startsWith(string, desde q indice empieza a buscar [es opcional]) ---> determina si una cadena comienza con los caracteres de una cadena específica, devolviendo verdadero o falso según corresponda.
+* .substring(inicio en numero, final en numero) ---> corta el string en un string mas pequeño con principio y final opcional
+* .toLocaleLowerCase('en-US' idioma que lo devuelve) ---> devuelve el string a minuscula segun el idioma q le hayamos dicho
+* .toLocaleUpperCase() ---> lo mismo q el de arriba pero a mayuscula
+* .toLowerCase() ---> devuelve el string en minuscula
+* .toUpperCase() ---> devuelve el string en mayuscula
+* .toString() ---> convierte la variable de referencia a string
+* .trim() ---> devuelve el string de referencia sin espacios al principio y final del string
+* .trimEnd() ---> lo mismo q trim pero solo al final
+* .trimStart() ---> lo mismo q trim pero solo al principio
 
---------------------------------------- useRef ---------------------------------------
-* Use ref crea un objeto. En el cual tiene una key q se llama current q tiene el valor actual. Sirve para mantener un valor al menos que le indiquemos q lo cambie
-* Seria como una variable que no se va a perder entre cambios de estados. Osea es una variable q se modifica pero no cambia en el render de la aplicacion, no va a volver a renderizarla.
-* Si nosotros cambiamos ese valor nuestra aplicacion NO SE VUELVE A RENDERIZAR.
-* Tambien podemos referenciar elementos del dom. En el elemento html ponemos la prop ref={variable q le ponemoss useRef()}
+--------------------------------- numeros metodos ------------------------------------------------------------------
 
-1) definimos el useRef
-const name = useRef('valorPorDefecto')
-2) luego en los lugares que queremos le modificamos el valor. Al ser un objeto, debemos acceder al a propiedad current
-name.current = 'Cambio el nombre';
+* Number(variableReferencia) ---> convierte la variable a numero
+* 123 === 123.0  // true ---> js no diferencia entre flotantes con cero y enteros
+* Number.EPSILON ---> diferencia entre 1 y el número de punto flotante más pequeño mayor que 1
+* Number.MAX_SAFE_INTEGER ---> el numero mas grande en js 'seguro' ?
+* Number.MAX_VALUE ---> representa el valor numérico máximo representable en JavaScript.
+* Number.MIN_SAFE_INTEGER ---> lo mismo q max_safe_integer pero en negativo
+* Number.MIN_VALUE ---> lo mismo q max_value pero en negativo
+* Number.NEGATIVE_INFINITY ---> representa el infinito negativo
+* Number.POSITIVE_INFINITY ---> representa el infinito positivo
+* Number.isFinite(variableNumerica) ---> determina si el valor pasado es un número finito, es decir, verifica que un valor dado sea un número y que el número no sea infinito positivo, infinito negativo ni NaN.
+* Number.isInteger(variableNumerica) ---> devuelve true o false si el numero es entero
+* Number.isNaN(variableNumerica) ---> devuelve true o false si la variable es NaN
+* Number.isSafeInteger(varialbe) ---> devuelve true o false si la variable es un entero seguro
+* Number.parseFloat(variable) ---> devuelve un número de coma flotante. Si no se puede analizar un número del argumento, devuelve NaN.
+* Number.parseInt(variable, tipo de base[ejempl decimal 10, hexadecimal 16]) ---> devuelve un numero en entero en esa base. Pör defecto la base es 10
+* .toExponential(variable) ---> devuelve la variable en notacion exponencial
+* .toFixed(variable) ---> retorna un numero formateado en la notacion de punto fijo. Ejemplo: .toFixed(123.456) ---> 123.46
+* .toPrecision(numero) ---> devuelve un numero con la precision q le pasamos como parametro, es la cantidad de numeros desp del ultimo numero encontrado
 
---------------------------------------- useMemo ---------------------------------------
-* memorizamos un valor y solo si una dependencia q le pasamos en el segundo parametro cambia volvemos a memorizar el nuevo valor
-* Sirve para no hacer renders innecesarios. Ejemplo
+--------------------------------- objetos metodos ------------------------------------------------------------------
 
-const prueba = useMemo(() => {}, [])
-el primer parametro se hace la logica q usamos para calcular, el array q esta en el 2do parametro del useMemo es un array de dependencias. Son los elementos q si cambian se vuelve a ejecutar la funcion del primer parametro
+* Object.createObject(null) ---> crea un objeto podemos por parametro pasarle como lo inicializamos, ej: {} o null
+* Object.keys(variableQueEsUnOBjeto) ---> devuelve un array con los nombres de cada elemento del objeto
+* Object.values() ---> devuelve un array con los valores de cada elemento del objeto
+* Object.entries() ---> devuelve un array de arrays. Un array bidimensional, en el cual el primer valor es el nombre del elemento y el segundo el valor
+* Object.assign(obj1, obj2) ---> sirve para hacer una copia de un objeto y ademas para juntar objetos en uno solo. Esto tambien se puede hacer con spread operator(...obj1, ...obj2)
+* Object.freeze(objetoQSeFrezea) ---> impide la modificación de propiedades y valores de un objeto, y evita que se agreguen propiedades a un objeto o que se eliminen de él.
+* Object.isFrozen(objetoQPasamos) ---> determina si un objeto se congeló o no, y muestra un booleano.
+* Object.seal() ---> impide la adición de nuevas propiedades a un objeto, pero permite la modificación de propiedades existentes.
 
---------------------------------------- useCallback ---------------------------------------
-* memorizamos una funcion para q no se vuelvan a generar y a ejecutar en cada render, solo cuando cambien las dependencias q le pasamos en el array que esta en el segundo parametro del hook.
-* La diferencia con useMemo es q el useCallback te devuelve la funcion memorizada, en cambio el useMemo te devuelve el valor calculado de la funcion. El callback, al devolvernos la funcion, podemos ejecutarla. Ejemplo
+--------------------------------- array metodos ------------------------------------------------------------------
 
-const ejemplo = useCallback(() => {}, [])
+* .length ---> devuelve el tamaño del array
+* .forEach(callback) ---> recorre el array y ejecuta una funcion q le pasamos por parametro
+* .concat(otroArray) ---> se usa para unir dos o más arrays. Este método no cambia los arrays existentes, sino que devuelve un nuevo array. Ejemplo: const array3 = array1.concat(array2);
+* .copyWithin(inicio, final, en que posicion lo ponemos) ---> creo q copia algo en otra parte del array pero no se bien q hace
+* .entries() ---> devuelve un nuevo array en los cuales vamos a tener un array de arrays con 2 posiciones, el primero es el indice y el segundo el valor
+* .every(condicion) ---> Determina si todos los elementos en el array satisfacen una condición. y devuelve un booleano
+* .some(callback) ---> devuelve true o false si la condicion del callback se cumple al menos una vez. y devuelve un booleano
+* .fill(valor con el q lo llena, posicionInicialDelArray, posicionFinalArray) ---> rellena con lo q indicamos por parametro. Ejemplo: array1.fill(0, 2, 4) ---> // expected output: [1, 2, 0, 0]
+* .filter(callback) ---> filtra el array con una funcion flecha q le pasamos con las condiciones
+* .find(callback) ---> devuelve el primer elemento del array q cumpla con la condicion q le pasamos a la funcion del parametro
+* .findIndex(callback) ---> devuelve el indice del primer elemento del array q cumpla con la condicion q pasamos en el callback
+* .findLast(callback) ---> devuelve el valor del ultimo elemento del array q cumpla con la condicion q pasamos en el callback
+* .findLastIndex(callback) ---> devuelve el indice del ultimo elemento del array q cumpla con la condicion q pasamos en el callback
+* .flat(numero de veces) ---> Si el array contiene algunos valores q son array sirve para aplanarlo. El numero de veces es la cantidad de veces q lo aplana, sirve para dejarlo de una dimension
+* .flatMap(callback) ---> primero mapea el array con el callback q le pasamos y luego lo aplana. Seria como hacer un .map y despues un .flat
+* Array.from(Mi Array) ---> crea una copia superficial del array que le pasamos por parametro
+* .includes(condicion) ---> devuelve true o false si algun elemento del array cumple la condicion
+* .indexOf(valor) ---> devuelve el indice del primer elemento q tenga el valor q pasamos por parametro. Si no encuentra devuelve -1
+* Array.isArray(mi array) ---> devuelve true o false si el array q pasamos por parametro es un array. Sirve para checkear si es un array
+* .join(string con lo q vamos a unirlos) ---> concatena los valores del array con lo q le pasemos como parametro al metodo, si no le pasamos nada pone una ,
+* .lastIndexOf(variable a buscar) ---> devuelve el numero del indice q sea igual a la variable q pasamos por parametro
+* .map(callback) ---> devuelve un array mapeado q sirve para trabajar la data o obtener solo una parte. Devuelve una copia del array original
+* .pop() ---> saca el ultimo elemento del array
+* .push(variableAAgregar) ---> le agrega un elemento que le pasamos como parametro del metodo al array en la ultima posicion
+* .reduce(callback, valor inicial del acumulador) ---> sirve para acumular o tener un array indexado por algun valor, Es para REDUCIR el array a un valor. El callback tiene como parametros (acumular O variable q debemos retornar, valor anterior, valor actual, el array entero)
+* .reverse() ---> da vuelta el array
+* .shift() ---> elimina el primer elemento del array
+* .slice(indice inicial, indice final) ---> hace una copia superficial del array cortandolo,
+* .splice(indice inicial, indice final, por que lo reemplazamos) ---> cambia el contenido del array desde un indice inicial a uno final y se lo cambia por lo q le pasamos por el 3er parametro q es opcional
+* .sort() ---> ordena el array
+* unshift(valor a agregar) ---> agrega uno o más elementos al comienzo de una matriz y devuelve la nueva longitud de la matriz.
 
---------------------------------------- useReducer ---------------------------------------
-* seria lo mismo q un useState pero si tiene muchas variantes para cambiar es preferible un useReducer. Serian para estados mas complejos. Tiene un state un dispatch q despacha las acciones y del otro lado le pasamos, el reducer y el inicial state. Ejemplo
-import {useReducer} from 'react';
+--------------------------------- SET ------------------------------------------------------------------
 
-const initialState = {
-  contador = 10
+* El objeto Set le permite almacenar valores únicos de cualquier tipo, ya sea valores primitivos o referencias a objetos. Un valor en un Set solo puede ocurrir una vez.
+* el set tiene valores unicos hablando de valores primitivos, no de objetos
+* el set es un OBJETO CON VALORES UNICOS. Ejemplo:
+const arr = [1, 1, 2, 3, true, false, false, 'a', 'b', 'a'];
+const set = new Set(arr) // ---> {1, 2, 3, true, false, 'a', 'b'}
+* props del set
+** .size ---> devuelve la longitud del set
+** .add(variable a agregar) ---> la agrega a mi variable de tipo set pero si ya esta agregada lo ignora
+** .delete(variable a borrar) ---> borra la variable del set
+** .has(valor a comprobar si esta) ---> devuelve true o false si esta o no en el set
+** .clear() ---> borra todo, lo deja como objeto vacio
+** .entries() ---> devuelve un array con los valores en tuplas con [valor, valor] . Esto lo hace js para mantener una coherencia con los demas entries. como no hay keys lo deja en value value
+** .keys() ---> existe pero no devuelve nada
+** .values ---> devuelve un array de values del set
+
+* para recorrer un set se puede hacer con un for of o con un foreach. Ejemplo:
+for (item in set){ ... }
+
+* para acceder a un elemento del set primero debemos convertirlo a un array. Ejemplo:
+const setHechoArr = Array.from(My set) // entonces ahora podemos acceder en un array
+
+--------------------------------- MAP ------------------------------------------------------------------
+
+* un Map no contiene ninguna key por defecto. No tiene prototipe
+* las keys pueden ser cualquier cosa, boolean, string, number, funciones, objetos, etc
+* Sirve para asegurarte el orden de las keys, valores indexados. SIEMPRE TIENEN EL MISMO ORDEN
+* metodos del map:
+const map = new Map()
+* map.set('nombre', 'nicolas') ---> agrega un elemento con key name y value nicolas
+* map.size ---> te dice el tamaño
+* map.delete(clave) ---> borra la clave
+* map.get('nombre del elemento') ---> te devuelve el valor del elemento
+* map.has('nombre del elemento') ---> devuelve true o false si lo tiene o no
+* map.keys() ---> mismo q en objetos
+* map.values() ---> mismo q en objetos
+* map.entries() ---> mismo q en objetos
+* con el foreach se puede iterar
+* Array.from(map) ---> lo pasa a un array con clave y valor
+
+
+--------------------------------- SYMBOL ------------------------------------------------------------------
+
+--------------------------------- URLPattern ------------------------------------------------------------------
+
+* sirve para obtener la info de la url facilmente. Ejemplo
+let pattern2 = new URLPattern(
+  '/books/:id',
+  'https://example.com',
+);
+// or
+let pattern3 = new URLPattern({
+  protocol: 'https',
+  hostname: 'example.com',
+  pathname: '/books/:id',
+});
+// or
+let pattern4 = new URLPattern({
+  pathname: '/books/:id',
+  baseURL: 'https://example.com',
+});
+
+* todas las posibles opciones de urlPattern:
+let pattern = new URLPattern({
+  protocol: 'http{s}?',
+  username: ':username',
+  password: ':password',
+  hostname: ':subdomain.example.com',
+  port: ':port(80|443)',
+  pathname: '/:path',
+  search: '*',
+  hash: '*',
+});
+
+* opciones q podemos usar
+* .hash() ---> te devuelve lo q sobra del string desde '#'
+* .hostname() ---> devuelve el 'www.nombrePagina.org'
+* password ---> nose bien, creo q la url puede tener una password
+* pathname  ---> devuelve la parte de la url q sigue desp del '/'
+* port ---> devuelve los puertos q pueden tener la pagina
+* protocol ---> devuelve el protocolo de la pag, ej https
+* search ---> devuelve las 2 '//' y todo lo q le sigue creo
+* username ---> creo q podes tener un username
+* .exec('url con la q buscamos matchear nuestras props') ---> nos devuelve un objeto de todas las cosas q buscamos en nuestro objeto q le aplicamos el .exec() a una url q buscamos
+* .test(url q queremos testear) ---> lo mismo q el exec pero lo testea, creo q puede devolver false o true
+
+--------------------------------- URLSEARCHPARAMS ------------------------------------------------------------------
+
+* Ejemplo: let url = new URL('https://example.com?foo=1&bar=2');
+* url.search ---> te pasa los parametros de la url
+* params.append(nombre, valor) ---> le agrega un query param a la url
+* params.delete(nombre) ---> lo borra del query param
+* entries()
+* foreach()
+* get(nombre) ---> te devuelve lo q tiene ese valor
+* getAll()
+* has()
+* keys()
+* set()
+* sort()
+
+--------------------------------- PROXY ------------------------------------------------------------------
+
+* este objeto recibe un objeto al cual vas a tomar de referencia y un handler q sirve por ejemplo para validaciones
+* el proxy instancia un objeto pero queda vinculado con el inicial
+* A diferencia de Reflect, el Proxy de JavaScript no tiene ninguna propiedad. En cambio, envuelve otro objeto e intercepta sus operaciones. Mientras tanto, Reflect es un objeto incorporado que simplifica la creación de Proxy y hace posible llamar a métodos internos.
+* Ejemplo
+const persona = {
+  nombre: '',
+  apellido: ''
 }
 
-interface actionType { type: 'incrementar' | 'decrementar'}
-
-const contadorReducer = (state: typeof initialState, action: actionType) => {
-  switch( action.type) {
-    case 'incrementar':
-      return {
-        ...state,
-        contador: state.contador + 1
-      }
-    case 'decrementar':
-      return {
-        ...state,
-        contador: state.contador - 1
-      }
-    default:
-      return state;
+const handlerValidator = {
+  set(obj, prop, valor) {
+    return console.error('mal')
   }
+  // arriba hago todas las valiaciones y sino lo devuelvo normal
+  obj[prop] = valor;
 }
 
-** luego en el componente o mas abajo definimos el reducer
-** el init sirve por si tarda en cargar la data q trae q muestre algo
-** y luego usamos el dispatch y le mandamos las acciones
-** el action es un objeto q mandas el nombre de la action y el payload con la data q podes usar
-** ademas en contadorState podemos desestructurar y traernos { contador }
+const jon = new Proxy(persona, handlerValidator)
 
-const [contadorState, dispatch] = useReducer(contadorReducer, initialState, init)
+--------------------------------- REFLECT ------------------------------------------------------------------
 
-() => dispatch({type: 'incrementar'})
+* JavaScript Reflect es un objeto global ES6 incorporado que brinda la capacidad de manipular propiedades, variables y métodos de objetos en tiempo de ejecución. No es un constructor, por lo tanto, no puede usar el operador new con él
 
+--------------------------------- DATOS ------------------------------------------------------------------
 
---------------------------------------- useParams ---------------------------------------
-* se importa de la libreria react-router. Sirve para extraer los parametros de la url. En el siguiente ejemplo en la constante params tenemos un objeto con cada param de la url con su nombre y valor. Ejemplo
+* hacer delete de un elemento de un objeto tiene problemas de rendimiento y lo hace mas lento. Es preferible ponerle obj.clave = undefined. El problema es q con el undefined, seguis teniendo un elemento en el objeto y el tamaño no baja y con el delete no esta optimizado.
 
-const params = useParams()
-
---------------------------------------- useLocation ---------------------------------------
-* se importa de la libreria react-router. la constante del ejemplo es un objeto con propiedades especificas.
-
-const location = useLocation()
-
-* Pathname, que seria luego de wwww.nombrepag.com lo q le sigue en la ruta de la url.
-* Search son los query params q le pasamos a la url
-
-Ejemplo para obtener las querys de forma facil.
-const {search} = useLocation();
-const query = new URLSearchParams(search);
-
-// obtiene la query del precio q pasariamos
-const price = query.get('price');
-
---------------------------------------- useHistory ---------------------------------------
-* se importa de la libreria react-router. Te devuelve un objeto con varias propiedades. Este hook tiene tambien dentro el useLocation
-* push, es una funcion q le pasas un string de parametro con el path al cual queres ir y te envia ahi
-* goFoward, para ir adelante en el historial
-* goBack, para ir atras en el historial
-* go, para que vaya a alguna pagina
-const history = useHistory()
-
---------------------------------------- useNavigate ---------------------------------------
-* se importa de la libreria react-router. Es una funcion q le pasas el path y te navea a esa ruta.
-
-const navigate = useNavigate()
-navigate('/home')
-
---------------------------------------- react router dom -----------------------------------
-* Link ----> es un componente q tiene esta libreria, es como una etiqueta <a> pero q tiene toda la logica que necesitamos. Para el href se reemplaza con un to={A donde nos redirije}. No puede usarse por fuera de una etiqueta Route
-* BrowserRouter ---> tiene toda la api del history. Debemos encerrar las etiquetas link dentro de un BrowserRouter
-* Route ---> Es un componente q le pasas path='Path al que vas a ir' y wrapeas el componente q vas a renderizar. Debemos pasarle el exact para q la ruta sea exacta en el path y renderice lo q queremos.
-* Switch ---> hace q solo se quede con el primero q coincida. Con esta etiqueta wrapeamos las etiquetas Route
-
-Ejemplo:
-
-<BrowserRouter>
-  <Link to='/contacto'>Contacto</Link>
-  <Switch>
-    <Route path='/contacto>
-      <ContactPage />
-    </Route>
-  </Switch>
-</BrowserRouter>
-
---------------------------------------- HOC ---------------------------------------
-* los high order component son las funciones que tienen la capacidad de recibir un componente como parametro y retornar un componente nuevo
-* se recomienda q al hacer estas funciones inicien con la palabra with y seguida de algo q represente
-* recibe un componente hace logica y retorna el mismo componente mejorado con la logica o otro. Ejemplo
-* son como los customHooks pero de antes
-
-const withConsoleLog = (Component, config?) => {
-  const WrappedComponent = () => {
-    // ACA HACEMOS LA LOGICA
-    return <Component />
-  }
-
-  return <WrappedComponent />
-}
-
-** despues wrapeamos nusetro componente con este HOC. Ejemplo
-export default withConsoleLog(App);
-
---------------------------------------- Promesas ---------------------------------------
-* un callback es una funcion que pasas por parametro para q la ejecute cuando termine la funcion y eso sea lo que retorna
-* el constructor new Promises recibe una funcion con dos parametros q son resolve y reject
-* entonces en una funcion nos quedaria
-
-const funcWithPromises = (a, b ) => {
-  const resultado = a + b;
-  return new Promises((resolve, reject) => {
-    //hago cosas y retorno lo q quiero
-    resolve(funcionQueLePasoCuandoTerminaBien)
-    reject(funcionQueLePasoCuandoTerminaMal)
-  })
-}
-
-** el .then lo ejecuta  con el resolve y el .catch lo ejecuta con el reject
-funcWithPromises(1, 3)
-  .then((res) => console.log(res))
-  .catch((res) => console.log('Errorrrrr'))
-
-
---------------------------------------- Promise All ---------------------------------------
-* Promise.all ---> es un array de promesas q se hacen en simultaneo entonces acortan el tiempo de espera. Si falla una, va al catch directo
-* Promise.allSettled devuelve un array en los q vas a poder saber si una de las promesas fallo o no. Siempre resuelve
-
-Promise.all([
-  ...array con las promesas
-]).then((response) => console.log(response))
-.catch(() => console.log('errrror'))
-
-Promise.allSettled([
-  ...array con las promesas
-]).then((values) => console.log('aca tenemos un array con cada promesa y errores o estado', values))
-.catch(() => console.log('errrror'))
-
---------------------------------------- React Query ---------------------------------------
-* sirve para las peticiones
-* necesita un provider
-* podemos importar ReactQueryDevtools q sirve para debuggear las request
-
-const { data, status } = useQuery('ClaveQueRepresenteLoQueLePasamos', FuncionQueSeEjecutaCuandoQueremosLaInfo)
-
-** para el provider en el app.jsx hacemos lo siguiente
-1) import { QueryClientProvider, QueryClient} from 'react-query'
-
-2) const queryClient = new QueryClient();
-
-3) Envolvemos la aplicacion en <QueryClientProvider client={queryClient}>
-
---------------------------------------- Portals ---------------------------------------
-* sirve para renderizar componentes en otro lado de la app, los "transporta" independientemente de quien sea el padre
-
-* ReactDOM.createPortal(child, container)
-* El primer argumento (child) es cualquier hijo renderizable por React, como un elemento, cadena de caracteres o fragmento. El segundo argumento (container) es un elemento DOM.
-* este metodo de createPorta esta dentro de la libreria react-dom
-* en el return del html del componente q lo quiero hacer portal pongo:
-return ReactDOM.createPortal(1,2)
-1 ---> todo mi html del return del componente, normal como en cualquier otro
-2 ---> de segundo parametro se le pasa getDocumentById con el div q tengamos en el index.html por fuera del id=root para q lo cargue ahi. Osea creariamos otro div vacio para esto
-
---------------------------------------- react lazy y suspense ---------------------------------------
-
-* React.lazy facilita la división de código de una aplicación React a nivel de componente mediante importaciones dinámicas. Ejemplo
-
-const MyComponente = lazy(() => import('./MyComponente'));
-
-return (
-  <>
-    <MyComponente />
-  </>
-)
-
-* sirve para cargar solo los modulos q necesitamos cuando los necesitemos. Es util en aplicaciones utiles
-* Luego puede encargarse de los estados de carga cuando lo acopla con el componente Suspense
-* el Suspense ayuda a que cuando este cargandose el js necesario te aparezca otro componente como cargando. Ejemplo
-
-const MyComponente = lazy(() => import('./MyComponente'));
-
-const loader = () => <p>Loading</p>;
-
-const DetailsComponent = () => (
-  <Suspense fallback={loader()}>
-    <MyComponente />
-  </Suspense>
-)
-
-* el fallback es donde se le pasa lo q va a mostrar cuando esta cargando el js que necesita
-* para manejar los errores cargando informacion esta <ErrorBoundary /> ---> debemos wrapear el <Suspense /> con el ErrorBoundary para manejar los errores
-* ErrorBoundary es un componente de clase normal q tiene un booleano y unas props para saber si hubo o no error y renderiza el error cuando termina la carga en caso de haber fallado
-
-
-
-
-
-
-
+Me quede en los metodos del proxy
