@@ -265,6 +265,144 @@ const DetailsComponent = () => (
 * rootMargin ---> margen al rededor del elemento root
 * threshold ---> Es un número o un array de números que indican a que porcentaje de visibilidad del elemento target, la función callback del observer debería ser ejecutada. Si usted quiere que se detecte cuando la visibilidad pasa la marca del 50%, debería usar un valor de 0.5. Si quiere ejecutar la función callback cada vez que la visibilidad pase otro 25%, usted debería especificar el array [0, 0.25, 0.5, 0.75, 1]. El valor por defecto es 0 (lo que significa que tan pronto como un píxel sea visible, la función callback será ejecutada). Un valor de 1.0 significa que el umbral no se considera pasado hasta que todos los pixels son visibles.
 
+--------------------------------- DOCUMENTACION REACT -----------------------------------------------
 
-Para hacer un loading en un state hacemos un fetch y en el .finally le cambiamos el loader a false,
- ESTUDIAR EL OBSERVER DE JS
+********************************* RENDERIZADO DE ELEMENTOS *********************************
+
+* el div del html q tiene el id='root' es el nodo raiz. Porque todo lo que esté dentro de él será manejado por React DOM.
+* En la practica se suele tener solo un nodo raiz, pero es posible tener todos los que se quieran. Para crear uno primero debemos pasarlo por  ReactDOM.createRoot() y luego por el .render(). Ejemplo:
+
+  const root = ReactDOM.createRoot(
+    document.getElementById('root')
+  );
+  const element = <h1>Hello, world</h1>;
+  root.render(element);
+
+* Los elementos de React son INMUTABLES. Una vez creados no se pueden cambiar sus atributos e hijos. La unica manera de actualizarlo es pasar al elemento por el .render() nuevamente y creando un nuevo elemento
+* React solo actualiza lo que es necesario. React por detras compara los elementos anteriores y sus hijos y solo aplica actualizaciones en el dom q son necesarias para llegar al nuevo render. Por ejemplo si cambia el texto no modifica una etiqueta <p> sino solo el texto q esta adentro.
+
+********************************* COMPONENTES Y PROPIEDADES *********************************
+
+* Los componentes son como las funciones de JavaScript. Aceptan entradas arbitrarias (llamadas “props”) y retornan elementos de React que describen lo que debe aparecer en la pantalla.
+* Existen dos tipos de componentes: de clase y funcionales
+* Los programadores son quienes pueden crear componentes y pasarle propiedades q este recibira mediante un objeto llamado props por parametros en los componentes funcionales
+* Los nombres de los componentes deben empezar siempre en mayuscula. Si le ponemos una letra minuscula los trata como una etiqueta del DOM
+* si se hace una migracion hacia react es conveniente empezar desde los componentes menores y ir escalando la cima. Desde un button hasta el componente App q seria el mayor
+* Es conveniente hacer los componentes los mas chicos y genericos posible para asi poder reutilizarlos
+* Nunca se deben modificar las props q se le pasan al componente. Estas funciones son llamadas puras y si le pasamos lo mismo siempre deberian devolver lo mismo. Para eso existen los state
+
+********************************* ESTADO Y CICLO DE VIDA *********************************
+
+* un state(estado) es como las props pero privada y controlada por el componente mismo
+* Pasos a seguir para cambiar de un componente funcional a uno de clases:
+1) Crear una clase ES6 con el mismo nombre que herede de React.Component.
+2) Agregar un único método vacío llamado render().
+3) Mover el cuerpo de la función al método render().
+4) Reemplazar props con this.props en el cuerpo de render().
+5) Borrar el resto de la declaración de la función ya vacía.
+
+* agregar un state a un componente de clase:
+1) en los lugares donde usemos le ponemos this.state
+2) añadimos un constructor en la clase q asigue this.state a un objeto con las props q vamos a usar, y ademas le agregamos  super(props) en el constructor para que herede propiedades
+
+* En una aplicacion grande es importante destruir o desmontar componentes para que no sea tan costosa y poco performante.
+* en un componente de clase se pueden declarar metodos para cuando se monta o desmonta el componente. Para esto existen:
+1)  componentDidMount() ---> se ejecuta cuando el componente se monto (parecido al use effect)
+2) componentWillUnmount() ---> se ejecuta cuando el componente se desmonta
+
+* se utiliza el this.setState() para actualizar los valores de los state en el componente de clase
+* las actualizaciones del estado con setState pueden ser asincronicas. Es conveniente agrupar el setState lo maximo posible para que sea mas performante.
+* Para modificarlo en el setState() es conveniente agarrar el estado previo y las props en vez de usar el mismo state (this.state.laVaribleQSea)
+* en react los datos siempre fluyen de padres a hijos. El flujo es unidireccional
+
+********************************* MANEJANDO EVENTOS ******************************************************
+
+* es muy similar a manejar eventos en el dom. Las diferencias son:
+1) Los eventos de React se nombran usando camelCase, en vez de minúsculas.
+2) Con JSX pasas una función como el manejador del evento, en vez de un string.
+* en react no se puede retornar false para prevenir el comportamiento por defecto. Se debe llamar explicitamente a preventDefault()
+* si al onclick le pasamos una funcion flecha q se ejecute esto deberia hacerse si se ejecuta el evento en el mismo componente. No pasar funciones flechas como prop a hijos pq puede renderizarse de nuevo el componente
+
+********************************* RENDERIZADO CONDICIONAL ************************************************
+
+* Si queremos renderizar condicionalmente con un if nomas debemos usar && y retornar lo que queremos sin la palabra return
+* Esto funciona porque en JavaScript, true && expresión siempre evalúa a expresión, y false && expresión siempre evalúa a false.
+* si renderizamos con if-else se puede usar un operador ternario condicion ? retorno si se cumple : retorno si no se cumple
+* si queres que un componente no se renderice en algun caso. Ponemos un if ante de arrancar la parte del html a renderizar y retornamos null. Esto hace q el componente no se renderice si se da esa condicion. Ejemplo:
+  function WarningBanner(props) {
+    if (!props.warn) {
+      return null;
+    }
+    return (
+      <div className="warning">
+        Warning!
+      </div>
+    );
+  }
+
+********************************* LISTAS Y KEYS ********************************************************
+
+* la key q le pasamos siempre es string. Es importante que sean valores unicos en esa lista. Es ideal no usar el indice para asignar keys pq puede generar problemas de rendimientos
+* Las keys ayudan a React a identificar que ítems han cambiado, son agregados, o son eliminados.
+* Al asignar un index a la key de la lista, si agregamos o eliminamos una el index en esa posicion no cambiaria aunque la informacion que tiene dentro si. Por lo cual podriamos estar mostrando informacion incorrecta
+* Casos en los que se podria asignar el index como key:
+1) la lista y los elementos son estáticos: no se calculan y no cambian;
+2) los elementos de la lista no tienen identificadores;
+3) la lista nunca se reordena ni se filtra.
+
+********************************* COMPONENTES CONTROLADOS Y NO CONTROLADOS *********************************
+
+* La diferencia entre los controlados (valores de los inputs manejados por react) y los componentes no controlados (valores controlados por el dom) es quien maneja los valores.
+* Para tener un componente controlado ponemos el onChange y le asignamos a la variable del input el setState de ese input. Con esto logramos q React sea 'la fuente del a verdad' y el componente siempre este dirigido por el estado. Entonces en el value le asignamos el state y en el onchagen el setState de ese state.
+* Esto es util si queremos pasar la informacion del input a otros elementos de la interfaz de usuario o si queremos reiniciarlo desde otros manejadores de eventos
+** OBS en las etiquetas select se le puede pasar en el value un array con las opciones
+* El input de tipo file solo es de lectura por lo tanto es un componente no controlado
+* Si trabajamos con mas de 1 input al mismo tiempo es conveniente a cada input asignarle un name y hacer q el name sea igual al value. Entonces en el onchange hacemos una funcion q tome el name y le asigne el nuevo value para asi tener una funcion reutilizable
+* si a un input le damos el value en null o undefined hace q no se pueda modificar
+
+********************************* LEVANTANDO EL STATE ****************************************************
+
+* cuando vemos que 2 componentes estan modificando el mismo dato, debemos levantas el state local de cada uno y llevarlo al componente compartido en donde se invocan esos dos para asi tengan el mismo estado pasado por props.
+
+********************************* COMPOSICION VS HERENCIA ************************************************
+
+* Siempre es mejor una composicion a una herencia. Por eso es importante cuando no sabemos q vamos a poner adentro de la caja usar la propiedad children q viene por defecto en las props
+
+********************************* ACCESIBILIDAD **********************************************************
+
+* Una practica para esto es usar etiquetas semanticas de html, labels con htmlFor='nombre del campo descriptivo', fragments
+* cuando no necesitas pasar ninguna prop en el fragment se puede pasar <></> en ves de asi <Fragment></Fragment>
+* el for en una etiequeta html se pone en react como htmlFor
+* se deben notificar los errores para que los entienda el usuario correctamente en los formularios
+* <main> y <aside> para que pueda skipearse partes del html con el teclado
+* tambien se debe poder acceder mediante el teclado a todas las funciones que se apreten cone l mouse. Ejemplo abrimos un modal y no podemos aceder a el mediante el teclado
+* configuracion de la etiqueta title
+* contraste de colores
+* configuracion de idioma
+
+********************************* SEPARACION DE CODIGO ****************************************************
+
+* dividir tu codigo en varios archivos y cargar solo los que necesita el usuario ayuda mucho al rendimiento de la aplicacion
+* Lo mejor para dividir el codigo es usar imports dinamicos. Si usas create react app ya viene implementado.
+* La función React.lazy te deja renderizar un import dinámico como un componente regular. Ejemplo:
+  // sin lazy
+  import OtherComponent from './OtherComponent';
+  // con lazy
+  const OtherComponent = React.lazy(() => import('./OtherComponent'));
+
+* El componente lazy debería entonces ser renderizado adentro de un componente Suspense, lo que nos permite mostrar algún contenido predeterminado (como un indicador de carga) mientras estamos esperando a que el componente lazy cargue.
+* La prop fallback acepta cualquier elemento de React que quieras renderizar mientras esperas
+* ojo con usar mucho fallback ya q puede generar problemas de experiencia de usuario al no tener nada para mostrar muestra el componente mas arriba disponible.
+* Si la carga del nuevo componente falla podemos usar Error Boundary
+* es una buena decision hacer la division de codigo en la parte de las rutas, para no alterar la experiencia de usuario. Esto es porque al cambiar de pagian el usuario esta acostumbrado a no interactuar hasta q cargue la nueva pagina.
+* React.lazy actualmente solo admite exports tipo default. Si el módulo que desea importar utiliza exports con nombre, puede crear un módulo intermedio que lo vuelva a exportar como default
+
+
+LLEGUE HASTA ACA
+https://es.reactjs.org/docs/context.html
+
+
+
+Dato interesante: Para hacer un loading en un state hacemos un fetch y en el .finally le cambiamos el loader a false,
+
+**** ESTUDIAR ---------> imports dinamicos
