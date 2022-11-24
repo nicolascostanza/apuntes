@@ -397,6 +397,37 @@ const DetailsComponent = () => (
 * es una buena decision hacer la division de codigo en la parte de las rutas, para no alterar la experiencia de usuario. Esto es porque al cambiar de pagian el usuario esta acostumbrado a no interactuar hasta q cargue la nueva pagina.
 * React.lazy actualmente solo admite exports tipo default. Si el módulo que desea importar utiliza exports con nombre, puede crear un módulo intermedio que lo vuelva a exportar como default
 
+********************************* CONTEXT ******************************************************************
+
+* Context debe usarse solo para las propiedades globales como saber si el usuario esta autenticado, el tema, idioma, etc. Tienen que ser accesibles por muchos componentes en diferentes niveles de anidamiento, usarlo con precaucion pq es mas compleja la reutilizacion de los componentes
+* Para usar un context usamos React.createContext(defaultValue);
+* Cuando React renderiza un componente que se suscribe a este objeto Context, este leerá el valor de contexto actual del Provider más cercano en el árbol.
+* El argumento defaultValue es usado únicamente cuando un componente no tiene un Provider superior a él en el árbol.
+* Cada objeto Context viene con un componente Provider de React que permite que los componentes que lo consumen se suscriban a los cambios del contexto.
+* El componente Provider acepta una prop value que se pasará a los componentes consumidores que son descendientes de este Provider
+* Todos los consumidores que son descendientes de un Provider se vuelven a renderizar cada vez que cambia la prop value del Provider
+
+
+
+
+LLEGUE HASTA 
+https://es.reactjs.org/docs/context.html#contextconsumer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 LLEGUE HASTA ACA
 https://es.reactjs.org/docs/context.html
