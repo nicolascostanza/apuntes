@@ -228,6 +228,12 @@ const jon = new Proxy(persona, handlerValidator)
 
 * JavaScript Reflect es un objeto global ES6 incorporado que brinda la capacidad de manipular propiedades, variables y métodos de objetos en tiempo de ejecución. No es un constructor, por lo tanto, no puede usar el operador new con él
 
+--------------------------------- YIELD FUNCION GENERADORA ---------------------------------
+
+* Para q sea una funcion generadora cuando la declaramos tenemos q ponerle function*
+* Cada vez q la llamamos puede devolver diferentes cosas
+* cuando dentro de la funcion usamos yield para la ejecucion en donde sea q este y retorna lo q le digamos. Queda como en pausa para si la ejecutamos de nuevo, ej: generatorFunc.next() arranque desde el punto q se pauso
+
 --------------------------------- DATOS ------------------------------------------------------------------
 
 * hacer delete de un elemento de un objeto tiene problemas de rendimiento y lo hace mas lento. Es preferible ponerle obj.clave = undefined. El problema es q con el undefined, seguis teniendo un elemento en el objeto y el tamaño no baja y con el delete no esta optimizado.

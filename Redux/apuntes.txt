@@ -194,6 +194,7 @@ Va en contra del espíritu previsto y los patrones de uso de Redux.
 
 ****************************** DOCUMENTACION REDUX TOOLKIT QUERY ******************************
 
+* La diferencia de esto con lo que era comun es que evita hacer un paso mas creando las acciones. Evita el "boilerplate". Osea no hay que escribir tanto codigo para lograr usar redux
 * createSlice ----> es una funcion que recibe como parametro un objeto. Este objeto debe tener un name, un initialState y un objeto con los reducers
 * redux toolkit nos permite q en los reducers podamos mutar el state (state.counter = 10 por ejemplo) y ellos con una libreria q tienen llamada Immer por detras lo convierten a codigo inmutable
 * configureStore ---> seria como el combineReducers
@@ -251,8 +252,129 @@ export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
 
+* Despues en la misma carpeta de cada reducer creamos otro archivo thunks.js y creamos nuestros thunks.
+* el thunks es una funcion que retorna otra funcion asincrona en donde vamos a hacer nuestras request asincronas. Ejemplo
+export const getPokemons = () => {
+  return async (dispatch, getState) => {
+    dispatch(...pending, api, success, error)
+  }
+}
 
+***************************************************** RTK QUERY GETS *****************************************************
 
+* RTK Query se integra con redux ---> sirve para hacer request (no es un reemplazo de axios)
+* Evita hacer llamados repetidos o traer info si ya tenemos esa informacion catcheada
+* Ya viene con el paquete de redux toolkit
+* Se usa mas que nada para controlar las peticiones http
+* Ejemplo de uso:
+import { createApi, fetchBaseQuery  } from '@reduxjs/toolkit/query/react'
+
+export const pokemonApi = createApi({
+  reducerPath: 'NombreQueLePonemosAlReducer',
+
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://pokeapi.co/api/v2/'
+  }),
+
+  keepUnusedDataFor: numero en segundos
+  refetchOnMountOrArgChange: true || numero de segundos,
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
+  pollingInterval: cantidad de milisegundos
+
+  endpoints: (builder) => ({
+    getData: builder.query({
+      query: () => '/pokemons'
+    }),
+    getDataById: builder.query({
+      query: (pokemonId) => `/pokemons/${pokemonId}`
+    })
+  })
+})
+
+export const {useGetDataQuery, useGetDataById, useLazyPostQuery ---> ver esta abajo en **} = pokemonApi;
+
+// una ves terminado eso lo implementamos en el store de la siguiente manera
+import {configureStore} from '@reduxjs/tookit';
+
+export const store = configureStore({
+  reducer: {
+    [pokemonApi.reducerPath]: pokemonApi.reducer,
+  }
+
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(pokemonApi.middleware)
+})
+
+// para usarlo solamente hacemos
+
+const {data, isFetching, etc... lo que queramos sacar de ahi} = useGetDataQuery();
+
+** reducerPath ---> nombre q le ponemos al reducer
+** baseUrl ---> es la base del url al q vamos a pegarle en el endpoint
+** endpoints ---> son los endpoints q va a manejar este RTK Query
+** useGetDataQuery ---> genera un customHook q tiene toda la info de si esta cargando, si fue exitosa, etc
+** getDefaultMiddleware ---> NO Importarlo, esta obsoleto, nomas es el parametro q se le pasa
+** keepUnusedDataFor ---> cantidad de tiempo q queda guardada la data en cache. Por defecto es un minuto
+** refetchOnMountOrArgChange ---> revalida la informaacion cuando el componente se monta. Esto se le pasa como segundo parametro a nuestro custom hook. Ejemplo:  useGetDataQuery(undefined, options);. Lo que hace es que por atras(en segundo plano) trae los datos del back y los compara con los actuales. Si son nuevos los actualiza
+** refetchOnFocus ---> true o false y hace la validacion contra el back  cuando esta en focus la ventana en donde estamos
+** refetchOnReconnect ---> true o false. Si nos llegamos a quedar desconectado por internet y nos volvemos a reconectar hace la validacion
+** pollingInterval ---> cada x tiempo seteado por nosotros revalida contra el back
+** isFetching se pone en true cuando estamos haciendo revalidaciones con refetchOnMountOrArgChange o algo q checkee. En cambio el isLoading es si esta cargando el endpoint la peticion qe stamos haciendo
+** error.error ---> tiene los mensajes de error de las peticiones
+** retry ---> podemos setear la cantidad de intentos q hacemos antes de q muestre q fallo la request. Tiene el maxRetries para la cantidad de veces q lo queremos hacer y tiene backoff para decirle cada cuando tiempo para reintento. Si queremos setear esto para una query en especifico le pasamos despues del query: () => {}, extraOptions: {maxRetries: 3}
+** skip ---> true o false. hace q no se ejecute de una. A veces es necesario tener otro valor de otr a consulta para hacer esta
+** tagTypes ---> son como etiquetas a ciertas partes de endpoints.
+** para revalidar luego de un post put o lo que sea. Ponemos en el get el providerTags en el query del get y cuando hacemos el post ponemos el invalidateTags para decirle q esta obsoleta y q lo tiene q buscar de nuevo. Ver el ejemplo de la mutacion
+** useLazyPostQuery ---> cada hook tiene un lazy q podemos usar automaticamente. Se usa asi:
+const [trigger, {same useGetDataQuery}] = useLazyPostQuery({options})
+
+<button onClick={() => trigger(args q le pasamos)}>Fetch Data</button>
+** trigger es lo q le pasamos para q se ejecute la lazy query.
+
+***************************************** RTK QUERY POST PUT DELETE PATCH *****************************************
+
+* Ejemplo de uso:
+import { createApi, fetchBaseQuery  } from '@reduxjs/toolkit/query/react'
+
+export const pokemonApi = createApi({
+  reducerPath: 'NombreQueLePonemosAlReducer',
+
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://pokeapi.co/api/v2/'
+  }),
+
+  keepUnusedDataFor: numero en segundos
+  refetchOnMountOrArgChange: true || numero de segundos,
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
+  pollingInterval: cantidad de milisegundos
+
+  tagTypes: ['Post']
+
+  endpoints: (builder) => ({
+    getData: builder.query({
+      query: () => '/pokemons',
+      providesTags:['post']
+    }),
+    getDataById: builder.query({
+      query: (pokemonId) => `/pokemons/${pokemonId}`
+    }),
+    newPost: builder.mutation({
+      query: (payloadRecived) => ({
+        url: '/post',
+        method: "post",
+        body: payloadRecived,
+      }),
+      invalidateTags: ['post']
+    }),
+  })
+})
+
+export const {useNewPostMutation} = pokemonApi;
+
+// luego para usarlo en el componente
+
+const [createPostDisparador, {como isloading, error, etc}] = useNewPostMutation(options,)
 
 
 DUDAS ::::::
@@ -308,3 +430,5 @@ https://redux.js.org/tutorials/essentials/part-1-overview-concepts
 
 
 
+DUDAS A TITO:
+para q se usan los headers en una request
