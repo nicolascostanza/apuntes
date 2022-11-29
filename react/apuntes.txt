@@ -1,112 +1,3 @@
-R--------------------------------------- useContext ---------------------------------------
-1) asignamos a una variable el createContext y la exportamos para usarla donde querramos
-export const userContext = React.createContext();
-2) Agarramos ese userContext como un componente y encerramos toda nuestra app con el componente.Provider. Ademas le damos un value con el store q vamos a tener para almacenar datos q pueda leer cualquier coponente dentro. Esta logica del context es ideal sacarla a un archivo aparte con funciones para manejar esa informacion etc.
-return (
-  <userContext.Provider value={storeConDatosQVamosAProveer}>
-    <div></div>
-    <img />
-  </userContext.Provider>
-)
-3) En los componentes donde queremos leer esa data hacemos useContext
-const dataDelContext = useContext(NombreDelContextoQVamosALeer)
-
---------------------------------------- useRef ---------------------------------------
-* Use ref crea un objeto. En el cual tiene una key q se llama current q tiene el valor actual. Sirve para mantener un valor al menos que le indiquemos q lo cambie
-* Seria como una variable que no se va a perder entre cambios de estados. Osea es una variable q se modifica pero no cambia en el render de la aplicacion, no va a volver a renderizarla.
-* Si nosotros cambiamos ese valor nuestra aplicacion NO SE VUELVE A RENDERIZAR.
-* Tambien podemos referenciar elementos del dom. En el elemento html ponemos la prop ref={variable q le ponemoss useRef()}
-
-1) definimos el useRef
-const name = useRef('valorPorDefecto')
-2) luego en los lugares que queremos le modificamos el valor. Al ser un objeto, debemos acceder al a propiedad current
-name.current = 'Cambio el nombre';
-
---------------------------------------- useMemo ---------------------------------------
-* memorizamos un valor y solo si una dependencia q le pasamos en el segundo parametro cambia volvemos a memorizar el nuevo valor
-* Sirve para no hacer renders innecesarios. Ejemplo
-
-const prueba = useMemo(() => {}, [])
-el primer parametro se hace la logica q usamos para calcular, el array q esta en el 2do parametro del useMemo es un array de dependencias. Son los elementos q si cambian se vuelve a ejecutar la funcion del primer parametro
-
---------------------------------------- useCallback ---------------------------------------
-* memorizamos una funcion para q no se vuelvan a generar y a ejecutar en cada render, solo cuando cambien las dependencias q le pasamos en el array que esta en el segundo parametro del hook.
-* La diferencia con useMemo es q el useCallback te devuelve la funcion memorizada, en cambio el useMemo te devuelve el valor calculado de la funcion. El callback, al devolvernos la funcion, podemos ejecutarla. Ejemplo
-
-const ejemplo = useCallback(() => {}, [])
-
---------------------------------------- useReducer ---------------------------------------
-* seria lo mismo q un useState pero si tiene muchas variantes para cambiar es preferible un useReducer. Serian para estados mas complejos. Tiene un state un dispatch q despacha las acciones y del otro lado le pasamos, el reducer y el inicial state. Ejemplo
-import {useReducer} from 'react';
-
-const initialState = {
-  contador = 10
-}
-
-interface actionType { type: 'incrementar' | 'decrementar'}
-
-const contadorReducer = (state: typeof initialState, action: actionType) => {
-  switch( action.type) {
-    case 'incrementar':
-      return {
-        ...state,
-        contador: state.contador + 1
-      }
-    case 'decrementar':
-      return {
-        ...state,
-        contador: state.contador - 1
-      }
-    default:
-      return state;
-  }
-}
-
-** luego en el componente o mas abajo definimos el reducer
-** el init sirve por si tarda en cargar la data q trae q muestre algo
-** y luego usamos el dispatch y le mandamos las acciones
-** el action es un objeto q mandas el nombre de la action y el payload con la data q podes usar
-** ademas en contadorState podemos desestructurar y traernos { contador }
-
-const [contadorState, dispatch] = useReducer(contadorReducer, initialState, init)
-
-() => dispatch({type: 'incrementar'})
-
-
---------------------------------------- useParams ---------------------------------------
-* se importa de la libreria react-router. Sirve para extraer los parametros de la url. En el siguiente ejemplo en la constante params tenemos un objeto con cada param de la url con su nombre y valor. Ejemplo
-
-const params = useParams()
-
---------------------------------------- useLocation ---------------------------------------
-* se importa de la libreria react-router. la constante del ejemplo es un objeto con propiedades especificas.
-
-const location = useLocation()
-
-* Pathname, que seria luego de wwww.nombrepag.com lo q le sigue en la ruta de la url.
-* Search son los query params q le pasamos a la url
-
-Ejemplo para obtener las querys de forma facil.
-const {search} = useLocation();
-const query = new URLSearchParams(search);
-
-// obtiene la query del precio q pasariamos
-const price = query.get('price');
-
---------------------------------------- useHistory ---------------------------------------
-* se importa de la libreria react-router. Te devuelve un objeto con varias propiedades. Este hook tiene tambien dentro el useLocation
-* push, es una funcion q le pasas un string de parametro con el path al cual queres ir y te envia ahi
-* goFoward, para ir adelante en el historial
-* goBack, para ir atras en el historial
-* go, para que vaya a alguna pagina
-const history = useHistory()
-
---------------------------------------- useNavigate ---------------------------------------
-* se importa de la libreria react-router. Es una funcion q le pasas el path y te navea a esa ruta.
-
-const navigate = useNavigate()
-navigate('/home')
-
 --------------------------------------- react router dom -----------------------------------
 * Link ----> es un componente q tiene esta libreria, es como una etiqueta <a> pero q tiene toda la logica que necesitamos. Para el href se reemplaza con un to={A donde nos redirije}. No puede usarse por fuera de una etiqueta Route
 * BrowserRouter ---> tiene toda la api del history. Debemos encerrar las etiquetas link dentro de un BrowserRouter
@@ -265,6 +156,491 @@ const DetailsComponent = () => (
 * rootMargin ---> margen al rededor del elemento root
 * threshold ---> Es un número o un array de números que indican a que porcentaje de visibilidad del elemento target, la función callback del observer debería ser ejecutada. Si usted quiere que se detecte cuando la visibilidad pasa la marca del 50%, debería usar un valor de 0.5. Si quiere ejecutar la función callback cada vez que la visibilidad pase otro 25%, usted debería especificar el array [0, 0.25, 0.5, 0.75, 1]. El valor por defecto es 0 (lo que significa que tan pronto como un píxel sea visible, la función callback será ejecutada). Un valor de 1.0 significa que el umbral no se considera pasado hasta que todos los pixels son visibles.
 
+--------------------------------- DOCUMENTACION REACT -----------------------------------------------
+
+********************************* RENDERIZADO DE ELEMENTOS *********************************
+
+* el div del html q tiene el id='root' es el nodo raiz. Porque todo lo que esté dentro de él será manejado por React DOM.
+* En la practica se suele tener solo un nodo raiz, pero es posible tener todos los que se quieran. Para crear uno primero debemos pasarlo por  ReactDOM.createRoot() y luego por el .render(). Ejemplo:
+
+  const root = ReactDOM.createRoot(
+    document.getElementById('root')
+  );
+  const element = <h1>Hello, world</h1>;
+  root.render(element);
+
+* Los elementos de React son INMUTABLES. Una vez creados no se pueden cambiar sus atributos e hijos. La unica manera de actualizarlo es pasar al elemento por el .render() nuevamente y creando un nuevo elemento
+* React solo actualiza lo que es necesario. React por detras compara los elementos anteriores y sus hijos y solo aplica actualizaciones en el dom q son necesarias para llegar al nuevo render. Por ejemplo si cambia el texto no modifica una etiqueta <p> sino solo el texto q esta adentro.
+
+********************************* COMPONENTES Y PROPIEDADES *********************************
+
+* Los componentes son como las funciones de JavaScript. Aceptan entradas arbitrarias (llamadas “props”) y retornan elementos de React que describen lo que debe aparecer en la pantalla.
+* Existen dos tipos de componentes: de clase y funcionales
+* Los programadores son quienes pueden crear componentes y pasarle propiedades q este recibira mediante un objeto llamado props por parametros en los componentes funcionales
+* Los nombres de los componentes deben empezar siempre en mayuscula. Si le ponemos una letra minuscula los trata como una etiqueta del DOM
+* si se hace una migracion hacia react es conveniente empezar desde los componentes menores y ir escalando la cima. Desde un button hasta el componente App q seria el mayor
+* Es conveniente hacer los componentes los mas chicos y genericos posible para asi poder reutilizarlos
+* Nunca se deben modificar las props q se le pasan al componente. Estas funciones son llamadas puras y si le pasamos lo mismo siempre deberian devolver lo mismo. Para eso existen los state
+
+********************************* ESTADO Y CICLO DE VIDA *********************************
+
+* un state(estado) es como las props pero privada y controlada por el componente mismo
+* Pasos a seguir para cambiar de un componente funcional a uno de clases:
+1) Crear una clase ES6 con el mismo nombre que herede de React.Component.
+2) Agregar un único método vacío llamado render().
+3) Mover el cuerpo de la función al método render().
+4) Reemplazar props con this.props en el cuerpo de render().
+5) Borrar el resto de la declaración de la función ya vacía.
+
+* agregar un state a un componente de clase:
+1) en los lugares donde usemos le ponemos this.state
+2) añadimos un constructor en la clase q asigue this.state a un objeto con las props q vamos a usar, y ademas le agregamos  super(props) en el constructor para que herede propiedades
+
+* En una aplicacion grande es importante destruir o desmontar componentes para que no sea tan costosa y poco performante.
+* en un componente de clase se pueden declarar metodos para cuando se monta o desmonta el componente. Para esto existen:
+1)  componentDidMount() ---> se ejecuta cuando el componente se monto (parecido al use effect)
+2) componentWillUnmount() ---> se ejecuta cuando el componente se desmonta
+
+* se utiliza el this.setState() para actualizar los valores de los state en el componente de clase
+* las actualizaciones del estado con setState pueden ser asincronicas. Es conveniente agrupar el setState lo maximo posible para que sea mas performante.
+* Para modificarlo en el setState() es conveniente agarrar el estado previo y las props en vez de usar el mismo state (this.state.laVaribleQSea)
+* en react los datos siempre fluyen de padres a hijos. El flujo es unidireccional
+
+********************************* MANEJANDO EVENTOS ******************************************************
+
+* es muy similar a manejar eventos en el dom. Las diferencias son:
+1) Los eventos de React se nombran usando camelCase, en vez de minúsculas.
+2) Con JSX pasas una función como el manejador del evento, en vez de un string.
+* en react no se puede retornar false para prevenir el comportamiento por defecto. Se debe llamar explicitamente a preventDefault()
+* si al onclick le pasamos una funcion flecha q se ejecute esto deberia hacerse si se ejecuta el evento en el mismo componente. No pasar funciones flechas como prop a hijos pq puede renderizarse de nuevo el componente
+
+********************************* RENDERIZADO CONDICIONAL ************************************************
+
+* Si queremos renderizar condicionalmente con un if nomas debemos usar && y retornar lo que queremos sin la palabra return
+* Esto funciona porque en JavaScript, true && expresión siempre evalúa a expresión, y false && expresión siempre evalúa a false.
+* si renderizamos con if-else se puede usar un operador ternario condicion ? retorno si se cumple : retorno si no se cumple
+* si queres que un componente no se renderice en algun caso. Ponemos un if ante de arrancar la parte del html a renderizar y retornamos null. Esto hace q el componente no se renderice si se da esa condicion. Ejemplo:
+  function WarningBanner(props) {
+    if (!props.warn) {
+      return null;
+    }
+    return (
+      <div className="warning">
+        Warning!
+      </div>
+    );
+  }
+
+********************************* LISTAS Y KEYS ********************************************************
+
+* la key q le pasamos siempre es string. Es importante que sean valores unicos en esa lista. Es ideal no usar el indice para asignar keys pq puede generar problemas de rendimientos
+* Las keys ayudan a React a identificar que ítems han cambiado, son agregados, o son eliminados.
+* Al asignar un index a la key de la lista, si agregamos o eliminamos una el index en esa posicion no cambiaria aunque la informacion que tiene dentro si. Por lo cual podriamos estar mostrando informacion incorrecta
+* Casos en los que se podria asignar el index como key:
+1) la lista y los elementos son estáticos: no se calculan y no cambian;
+2) los elementos de la lista no tienen identificadores;
+3) la lista nunca se reordena ni se filtra.
+
+********************************* COMPONENTES CONTROLADOS Y NO CONTROLADOS *********************************
+
+* La diferencia entre los controlados (valores de los inputs manejados por react) y los componentes no controlados (valores controlados por el dom) es quien maneja los valores.
+* Para tener un componente controlado ponemos el onChange y le asignamos a la variable del input el setState de ese input. Con esto logramos q React sea 'la fuente del a verdad' y el componente siempre este dirigido por el estado. Entonces en el value le asignamos el state y en el onchagen el setState de ese state.
+* Esto es util si queremos pasar la informacion del input a otros elementos de la interfaz de usuario o si queremos reiniciarlo desde otros manejadores de eventos
+** OBS en las etiquetas select se le puede pasar en el value un array con las opciones
+* El input de tipo file solo es de lectura por lo tanto es un componente no controlado
+* Si trabajamos con mas de 1 input al mismo tiempo es conveniente a cada input asignarle un name y hacer q el name sea igual al value. Entonces en el onchange hacemos una funcion q tome el name y le asigne el nuevo value para asi tener una funcion reutilizable
+* si a un input le damos el value en null o undefined hace q no se pueda modificar
+
+********************************* LEVANTANDO EL STATE ****************************************************
+
+* cuando vemos que 2 componentes estan modificando el mismo dato, debemos levantas el state local de cada uno y llevarlo al componente compartido en donde se invocan esos dos para asi tengan el mismo estado pasado por props.
+
+********************************* COMPOSICION VS HERENCIA ************************************************
+
+* Siempre es mejor una composicion a una herencia. Por eso es importante cuando no sabemos q vamos a poner adentro de la caja usar la propiedad children q viene por defecto en las props
+
+********************************* ACCESIBILIDAD **********************************************************
+
+* Una practica para esto es usar etiquetas semanticas de html, labels con htmlFor='nombre del campo descriptivo', fragments
+* cuando no necesitas pasar ninguna prop en el fragment se puede pasar <></> en ves de asi <Fragment></Fragment>
+* el for en una etiequeta html se pone en react como htmlFor
+* se deben notificar los errores para que los entienda el usuario correctamente en los formularios
+* <main> y <aside> para que pueda skipearse partes del html con el teclado
+* tambien se debe poder acceder mediante el teclado a todas las funciones que se apreten cone l mouse. Ejemplo abrimos un modal y no podemos aceder a el mediante el teclado
+* configuracion de la etiqueta title
+* contraste de colores
+* configuracion de idioma
+
+********************************* SEPARACION DE CODIGO ****************************************************
+
+* dividir tu codigo en varios archivos y cargar solo los que necesita el usuario ayuda mucho al rendimiento de la aplicacion
+* Lo mejor para dividir el codigo es usar imports dinamicos. Si usas create react app ya viene implementado.
+* La función React.lazy te deja renderizar un import dinámico como un componente regular. Ejemplo:
+  // sin lazy
+  import OtherComponent from './OtherComponent';
+  // con lazy
+  const OtherComponent = React.lazy(() => import('./OtherComponent'));
+
+* El componente lazy debería entonces ser renderizado adentro de un componente Suspense, lo que nos permite mostrar algún contenido predeterminado (como un indicador de carga) mientras estamos esperando a que el componente lazy cargue.
+* La prop fallback acepta cualquier elemento de React que quieras renderizar mientras esperas
+* ojo con usar mucho fallback ya q puede generar problemas de experiencia de usuario al no tener nada para mostrar muestra el componente mas arriba disponible.
+* Si la carga del nuevo componente falla podemos usar Error Boundary
+* es una buena decision hacer la division de codigo en la parte de las rutas, para no alterar la experiencia de usuario. Esto es porque al cambiar de pagian el usuario esta acostumbrado a no interactuar hasta q cargue la nueva pagina.
+* React.lazy actualmente solo admite exports tipo default. Si el módulo que desea importar utiliza exports con nombre, puede crear un módulo intermedio que lo vuelva a exportar como default
+
+********************************* CONTEXT ******************************************************************
+
+* Context debe usarse solo para las propiedades globales como saber si el usuario esta autenticado, el tema, idioma, etc. Tienen que ser accesibles por muchos componentes en diferentes niveles de anidamiento, usarlo con precaucion pq es mas compleja la reutilizacion de los componentes
+* Para usar un context usamos React.createContext(defaultValue);
+* Cuando React renderiza un componente que se suscribe a este objeto Context, este leerá el valor de contexto actual del Provider más cercano en el árbol.
+* El argumento defaultValue es usado únicamente cuando un componente no tiene un Provider superior a él en el árbol.
+* Cada objeto Context viene con un componente Provider de React que permite que los componentes que lo consumen se suscriban a los cambios del contexto.
+* El componente Provider acepta una prop value que se pasará a los componentes consumidores que son descendientes de este Provider
+* Todos los consumidores que son descendientes de un Provider se vuelven a renderizar cada vez que cambia la prop value del Provider
+* Debido a que Context usa la identidad por referencia para determinar cuándo se debe volver a renderizar, hay algunos errores que podrían provocar renderizados involuntarios en los consumidores cuando se vuelve a renderizar en el padre del proveedor. Por ejemplo, el código a continuación volverá a renderizar a todos los consumidores cada vez que el Proveedor se vuelva a renderizar porque siempre se crea un nuevo objeto para value
+
+********************************* ERROR BOUNDARIES ********************************************************
+
+* son componentes de React que capturan errores de JavaScript en cualquier parte de su árbol de componentes hijo, registran esos errores, y muestran una interfaz de repuesto
+* son componentes de React que capturan errores de JavaScript en cualquier parte de su árbol de componentes hijo, registran esos errores, y muestran una interfaz de repuesto
+* No capturan los siguientes errores:
+1) manejadores de eventos
+2) codigo asincronico (callbacks de setTimeout, etc)
+3) renderizado en el servidor
+4) Errores lanzados en el propio error boundaries
+* Para usarlo debemos wrapear la aplicacion en el componente <ErrorBoundary>.
+* Error boundary funciona como un catch para javascript pero de componentes
+* Los errores q no son capturados por el error boundary derivan en desmontar todos los componentes de la aplicacion
+
+********************************* REENVIO DE REF *********************************************************
+
+* es una técnica para pasar automáticamente una ref a través de un componente a uno de sus hijos
+* Con un ejemplo se entiende mejor:
+  const FancyButton = React.forwardRef((props, ref) => (
+    <button ref={ref} className="FancyButton">
+      {props.children}
+    </button>
+  ));
+
+  // Ahora puedes obtener una referencia directa al botón del DOM:
+  const ref = React.createRef();
+  <FancyButton ref={ref}>Click me!</FancyButton>;
+
+1) Creamos una ref React llamando React.createRef y la asignamos a la variable ref.
+2) Pasamos nuestra ref hacia <FancyButton ref={ref}> al especificarla como un atributo JSX.
+3) React pasa la ref a la función (props, ref) => ... dentro de forwardRef como segundo argumento.
+4) Reenviamos este argumento ref hacia <button ref={ref}> al especificarla como un atributo JSX.
+5) Cuando la ref es adjuntada, ref.current apuntará al nodo DOM <button>.
+
+* sirve para pasar de un componente creado en react a una etiqueta html comun una ref para el hijo
+* las ref se pasan aparte pq no son tratadas como props
+* podemos reenviar explícitamente refs al componente interno usando el API React.forwardRef. React.forwardRef acepta una función de renderizado que recibe los parámetros props y ref, y devuelve un nodo React
+
+********************************* FRAGMENTS *******************************************************
+
+* permiten agrupar una lista de hijos sin agregar nodos extra al DOM.
+* si se quiere usar un fragment sin props ni keys se escribe <></> y si lo queres con props o keys <React.Fragment></React.Fragment>
+* a los fragments no se le pueden pasar eventos
+
+********************************* HOCs ************************************************************
+
+* los HOCs son un componente funciónal que recibe un componente y devuelve un nuevo componente.
+* Un HOC es una función pura sin efectos colaterales.
+* por convencion suelen empezar con la palabra with
+* Los HOCS aceptan como parametro el componente y el segundo como una configuracion o opciones a pasarle
+* NO APLICAR HOCS EN  EL RENDER O RETURN DE UN COMPONENTE
+* no funciona pasar ref a un hoc
+
+********************************* JSX ************************************************************
+
+* los componentes que creamos deben estar escritos con la primer letra en mayuscula
+* se puede autocerrar cualquier etiqueta
+* Si no pasas ningún valor para un prop, el valor predeterminado es true. Estas dos expresiones JSX son equivalentes:
+  <MyTextBox autocomplete />
+  <MyTextBox autocomplete={true} />
+* se pueden pasar todas las props a otro componentes usando {...props}
+* false, null, undefined y true son hijos válidos. Simplemente no se renderizan.
+
+********************************* OPTIMIZACION ***************************************************
+
+* para hacer tu codigo minificado. Si tenemos el proyecto creado por create react app tiramos el comando npm run build y en la carpeta build nos genera el codigo minificado listo para la produccion. Sino debemos hacerlo a mano
+* Recuerda que solo los archivos de React que terminan con production.min.js son apropiados para producción.
+
+********************************* PORTALS ********************************************************
+
+* sirve para renderizar componentes en otro lado de la app, los "transporta" independientemente de quien sea el padre
+* ReactDOM.createPortal(child, container)
+* El primer argumento (child) es cualquier hijo renderizable por React, como un elemento, cadena de caracteres o fragmento. El segundo argumento (container) es un elemento DOM.
+* este metodo de createPortal esta dentro de la libreria react-dom
+* en el return del html del componente q lo quiero hacer portal pongo:
+return ReactDOM.createPortal(1,2)
+1 ---> todo mi html del return del componente, normal como en cualquier otro
+2 ---> de segundo parametro se le pasa getDocumentById con el div q tengamos en el index.html por fuera del id=root para q lo cargue ahi. Osea creariamos otro div vacio para esto
+* creamos otro div vacio en el html de la app con un id y se trabaja en un arbol paralelo al del componente App
+
+********************************* PROFILER ********************************************************
+
+* El Profiler (perfilador o generador de perfiles) mide con qué frecuencia se renderiza una aplicación React y cuál es el “costo” del renderizado. Su propósito es ayudar a identificar partes de una aplicación que son lentas y pueden beneficiarse de optimizaciones como la memoización.
+* el profiler solo debe usarse en desarrollo. No en produccion
+* uso ---> Se puede agregar un Profiler en cualquier parte de un árbol React para medir el costo de renderizar esa parte del árbol. Requiere dos props: un id (string) y un callback onRender (función) que React llama cada vez que un componente dentro del árbol “confirma” una actualización.. Ejemplo
+  render(
+    <App>
+      <Profiler id="Navigation" onRender={callback}>
+        <Navigation {...props} />
+      </Profiler>
+      <Main {...props} />
+    </App>
+  );
+
+********************************* RECONCILIZACION *************************************************
+
+* React proporciona una API declarativa para que no tengas que preocuparte sobre qué cambia exactamente en cada actualización. Esto facilita mucho la escritura de aplicaciones, pero podría no ser obvio cómo se implementa esto dentro de React. Este artículo explica las elecciones que hicimos en el algoritmo “diferencial” de React para que las actualizaciones de los componentes sean predecibles y al mismo tiempo sean lo suficiente rápidas para las aplicaciones de alto rendimiento.
+* Cuando usas React, en un momento dado puedes pensar que la función render() crea un árbol de elementos de React. En la siguiente actualización de estado o propiedades, esa función render() devolverá un árbol diferente de elementos de React. React luego debe descubrir cómo actualizar de manera eficiente la interfaz de usuario para que coincida con el árbol más reciente. Existen algunas soluciones genéricas para este problema algorítmico de generar el número mínimo de operaciones para transformar un árbol en otro. Sin embargo, los algoritmos de vanguardia tienen una complejidad en el orden de O(n3) donde n es el número de elementos en el árbol. Si utilizamos esto en React, mostrar 1000 elementos requeriría del orden de mil millones de comparaciones. Esto sería demasiado costoso. En su lugar, React implementa un algoritmo heurístico O(n) basado en dos suposiciones. Dos elementos de diferentes tipos producirán diferentes árboles. El desarrollador puede insinuar qué elementos secundarios pueden ser estables en diferentes renders con una propiedad key. En la práctica, estos supuestos son válidos para casi todos los casos de uso práctico.
+* El algoritmo diferencial ---> Al diferenciar dos árboles, React primero compara dos elementos raíz. El comportamiento es diferente dependiendo de los tipos de elementos raíz. Cada vez que los elementos raíz tienen diferentes tipos, React derribará el árbol viejo y construirá el nuevo árbol desde cero
+* Si compara elementos del dom del mismo tipo ---> Al comparar dos elementos React DOM del mismo tipo, React analiza los atributos de ambos, mantiene el mismo nodo DOM subyacente, y solo actualiza los atributos modificados.
+* si hay hijos recursivos ---> De forma predeterminada, cuando hay recursión en los hijos de un nodo DOM, React simplemente itera sobre ambas listas de hijos al mismo tiempo y genera una mutación siempre que haya diferencia.
+
+********************************* STRICT MODE ****************************************************
+
+* StrictMode es una herramienta para destacar problemas potenciales en la aplicación. Al igual que Fragment, StrictMode no renderiza nada en la interfaz de usuario. Este modo también activa advertencias y comprobaciones adicionales para sus descendientes.
+* Strict mode ayuda a:
+1) Identificar ciclos de vida inseguros
+2) Advertencia sobre el uso de la API legado de string ref
+3) Advertencia sobre el uso del método obsoleto findDOMNode
+4) Detectar efectos secundarios inesperados
+5) Detectar el uso de la API legado para el contexto
+6) Asegurar estado reutilizable
+
+********************************* HOOKS *********************************************************
+
+********************************* useContext *********************************
+1) asignamos a una variable el createContext y la exportamos para usarla donde querramos
+export const userContext = React.createContext();
+2) Agarramos ese userContext como un componente y encerramos toda nuestra app con el componente.Provider. Ademas le damos un value con el store q vamos a tener para almacenar datos q pueda leer cualquier coponente dentro. Esta logica del context es ideal sacarla a un archivo aparte con funciones para manejar esa informacion etc.
+return (
+  <userContext.Provider value={storeConDatosQVamosAProveer}>
+    <div></div>
+    <img />
+  </userContext.Provider>
+)
+3) En los componentes donde queremos leer esa data hacemos useContext
+const dataDelContext = useContext(NombreDelContextoQVamosALeer)
+
+********************************* useRef *********************************
+* Use ref crea un objeto. En el cual tiene una key q se llama current q tiene el valor actual. Sirve para mantener un valor al menos que le indiquemos q lo cambie
+* Seria como una variable que no se va a perder entre cambios de estados. Osea es una variable q se modifica pero no cambia en el render de la aplicacion, no va a volver a renderizarla.
+* Si nosotros cambiamos ese valor nuestra aplicacion NO SE VUELVE A RENDERIZAR.
+* Tambien podemos referenciar elementos del dom. En el elemento html ponemos la prop ref={variable q le ponemoss useRef()}
+
+1) definimos el useRef
+const name = useRef('valorPorDefecto')
+2) luego en los lugares que queremos le modificamos el valor. Al ser un objeto, debemos acceder al a propiedad current
+name.current = 'Cambio el nombre';
+
+********************************* useMemo *********************************
+* memorizamos un valor y solo si una dependencia q le pasamos en el segundo parametro cambia volvemos a memorizar el nuevo valor
+* Sirve para no hacer renders innecesarios. Ejemplo
+
+const prueba = useMemo(() => {}, [])
+el primer parametro se hace la logica q usamos para calcular, el array q esta en el 2do parametro del useMemo es un array de dependencias. Son los elementos q si cambian se vuelve a ejecutar la funcion del primer parametro
+
+********************************* useCallback *********************************
+* memorizamos una funcion para q no se vuelvan a generar y a ejecutar en cada render, solo cuando cambien las dependencias q le pasamos en el array que esta en el segundo parametro del hook.
+* La diferencia con useMemo es q el useCallback te devuelve la funcion memorizada, en cambio el useMemo te devuelve el valor calculado de la funcion. El callback, al devolvernos la funcion, podemos ejecutarla. Ejemplo
+
+const ejemplo = useCallback(() => {}, [])
+
+********************************* useReducer *********************************
+* seria lo mismo q un useState pero si tiene muchas variantes para cambiar es preferible un useReducer. Serian para estados mas complejos. Tiene un state un dispatch q despacha las acciones y del otro lado le pasamos, el reducer y el inicial state. Ejemplo
+import {useReducer} from 'react';
+
+const initialState = {
+  contador = 10
+}
+
+interface actionType { type: 'incrementar' | 'decrementar'}
+
+const contadorReducer = (state: typeof initialState, action: actionType) => {
+  switch( action.type) {
+    case 'incrementar':
+      return {
+        ...state,
+        contador: state.contador + 1
+      }
+    case 'decrementar':
+      return {
+        ...state,
+        contador: state.contador - 1
+      }
+    default:
+      return state;
+  }
+}
+
+** luego en el componente o mas abajo definimos el reducer
+** el init sirve por si tarda en cargar la data q trae q muestre algo
+** y luego usamos el dispatch y le mandamos las acciones
+** el action es un objeto q mandas el nombre de la action y el payload con la data q podes usar
+** ademas en contadorState podemos desestructurar y traernos { contador }
+
+const [contadorState, dispatch] = useReducer(contadorReducer, initialState, init)
+
+() => dispatch({type: 'incrementar'})
+
+
+********************************* useParams *********************************
+* se importa de la libreria react-router. Sirve para extraer los parametros de la url. En el siguiente ejemplo en la constante params tenemos un objeto con cada param de la url con su nombre y valor. Ejemplo
+
+const params = useParams()
+
+********************************* useLocation *********************************
+* se importa de la libreria react-router. la constante del ejemplo es un objeto con propiedades especificas.
+
+const location = useLocation()
+
+* Pathname, que seria luego de wwww.nombrepag.com lo q le sigue en la ruta de la url.
+* Search son los query params q le pasamos a la url
+
+Ejemplo para obtener las querys de forma facil.
+const {search} = useLocation();
+const query = new URLSearchParams(search);
+
+// obtiene la query del precio q pasariamos
+const price = query.get('price');
+
+********************************* useHistory *********************************
+* se importa de la libreria react-router. Te devuelve un objeto con varias propiedades. Este hook tiene tambien dentro el useLocation
+* push, es una funcion q le pasas un string de parametro con el path al cual queres ir y te envia ahi
+* goFoward, para ir adelante en el historial
+* goBack, para ir atras en el historial
+* go, para que vaya a alguna pagina
+const history = useHistory()
+
+********************************* useNavigate *********************************
+* se importa de la libreria react-router. Es una funcion q le pasas el path y te navea a esa ruta.
+
+const navigate = useNavigate()
+navigate('/home')
+
+
+
+********************************* useImperativeHandle *******************************************
+
+* Suele ser una mala practica usas cosas imperativas en react. Se suele usar como escape cuando estamos trabajando con librerias de terceros o cosas externas q no podamos controlar y queremos hacer alguna cosa
+* sirve por si queremos por ejemplo ejecutar una funcion desde el componente padre para indicar algo en el componente hijo. Se pone un useRef en el componente padre y se le pasa la ref al componente hijo. Una vez hecho eso, envolvemos el componente hijo con React.forwardRef y le pasamos como 1er parametro las props y como segundo las ref. Una vez hecho esto, en el componente hijo llamamos al useImperativeHandle q seria como un use effect. Primer parametro q le pasamos es la referencia creada y pasada como ref. y como segundo una funcion flecha q en el return tendra los metodos q podemos acceder desde el padre para modificar cosas. Si hay alguna duda en el futuro ver este video. https://www.youtube.com/watch?v=a7_S6ZeydeU
+
+********************************* useLayoutEffect ************************************************
+
+* La firma es idéntica a useEffect, pero se dispara de forma síncrona después de todas las mutaciones de DOM. Use esto para leer el diseño del DOM y volver a renderizar de forma sincrónica. Las actualizaciones programadas dentro de useLayoutEffect se vaciarán sincrónicamente, antes de que el navegador tenga la oportunidad de pintar. Prefiera el useEffect estándar cuando sea posible para evitar el bloqueo de actualizaciones visuales.
+
+********************************* useDebugValue **************************************************
+
+* useDebugValue puede usarse para mostrar una etiqueta para Hooks personalizados en React DevTools. Ejemplo:
+  useDebugValue(value)
+
+********************************* useDeferredValue ***********************************************
+
+* le da al state q le pases baja prioridad y lo actualiza ultimo. Sirve para aplicarlo en operaciones costosas de renderizado
+* hace q se renderice esa parte una vez terminado todo lo demas a renderizarse
+* si hay alguna duda con esto ver https://www.youtube.com/watch?v=jCGMedd6IWA
+* creo se le pasa dependencias
+
+********************************* useTransition ***************************************************
+
+const [isPending, startTransition] = useTransition()
+
+* isPending es un booleando q te dice si se esta o no ejecutando la funcion q esta dentro del startTransition. Sirve para mostrar un loading o algo en pantalla mientras esta esperando para hacer el renderizado de lo q es baja prioridad
+* startTRansition es un metodo q se le pasa una funcion flecha con el pedazo de codigo que queramos dejarlo en baja prioridad y renderizarlo solo si ya se renderizo todo lo demas y hay tiempo.
+* Sirve para darle prioridad al renderizado en algunas partes
+* hace q se renderice esa parte una vez terminado todo lo demas a renderizarse
+
+******************************* solucion a useTransition y useDeferredValue *************************
+
+* existen librerias como react-virtualized o react-window que hacen render solo de la parte de la tabla q este en la vista del usuario, haciendo la experiencia de usuario mas rapida y con mejor rendimiento.
+* parece ser q react-window es mejor. Las dos estan hechas por el mismo autor
+
+******************************* REACT TESTING LIBRARY Y JEST ****************************************
+
+* jest es un test runner
+* si ponemos el nombredelArchivoConMayuscula.test.js te lo toma ya como para testear
+* Para empezar importamos varias cosas:
+import React from 'react'
+import '@testing-library/jest-dom/extend-expect'
+import { render } from '@testing-library/react'
+importamos el componente a testear
+
+despues:
+test('nombre del test', () => {
+  // ponemos el objeto o cosas a pasarle como prop al componente en cuestion
+  const component = render(<Component props />)
+
+  const elem = component.getByText('texto q busca en el componente')
+  expect(elem).toBeDefined() ---> para q lo encuentre si lo recupero bien. A veces innecesario ya con el getByText es suficiente
+  expect(component.container).toHaveTextContent('texto q busca en el componente')
+})
+
+
+* el component.container tiene el html renderizado del componente
+* metodos a usar:
+component.getByText() ---> busca en el componente el texto q se le pase por parametro
+expect(elemento buscado).toBeDefined() ---> para ver si esta existiendo
+component.debug() ---> te muestra lo q se esta renderizando actualmente en el test. Sirve para ver q error tira
+prettyDOM(elemento en cuestion) ---> si buscamos un elemento del componente y lo consologueamos tira mucha info. Si lo queremos ver mejor usamos este metodo. Lo importamos de import {prettyDOM} from '@testing-library/dom'
+* para ver los eventos tenemos el fireEvent q dispara cualquier tipo de eventos. Ejemplo:
+import { fireEvent } from '@testing-library/dom'
+
+const button = component.getByText('texto del boton')
+fireEvent.click(button)
+
+
+* ME QUEDE EN ESTE VIDEO EN EL MIN 16
+https://www.youtube.com/watch?v=KYjjtRgg_H0
+
+
+--------------------------------- ERROR BOUNDARY ------------------------------------------------------------------
+
+* sirve para manejar los errores de la aplicacion. Estos no capturan errores de manejo de eventos, setTimeOut, renderizado del servidor, etc.
+* los error boundary funcionan solo con catch de javascript
+* se podria usar haciendo un HOC de boundary error, q se llame WithBoundaryError y lo wrapeamos al componente
+
+--------------------------------- PRINCIPIOS SOLID ------------------------------------------------------------------
+
+* Single responsibility principle ---> cada componente debe tener una sola tarea. Para esto usamos CustomHooks
+* open close principle ---> cada entidad q tengamos deben estar abiertas para extender y cerradas para modificar. Osea tendriamos q tener un componente q no se toque y retocarlo de afuera para agregarle funcionalidades. Para esto usamos los children
+* liskov ---> cada prop, deberia poder intercambiarse por una prop o metodo del elemento q lo hereda. Osea el componente padre y el hijo deben tener props con los mismos nombre y q hagan las cosas, por si algun dia queres cambiarlo no te daria problema de funcionalidad
+* interface segregation principle ---> los clientes no deben depender de interfaces q no necesitan. Solo le tenemos q pasar a los componentes las cosas q necesitan, no todo el objeto data por ejemplo. Hacer el pasaje de solo lo q necesita
+* dependency inversion principle ---> los componentes deben depender de abstracciones y no de implementaciones. Q haya parametros, no dejar nada fijo por ejemplo la url del fetch y poner parametro q se llame url
+
+--------------------------------- INTERSECTION OBSERVER ------------------------------------------------------------------
+
+* La API Intersection Observer le permite configurar una función callback que es llamada cuando alguna de las siguientes circunstancias ocurren:
+* Un elemento target intersecta ya sea al viewport del dispositivo o un elemento especificado. Ese elemento especificado es llamado el elemento root o root a los propósitos de la API Intersection Observer.
+* La primera vez que se pide inicialmente al observador que observe un elemento target.
+* Ejemplo
+** Cree el intersection observer llamando a su constructor y pasándole una función callback para que se ejecute cuando se cruce un umbral (threshold) en una u otra dirección:
+
+  let options = {
+    root: document.querySelector('#scrollArea'),
+    rootMargin: '0px',
+    threshold: 1.0
+  }
+
+  let observer = new IntersectionObserver(callback, options);
+* opciones:
+* root ---> el elemento q es usado como viewporta
+* rootMargin ---> margen al rededor del elemento root
+* threshold ---> Es un número o un array de números que indican a que porcentaje de visibilidad del elemento target, la función callback del observer debería ser ejecutada. Si usted quiere que se detecte cuando la visibilidad pasa la marca del 50%, debería usar un valor de 0.5. Si quiere ejecutar la función callback cada vez que la visibilidad pase otro 25%, usted debería especificar el array [0, 0.25, 0.5, 0.75, 1]. El valor por defecto es 0 (lo que significa que tan pronto como un píxel sea visible, la función callback será ejecutada). Un valor de 1.0 significa que el umbral no se considera pasado hasta que todos los pixels son visibles.
+
 
 Para hacer un loading en un state hacemos un fetch y en el .finally le cambiamos el loader a false,
  ESTUDIAR EL OBSERVER DE JS
+Datos interesantes
+* Para hacer un loading en un state hacemos un fetch y en el .finally le cambiamos el loader a false,
+* los componentes de react son declarativos, no imperativos.
+
+TODO:
+leer en profundidad https://web.dev/i18n/es/virtualize-long-lists-react-window/
+aprender axios, swr, react query, nextjs, cypress
+
+NO ENTENDI
+* cuando es mejor usar useTransition o useDeferredValue

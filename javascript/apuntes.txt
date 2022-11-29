@@ -143,6 +143,8 @@ const map = new Map()
 
 --------------------------------- SYMBOL ------------------------------------------------------------------
 
+* tipo de dato primitivo. No se usa new. Crea un identificador unico para la variable. Sirven para crear propiedades privadas de los objetos
+
 --------------------------------- URLPattern ------------------------------------------------------------------
 
 * sirve para obtener la info de la url facilmente. Ejemplo

@@ -144,7 +144,164 @@ const store = createStore(rootReducer);
 
 
 
+**************************************** DOCUMENTACION ****************************************
 
+* Redux es un patrón y una biblioteca para administrar y actualizar el estado de la aplicación, utilizando eventos llamados "acciones". Sirve como un almacén centralizado para el estado que debe usarse en toda su aplicación, con reglas que garantizan que el estado solo se puede actualizar de manera predecible.
+
+* un solo flujo de datos ---> vista ---> accion ---> state ---> vista. Por ejemplo si la vista se apreta un boton, se despacha una accion q indica como debe variar el state. El state varia y se lo manda a la vista q toma los nuevos valores y renderiza de nuevo
+
+* ACTION ---> una accion es un simple objeto de javascript q contiene un campo llamado type en el que debemos darle un nombre representativo de la accion q vamos a realizar. Ademas podemos pasarle informacion o variables, esto lo hacemos por convencion a travez de otro campo llamado payload q recibe toda esta informacion para pasarla al reducer. Ejemplo:
+
+  const addTodoAction = {
+    type: 'todos/todoAdded',
+    payload: 'Buy milk'
+  }
+
+* existen los creadores de acciones que son funciones que retornan una accion. Esto es lo q se usa. Ejemplo
+
+const addTodo = (data) => {
+  return {
+    type: 'todos/todoAdded',
+    payload: data
+  }
+}
+
+* REDUCER ---> Un reducer es una funcion que recibe el estado actual de la aplicacion y un objeto con la accion. Realiza la logica necesaria para actualizar el state. Solo deben calcular el nuevo valor de estado en función de los argumentos de estado y acción. No se les permite modificar el estado existente. En su lugar, deben realizar actualizaciones inmutables, copiando el estado existente y realizando cambios en los valores copiados. No deben hacer ninguna lógica asíncrona, calcular valores aleatorios o causar otros "efectos secundarios".
+
+* STORE ----> El store es un objeto que contiene toda la infomacion global de la aplicacion q fuimos almacenando a traves de los reducers. Tiene un metodo llamado store.getState() que nos devuelve toda esa info
+
+* DISPATCH ---> La unica forma de actualizar el state en redux es a travez de un dispatch q despache alguna action o thunk para q ejecute los reducers correspondientes y modifiquen el state.
+
+* SELECTORES ---> son funciones que sirven para traer cierta parte de la informacion o mapearla para conseguir algo unico. En resumen, podes derivar data o modificarla para conseguir lo q necesites del state.
+
+* razones por las que el state es inmutable:
+Provoca errores, como que la interfaz de usuario no se actualice correctamente para mostrar los valores más recientes.
+Hace que sea más difícil entender por qué y cómo se ha actualizado el estado.
+Hace que sea más difícil escribir test.
+Rompe la capacidad de usar la "depuración de viajes en el tiempo" correctamente
+Va en contra del espíritu previsto y los patrones de uso de Redux.
+
+* THUNKS FUNCTIONS ---> Son funciones que despachan acciones asincronicas. Por eso maneja los 3 estados de una peticion asincronica. Fetching, fulfilled y error. Y dentro de la funcion thunks despachada se despachan 3 acciones mas segun el estado de la peticion. Estas son las que modifican al reducer y al store segun en el momento q se encuentre
+
+* PRINCIPIOS DE REDUX
+1) tener una aplicacion predecible
+2) centralizada ----> store global
+3) debuggeable
+4) flexible
+
+
+
+
+****************************** DOCUMENTACION REDUX TOOLKIT QUERY ******************************
+
+* createSlice ----> es una funcion que recibe como parametro un objeto. Este objeto debe tener un name, un initialState y un objeto con los reducers
+* redux toolkit nos permite q en los reducers podamos mutar el state (state.counter = 10 por ejemplo) y ellos con una libreria q tienen llamada Immer por detras lo convierten a codigo inmutable
+* configureStore ---> seria como el combineReducers
+* cada createSlice exporta las acciones. Esto recibe directamente el payload y el nombre
+* EJEMPLO:
+
+import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+
+export interface CounterState {
+  value: number
+}
+
+const initialState: CounterState = {
+  value: 0,
+}
+
+export const counterSlice = createSlice({
+  name: 'counter',
+  initialState,
+  reducers: {
+    increment: (state) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.value += 1
+    },
+    decrement: (state) => {
+      state.value -= 1
+    },
+    // el payload es recibido directamente en el parametro de la action
+    incrementByAmount: (state, action) => {
+      state.value += action.payload
+    },
+  },
+})
+
+// Action creators are generated for each case reducer function
+export const { increment, decrement, incrementByAmount } = counterSlice.actions
+
+* una vez q tenemos el slice creado lo usamos en el index de redux (en el store). Ejemplo
+
+import { configureStore } from '@reduxjs/toolkit'
+import counterReducer from '../features/counter/counterSlice'
+
+export const store = configureStore({
+  reducer: {
+    counter: counterReducer.reducer,
+  },
+})
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch
+
+
+
+
+
+DUDAS ::::::
+para que se usa createSlice
+ver createAsyncThunk y createSlice, que es rkt query
+ver tambien useSWR
+
+de rkt query ver ---> createApi(), fetchBaseQuery()
+
+HASTA ACA LLEGUE:::::
+https://redux.js.org/tutorials/essentials/part-7-rtk-query-basics
+
+SEGUIR DE ACA :::::::
+CAPITULO 7
+https://www.youtube.com/watch?v=6ISuVZVGa_o&list=PLCKuOXG0bPi3AWYFJewb-UhN7Y2VjooJL&index=6&ab_channel=FernandoHerrera
+
+
+**************************************** tipado ********************************************************
+
+* para el tipado en typescript ---> Redux toolkit (RTK) ya tiene el tipado pq esta hecho con typescript. React-redux no lo tiene. tenemos q importar @types/react-redux
+
+
+* cuando configuramos redux con los reducers no necesitariamos nada mas. Pero podemos extraer el rootState y el dispatch como types. Ejemplo
+  import { configureStore } from '@reduxjs/toolkit'
+
+  export const store = configureStore({
+    reducer: {
+      posts: postsReducer,
+      comments: commentsReducer,
+      users: usersReducer
+    }
+  })
+
+  // Infer the `RootState` and `AppDispatch` types from the store itself
+  export type RootState = ReturnType<typeof store.getState>
+  // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+  export type AppDispatch = typeof store.dispatch
+
+**************************************** 3 principios de redux ****************************************
+
+1) unica fuente de verdad ---> el estado de la aplicacion es global y es el unico donde puede consultarse o cambiarse
+2) State is read-only ----> el estado es de solo lectura por eso siempres se devuelve una copia del state en lugar del mismo state
+3) los cambios se hacen con funciones puras ---> para esto debemos tener reducers "puros". Los reductores son solo funciones puras que toman el estado anterior y una acción, y regresan al siguiente estado. Recuerde devolver nuevos objetos de estado, en lugar de mutar el estado anterior.
+
+
+
+
+empezar de aca
+https://redux.js.org/tutorials/essentials/part-1-overview-concepts
 
 
 
