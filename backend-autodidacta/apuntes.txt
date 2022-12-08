@@ -970,13 +970,11 @@ CLASE 34:
     * Alarmas de Amazon CloudWatch ---> Dos alarmas de CloudWatch que monitoriean la carga recibida por las instancias y que se activan si la carga es demasiado alta o demasiado baja. Cuando se activa una alarma, en respuesta, el grupo de Auto Scaling aumenta o reduce los recursos.
     * Plataforma de AWS CloudFormation ---> Elastic Beanstalk utiliza AWS CloudFormation para lanzar los recursos del entorno y propagar los cambios de configuración.
     * Nombre de dominio ---> Nombre de dominio que direcciona el tráfico a la aplicación web con el formato subdominio.region.elasticbeanstalk.com.
-
+    * Amazon s3 bucket ---> es el store de amazon donde podemos guardar imagenes, videos, pdf, etc
+    * Amazon sns ---> manda mensajes cuando ocurre algo exitosamente, es un push notification. Sirve para mandarle mensajes las notificaciones al cliente
 
 ********************** ME QUEDA VER LA CLASE GRABADA 34
 
 
-
-
-
-
+DUDAS
 

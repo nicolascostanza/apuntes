@@ -34,6 +34,7 @@ const withConsoleLog = (Component, config?) => {
 export default withConsoleLog(App);
 
 --------------------------------------- Promesas ---------------------------------------
+* DATO IMPORTANTE ---> UNA PROMESA SIEMPRE EN EL RETURN DEVUELTE OTRA PROMESA. ESTE CALLBACK ES UNA PROMESA PARA ASI PERMITIR AL METODO .THEN CONCATENAR VARIOS SEGUIDOS. ES POR EL METODO EN SI.
 * un callback es una funcion que pasas por parametro para q la ejecute cuando termine la funcion y eso sea lo que retorna
 * el constructor new Promises recibe una funcion con dos parametros q son resolve y reject
 * entonces en una funcion nos quedaria
