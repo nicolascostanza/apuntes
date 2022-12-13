@@ -91,7 +91,7 @@
 * .map(callback) ---> devuelve un array mapeado q sirve para trabajar la data o obtener solo una parte. Devuelve una copia del array original
 * .pop() ---> saca el ultimo elemento del array
 * .push(variableAAgregar) ---> le agrega un elemento que le pasamos como parametro del metodo al array en la ultima posicion
-* .reduce(callback, valor inicial del acumulador) ---> sirve para acumular o tener un array indexado por algun valor, Es para REDUCIR el array a un valor. El callback tiene como parametros (acumular O variable q debemos retornar, valor anterior, valor actual, el array entero)
+* .reduce(callback, valor inicial del acumulador) ---> sirve para acumular o tener un array indexado por algun valor, Es para REDUCIR el array a un valor. Sintaxis: arr.reduce(callback(acumulador, valorActual, indiceActual, arrayEntero), initialValue). Siempre debe retornarse el acumulador
 * .reverse() ---> da vuelta el array
 * .shift() ---> elimina el primer elemento del array
 * .slice(indice inicial, indice final) ---> hace una copia superficial del array cortandolo,
@@ -124,6 +124,8 @@ const setHechoArr = Array.from(My set) // entonces ahora podemos acceder en un a
 
 --------------------------------- MAP ------------------------------------------------------------------
 
+* Un Map recuerda el orden de inserción original de las claves.
+* Podemos obtener un objeto o array indexado usando un Map.
 * un Map no contiene ninguna key por defecto. No tiene prototipe
 * las keys pueden ser cualquier cosa, boolean, string, number, funciones, objetos, etc
 * Sirve para asegurarte el orden de las keys, valores indexados. SIEMPRE TIENEN EL MISMO ORDEN
@@ -237,5 +239,11 @@ const jon = new Proxy(persona, handlerValidator)
 --------------------------------- DATOS ------------------------------------------------------------------
 
 * hacer delete de un elemento de un objeto tiene problemas de rendimiento y lo hace mas lento. Es preferible ponerle obj.clave = undefined. El problema es q con el undefined, seguis teniendo un elemento en el objeto y el tamaño no baja y con el delete no esta optimizado.
+
+--------------------------------- COSAS DE UTLIDAD ------------------------------------------------------------------
+
+* for ... in ---> recorre cada elemento de un objeto
+* for ... of ---> recorre cada elemento de in Array
+* 'nombreDeLaKey' in obj ---> devuelve true o false si la propiedad existe en ese objeto
 
 Me quede en los metodos del proxy

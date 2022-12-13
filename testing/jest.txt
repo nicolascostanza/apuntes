@@ -1,0 +1,97 @@
+NOTAS
+* se le hace un decribe y adentro varios TEST
+* el describe recibe un string como primer parametro en donde debemos describir la funcionalida q estamos probando y como segundo parametro una funcion en donde vamos a ir escribiendo los test sobre esa funcionalidad
+* dentro de esa funcion pasada por segundo parametro se le pasa un it()
+* la funcion it() recibe 2 parametros, el primero es un string q deberia decir q debe retornar ese test en particular y segundo una funcion en donde testeamos ese caso
+* cada it es un test especifico
+* en la funcion dentro del it tenemos un metodo q se llama expect y testeamos casos para el resultado en cuestion.
+* podemos usar las promise y testear en el .then() o hacer la funcion q se la pasa al it() de forma async-await. Es mas conveniente usar async-await por la sugar syntax
+* EJEMPLO
+
+describe('sum', () => {
+    it('deberia retornar 11 al sumar 4 + 7', () => {
+        const result = sum(4,7);
+        expect(result).toBe(11);
+    })
+})
+
+* jest nos deja ver el coverage de los test. Ademas dentro de la carpeta coverage q se crea tenemos un index.html y podemos ver incluso con mas detalle q lineas nos falta cubrir
+* para detectar los console.log de lo que testeamos tenemos q aplicar un metodo de jest llamado jest.spyOn(console, 'log'). EJEMPLO
+const logSpy = jest.spyOn(console, 'log').mockImplementation(jest.fn());
+
+
+MATCHERS
+
+* se puede agregar el .not para contradecir el matcher q vamos a usar
+* toBe(lo q se espera de ese dato) ----> algo q de cierto resutlado
+* toHaveBeenCalled() ---> para checkear q algo se este llamando
+* toHaveBeenCalledWith('string q deberia devolver cuando lo llamamos') ---> para checkear q algo se este llamando con cierta cosa adentro
+* toHaveBeenCalledTimes(1)  ---> para checekar la sveces q se llamo
+* toBeNull() ---> da ok si es null lo q devuelve
+* toBeUndefined() ----> matchea solo undefineds
+* toBeDefined() ---> lo opuesto a toBeUndefined
+* toBeTruthy() ---> matchea las cosas q en el if sean true
+* toBeFalsy() ----> matchea las cosas q dan false en un if
+* toBeGreaterThan(3) ---> debe ser mayor a 3
+* toBeGreaterThanOrEqual(3.5) ---> debe ser mayor o igual a 3.5
+* toBeLessThan(5) ---> debe ser menor que 5
+* toBeLessThanOrEqual(4.5) ---> debe ser menor o igual que 5
+* toBe(4) ---> debe ser igual a 4
+* toEqual(4) ---> debe ser igual a 4
+* toBeCloseTo(0.3) ---> sirve para testear numeros flotantes y q el redondeo no moleste
+* toMatch(/Regular expression/) ---> sirve para testear strings contra expresiones regulares
+* toContain(valor) ---> sirve para checkear si un valor esta en un array o objeto
+* toThrow() ----> para ver si la funcion tira un error cuando se llama
+* toMatchSnapshot() ---> creas un componente y haces q matchee con la foto q saca automaticamente cuando tenes el test en el mismo lugar de archivos q tu componente. Ademas te crea una carpeta snapshot que te pega el objeto q devuelve la imagen q hiciste
+* toMatchInlineSnapshot() ---> si lo pasamos vacio y corremos el test con -u nos escribe lo que estaria recibiendo
+* toMatchObject() ---> este no se actualiza solo como el toMatchInlineSnapshot
+* toThrowErrorMatchingInlineSnapshot() ---> cono el inline podes updatearlo y te devuelve el error, es para verificar los mensajes de error de la api
+
+SETERS
+
+* beforeEach(() => {...codigo a ejecutar}) ---> se ejecuta antes de cada test
+* afterEach(() => {...codigo a ejecutar})---> se ejecuta despues de cada test
+* beforeAll(() => {....codigo a ejecutar}) ----> se ejecuta una vez antes de que corran todos los test de ese archivo. Si agrupamos a los test dentro de un describe y adentro usamos el beforeAll, este solo aplicara a ese scope no a todo el archivo
+* afterAll(() => {...codigo a ejecutar}) ---> se ejecuta una vez despues de que corran todos los test. Si agrupamos a los test dentro de un describe y adentro usamos el afterAll, este solo aplicara a ese scope no a todo el archivo
+
+ITERACION CON VALORES
+
+* it.only() ---> testea solo ese test
+* it.each ---> cuando queres testear muchas veces lo mismo con distintos valores. Sirve para iterar. EJEMPLO
+* it.each`
+    input | expected
+    ${ejemplo@gmail.com} | ${true}
+`('texto del caso a testear', {input, expected}) => {
+    expect(input).toBe(expected)
+})
+
+MOCKS
+
+* la propiedad .mock nos da mucha informacion sobre las intancias en donde fue llamado algo o la data que tiene
+* .mockReturnValueOnce(valores) ---> sirven para inyectar valores en los test
+* jest.fn() ---> mockea una funcion que despues podes ver si se llamo o no
+
+MOCK SERVICE WORKER
+* intersecta el api call y devuelve data mockeada
+
+COMPONENTES EN REACT
+
+* para buscar componentes lo podemos hacer mediante varios metodos
+* getByText('string del componente') ---> busca solo el primer elemento del html q coincida con ese texto
+* getByTestId(valor de la prop esa en el elemento q buscamos) ---> va a buscar en el html el primer elemento q tenga la prop q coincida con la q le paso
+* queryAllByText('string de los elementos') ---> matchea con uno o mas elementos q lo tengan
+* toHaveLength(numero) ---> checkea la cantidad q encuentra de los elementos q buscamos en el html
+* queryByTestId ---> sirve para ver si hay 0, 1 o muchos elementos
+* queryByPlaceholderText ----> lo busca por el placeholder
+
+FIRE EVENT (la provee react testing library) ---> sirve para interactuar con los elementos en react native ---> testeamos los eventos de la app
+USER EVENT ----> lo mismo pero para web ---> testeamos los eventos de la app
+
+* waitFor(() => {...codigo}) ---> es de react testing library y espera ejecuta las cosas q tenemos en el callback. Por defecto es un segundo pero se puede modificar
+* fireEvent.press(elemento html q previamente seleccionamos) ---> presiona un elemento html
+* fireEvent.changeText(elemento del html, texto a modificar) ---> le cambia el texto
+
+REDUX TEST
+* el mock con los valores iniciales se hace a mano y se obtiene con la funcion getMockState()
+* los reducers son los que se usan en serio
+* y se mockea las peticiones de la API y usas eso para simular las respuestas

@@ -1,0 +1,5 @@
+acomodar y moves las cosas de js en js y las de react en react, ts, redux, etc
+borrar cosas repetidas y explicar mejor cada cosa
+mirar el instagram de nishasingla05 y ver los tips utiles que tiene. Por ejemplo agregar el condicional para objetos
+estudiar todos los tipos de estructura de datos como pila, etc
+estudiar weak map y set weak
