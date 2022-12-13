@@ -1,0 +1,271 @@
+BUENAS PRACTICAS:
+1) Siempre intentar poner nombres representativos. Tanto en variables como a funciones
+3) Unit testing ??
+4) Evitar los else cuando no son necesarios
+5) Bien tabulado y legible
+6) Evito duplicar codigo.
+7) Abstrae y parametriza. Generar funciones q vas a usar muchas veces.
+8) Crear funciones con 1 solo proposito en concreto
+9) Evitar enviar muchos parametros a una funcion (max 3, 4 params)
+10) Evitar If anidados
+11) Evitar muchos bucles anidados
+12) Evitar callback Hell (usar async y await)
+13) Usar promesas, con el .then y .catch
+14) Usar patrones
+15) Refactorizar para que sea mas simple
+
+PRINCIPIOS DE LA POO:
+1) abstraccion: definimos los atributos y los metodos q definiran cual sera lo necesario para nuestra clase
+2) encapsulacion: definir cuales de nuestros atributos y metodos van a ser privados. Define cual puede usarse desde fuera. Existen algunos metodos q manejan otros
+3) herencia: a veces cuando creamos clases necesitamos atributos y metodos de otra clase, para eso usamos la herencia. Para que los hereden. La clase q hereda se la conoce como clase padre.
+4) polimorfismo: permite a un metodo ser diferente, segun que clase lo este usando.
+
+INTERFAZ: contrato entre dos entidades. Da metodos a las clases. Las clases q implementan estas interfaces deben implementarlas. Los metodos de la interfaz deben ser siempre publicos. Las interfaces NO SON OBJETOS. Osea en la interfaces se define que "forma" deberia tener un obejto/instancia. Metodos y atributos, nada mas
+
+PATRONES DE DISEÑO:
+Hay 3 tipos de patrones de diseño. Los creacionales, los estructurales y los de comportamiento.
+** Los creacionales: simplifican la creacion de objetos. Desacoplan la forma en la que se crean del resto de la implementacion(Los mas conocidos: abstract factory, factory method, builder, singleton, prototype)
+** Los estructurales: modelizacion, creacion de la estructura de nuestro software especificando la forma en las que unas clases se relacionan con otras(los mas conocidos: adapter, bridge, composite, decorator, facade, flyweight, proxy)
+** Los de comportamiento: se usan para gestionar algoritmos, relaciones y responsabilidades entre distintos objetos(los mas conocidos: command, chain of responsibility, interpreter, iterator, mediator, memento, observer, state, strategy, template method, visitor)
+
+UNO A UNO LOS PATRONES DE DISEÑO:
+** Factory: Logica encargada de la creacion de enemigo, para q se generen aleatoriamente. Genera distintas funciones con logica para ver si quiere random por igual, o si quiere los mas fuerte siempre. Es general entonces no afecta a las demas cosas (A partir de un parametro de entrada vamos a crear distintos objetos). Ejemplo:
+function FactoryBurger(){
+
+    function Burger(ingredientes, precio){
+        this.ingredientes = ingredientes
+        this.precio = precio
+    }
+    function BurgerRoyal(){
+        return new Burger(['pan', 'queso', 'carne'], 12)
+    }
+    function BurguerSupreme(){
+        return new Burguer(['pan', 'lechuga', 'tomate', 'carne'], 10)
+    }
+    this.CreateBurger() = function(clase){
+        if(clase === 'burgerSupreme"){
+            return BurgerSupreme()
+        } else if(clase === 'burgerRoyal'){
+            return BurgerRoyal()
+        }
+    }
+}
+let factory = new FactoryBurger();
+let burger = factory.createBurger('burgerSupreme');
+
+
+** Abstract Factory: Es como el "papa de factory". En una sola clase vamos a agrupar varias factory. 'Fabrica de fabricas'. Es un patrón de diseño creacional que nos permite producir familias de objetos relacionados sin especificar sus clases concretas. Caso queres publicar un mensaje en 3 canales distintos (facebook, twt, linkedin). Haces una fabrica q cree el conector y abra la app, y lo publique. Te abstraes de el canal q queres hacerlo. Video: https://www.youtube.com/watch?v=JgejyeRyztI
+
+** builder: Sirve cuando queremos crear cosas pero algunos parametros son opcionales y otros no. En el constructor van los q son required y en los set van los que son opcionales. Al final esta el build q montaria el usuario
+
+class UserBuild {
+    constructor(name){
+        this.name = name
+    }
+    setAge(age){
+        this.user.age = age;
+        return this
+    }
+    setPhone(phone){
+        this.user.phone = phone;
+        return this
+    }
+    setAddress(address){
+        this.user.address = address;
+        return this
+    }
+    build(){
+        return this.user
+    }
+}
+
+let user = new UserBuild('Nicolas').build()
+let user2 = new UserBuild('Pedrito').setAge(12).setAddress('mendoza 9230').build()
+
+** singleton: Instancia una unica vez la clase, una vez q ya fue instancia no importa cuantas veces pongas new, ya tomo el primer valor y no lo cambia. En el ejemplo de abajo el if con !! ---> significa q si no es la primera vez, osea undefined te lo retorna y corta ahi. Sino les asigna nombre. El const instancia2 no modifica el valor, no sirve para nada
+
+Class Singleton{
+    static instance;
+    nombre = '';
+
+    constructor(nombre = ''){
+        if(!!singleton.instance){
+            return singleton.instance;
+        }
+        singleton.instance = this;
+        this.nombre = nombre;
+    }
+}
+
+const instancia1 = new Singleton('Nicolas');
+const instancia2 = new Singleton('Pedro');
+
+
+
+
+ARQUITECTURA DE SOFTWARE: son metodos que se utilizan de base para el diseño de las diferentes funcionalidades
+1) MODELO MICROKERNEL: consta de dos tipos de componentes de arquitectura: un sistema central y módulos enchufables. La lógica de la aplicación se divide entre módulos enchufables independientes y el sistema básico del núcleo, lo que proporciona extensibilidad, flexibilidad y aislamiento de las características de la aplicación y la lógica de procesamiento personalizada. Y el sistema central del patrón de arquitectura del Microkernel contiene tradicionalmente sólo la funcionalidad mínima necesaria para que el sistema sea operativo.
+VENTAJAS:
+- Gran flexibilidad y extensibilidad
+- Algunas implementaciones web permiten añadir plugins mientras la aplicación se está ejecutando
+- Buena portabilidad
+- Facilidad de despliegue
+- Respuesta rápida a un entorno en constante cambio que implica un entorno empresarial
+- Los módulos enchufables pueden probarse de forma aislada y pueden ser fácilmente burlados por el sistema central para demostrar o hacer un prototipo de una característica particular con poco o ningún cambio en el sistema central.
+- Alto rendimiento ya que puede personalizar y racionalizar las aplicaciones para incluir sólo las características que necesita.
+CASOS DE USO:
+- Aplicaciones que toman datos de diferentes fuentes, los transforman y los escriben a diferentes destinos
+- Aplicaciones de flujo de trabajo
+- Solicitudes de programación de tareas y trabajos
+2) MICROSERVICIOS: Cuando escribes tu solicitud como un conjunto de microservicios, en realidad estás escribiendo múltiples solicitudes que funcionarán juntas. Cada microservicio tiene su propia responsabilidad y los equipos pueden desarrollarlos independientemente de otros microservicios. La única dependencia entre ellos es la comunicación. A medida que los microservicios se comunican entre sí, tendrás que asegurarte de que los mensajes enviados entre ellos sean compatibles con los anteriores.
+VENTAJAS:
+- Puedes escribir, mantener y desplegar cada microservicio por separado
+- Fácil de escalar, ya que sólo se pueden escalar los microservicios que necesitan ser escalados
+- Es más fácil reescribir las piezas de la aplicación porque son más pequeñas y menos acopladas a otras partes
+- Los nuevos miembros del equipo deben ser rápidamente productivos
+- La aplicación debe ser fácil de entender y modificar
+- Altamente mantenible y comprobable – permite un desarrollo y despliegue rápido y frecuente
+- Desplegable de forma independiente – permite a un equipo desplegar su servicio sin tener que coordinar con otros equipos
+CASOS DE USO:
+- Sitios web con pequeños componentes
+- Centros de datos corporativos con límites bien definidos
+- El rápido desarrollo de nuevos negocios y aplicaciones web
+3) PATRON DE ARQUITECTURA EN CAPAS: El patrón de software más común es el patrón arquitectónico en capas. Los patrones de arquitectura en capas son patrones de n niveles donde los componentes están organizados en capas horizontales. Este es el método tradicional para diseñar la mayoría de los programas informáticos y está destinado a ser auto-independiente. Esto significa que todos los componentes están interconectados pero no dependen unos de otros. Cada capa del patrón de arquitectura en capas tiene un papel y una responsabilidad específicos dentro de la aplicación. Por ejemplo, una capa de presentación se encargaría de manejar toda la interfaz de usuario y la lógica de comunicación del navegador, mientras que una capa empresarial se encargaría de ejecutar las reglas empresariales específicas asociadas a la solicitud. Una de las características poderosas del patrón de arquitectura en capas es la separación de las preocupaciones entre los componentes. Los componentes dentro de una capa específica se ocupan sólo de la lógica que pertenece a esa capa.
+VENTAJAS:
+- Alta comprobabilidad porque los componentes pertenecen a capas específicas de la arquitectura, otras capas pueden ser burladas o desviadas, haciendo que este patrón sea relativamente fácil de comprobar..
+- Alta facilidad de desarrollo porque este patrón es muy conocido y no es excesivamente complejo de implementar, además la mayoría de las empresas desarrollan aplicaciones separando conjuntos de habilidades por capas, este patrón se convierte en una elección natural para la mayoría de los desarrollos de aplicaciones empresariales.
+- Mantenible.
+- Fácil de asignar «roles» separados.
+- Fácil de actualizar y mejorar las capas por separado
+CASOS DE USO:
+- Aplicaciones estándar de línea de negocios que hacen más que sólo operaciones CRUD
+- Nuevas aplicaciones que necesitan ser construidas rápidamente
+- Equipos de desarrolladores inexpertos que aún no entienden otras arquitecturas
+- Aplicaciones que requieren normas estrictas de mantenimiento y comprobabilidad
+4) EVENT-BASED: Esta es la arquitectura asíncrona distribuida más común utilizada para desarrollar un sistema altamente escalable. La arquitectura consiste en componentes de procesamiento de eventos de un solo propósito que escuchan los eventos y los procesan asincrónicamente. La arquitectura impulsada por eventos construye una unidad central que acepta todos los datos y luego los delega a los módulos separados que manejan el tipo particular.
+VENTAJAS:
+- Son fácilmente adaptables a entornos complejos, a menudo caóticos.
+- Escala fácilmente.
+- Son fácilmente ampliables cuando aparecen nuevos tipos de eventos.
+CASOS DE USO:
+- Sistemas asíncronos con flujo de datos asíncronos.
+- Interfaces de usuario
+5) BASADO EN EL ESPACIO: El patrón de arquitectura basada en el espacio está diseñado específicamente para abordar y resolver problemas de escalabilidad y concurrencia. También es un patrón de arquitectura útil para las aplicaciones que tienen volúmenes de usuarios concurrentes variables e impredecibles. La alta escalabilidad se logra eliminando la restricción de la base de datos central y utilizando en su lugar cuadrículas de datos replicados en memoria. La arquitectura basada en el espacio está diseñada para evitar el colapso funcional bajo una gran carga al dividir tanto el procesamiento como el almacenamiento entre múltiples un servidor y otro
+VENTAJAS:
+- Responde rápidamente a un entorno en constante cambio.
+- Aunque las arquitecturas basadas en el espacio no suelen estar desacopladas y distribuidas, son dinámicas, y las sofisticadas herramientas basadas en la nube permiten «empujar» fácilmente las aplicaciones a los servidores, simplificando su despliegue.
+- Se logra un alto rendimiento en el servidor gracias al acceso a los datos en memoria y a los mecanismos de almacenamiento en caché incorporados en esta pauta.
+- La elevada escalabilidad se debe a que se depende poco o nada de una base de datos centralizada, con lo que se elimina esencialmente este cuello de botella limitante de la ecuación de la escalabilidad en un servidor.
+CASOS DE USO:
+- Datos de gran volumen como flujos de clicks y registros de usuarios
+- Datos de bajo valor que pueden perderse ocasionalmente sin grandes consecuencias
+- Redes sociales
+
+MIDDLEWARE: Un middleware es una función que se puede ejecutar antes o después del manejo de una ruta. Esta función tiene acceso al objeto Request, Response y la función next(). Las funciones middleware suelen ser utilizadas como mecanismo para verificar niveles de acceso antes de entrar en una ruta, manejo de errores, validación de datos, etc.
+FUNCION LAMBDA: es una funcion flecha que es pasada como parametro en otra funcion. Un callback(de una funcion flech)
+HTTP: significa protocolo de transferencia de hipertexto. Sirve para la transferencia de documentos hipermedia como html. Sigue el modelo cliente-servidor
+CORS HTTP: son peticiones http de un dominio a otro dominio distinto. Sirve para consumir cosas de otras paginas. Y hay veces q te lo deniegan.
+METODOS DE PETICIONES HTTP: Son las distintas operaciones que se pueden realizar con http. Algunos ejemplos: get, post, put, patch, delete
+CODIGOS DE RESPUESTA HTTP: indican si una peticion http fue realizada con exito o surgio algun tipo de problema. Los 100 tienen informacion de responses. Los 200 mensajes de respuestas exitosas. Los 300 mensaje de redirecciones. Los 400 mensajes de errores del cliente. Los 500 mensajes de errores del servidor
+EXPRESSJS: es un framework q se usa en nodejs para la creacion de APIs. Se encarga del enrutamiento y las peticiones
+API: significa interfaz de programacion de aplicaciones. Es un conjunto de requests que permite la comunicacion de datos entre aplicaciones mediante request http. (POST, PUT, PATCH, DELETE, GET)
+API REST: significa representational state transfer. Es un conjunto de restricciones que se utilizan en las solicitudes http para q cumplan con las directrizes desfinidas en la arquitectura. Estas son:
+  1) cliente-servidor: las app existentes del cliente y del servidor deben estar separadas
+  2) sin estado: las request se hacen de forma independiente. Cada una ejecuta solo una accion
+  3) cache: la API debe utiizar la cache para evitar llamadas recurrentes al servidor
+  4) interfaz uniforme: los recursos deben ser identificados, la manipulacion debe ser a travez de la representacion, con mensajes autodescriptivos y utilizando enlaces para navegar por la app
+Cuando se habla de rest api, significa utilizar una api para acceder a aplicaciones back-end, de manera q esa comunicacion se realice con los estandares definidos por el estilo de la arquitectura rest
+el API sirve para comunicarse entre aplicaciones para intercambiar informaciones de forma rápida y segura
+COMO FUNCIONA UNA API REST:
+
+DIFERENCIA ENTRE CODIGOS SINCRONICOS Y ASINCRONICOS: Un código síncrono es aquel código donde cada instrucción espera a la anterior para ejecutarse mientras que un código asíncrono no espera a las instrucciones diferidas y continúa con su ejecución. Javascript es un lenguaje de ejecucion sobre un solo hilo. Por lo tanto si alguna instruccion tarda (ej peticion a una api) decimos q es bloqueante pq bloquea las instrucciones siguientes.
+CAPAS API REST:
+1) peticion del cliente
+2) capa de seguridad, donde validamos el token para saber si tiene acceso a esa informacion. Y ademas si envio correctamente los datos
+3) capa mapper esta entre routes y services(logica de negocios) . Se encarga de por ejemplo si te mandan un id le buscas el objeto con todo y tambien en la response desp de la logica de negocios le sacas la contraseña, pq no deberia salir al front
+4) capa de servicios (donde se encuentra la logica de negocios. Verificamos q ese mail no pertenezca a otra persona, o creamos un usuario o editamos algo, etc)
+5) capa de database. Esta es para convertir los archivos a los formatos de la base de dato relacional necesaria. Cuando se trabaja con MONGODB no se usa ya que es formato json como el q estamos trabajando en el back, asique va derecho.
+
+
+ORM: object relational mapper, Nos permite interactuar con la base de datos sin conocer sql.
+
+Curso de mongoDB:
+MONGODB: es un gestor de base de datos no relacionales. Aca se usan collections y documentos. Se representan con json.
+
+mongoose sirve para darle un poco el formato con esquemas. Sirve para trabajar con mongodb. Ya q esta no tiene tablas.
+En mongo db se trabaja con json pero desp se guarda con BSON, q es un json en formaton binario
+
+Para crear una BD vas a atlas mongodb y pones create new cluster
+Una vez elegido el servidor gratuito en la tab de cluster le ponemos conect y elegimos la opcion con robo (la del medio) y ponemos el link en from srv
+ROBO 3T sirve para conectar la base de dato a tu app
+Una vez dentro te vas a la parte de robo 3T dnd tiene la P (por ser el servidor primario) y le ponemos en esa consola use <nombre de la bd>
+
+luego ponemos db.createCollection('nombredecoleccion')
+mongodb crea un _id con un object id automaticamente
+
+Para conectarse usamos
+const mongoose = require('mongoose')
+// tenemos q ademas tener la pw, con .env o en dnd queramos
+y ponemos mongoose.connect(url con la pw dentro). Y uso el .then y .catch para ver si anda bien o no y si se conecto
+
+luego hacemos un schema q es un contrato de como debe ser los objetos en la base de datos y de q tipo. Ej:
+
+**luego te creas el objeto q queres y pones. El nombre del model se pone con la primera letra en mayusculas y en singular
+
+
+const noteSchema = new Schema({
+  name: String,
+  cumpleaños: Date,
+  isActive: Boolean
+})
+
+const Note = model('Note', noteSchema)
+const note = new Note({
+name: 'nico',
+cumpleaños: 16/04/1998,
+isActive: true
+})
+
+Una vez hecho eso al pones note. Nos saldrian muchas opciones, por ejemplo: note.save()
+Es buena practica al final del save en el .then pones mongoose.connection.close()
+
+en los middleware es importantisimo el orden (app.use((req, res, next)=> netx()))
+los q son para manejar errores los mandamos al final
+
+El next() dice anda a la siguiente ruta q matchea el path. Sirve generalmente para manejar errores
+
+
+------------------------
+
+DUDAS:
+el modelo cliente-servidor en q esta encerrado, a q pertenece ?
+
+
+------------------------
+
+VER:
+event loop, call stack, etc
+
+
+
+
+DECORADOR: es un patron que permite agregar funcionalidades a un objeto sin alterar el comportamiento de otras intancias de objetos de la misma
+
+
+SINGLETON: clases con solo una instancia. clase
+MEADIADOR:
+OBSERVADOR:
+
+
+PATRONES DE ARQUITECTURA:
+API REST:
+MVC: se usa para desarrollar interfaces de usuario. Divide la logica en 3 elementos. El modelo contiene la logica de tu app(logica de negocios). La vista es la representacion visual de los datos. El controlador se encarga de recibir los datos, trabajarlos y transformarlos en algo util. Usamos express y manejamos los resultados con try catch
+
+
+INVESTIGAR:
+como hacer metodos privados, encapsulamiento en nodejs
+interfaces ?¡?¡
+VER MVC Y MVVC
+que es una interfaz
+principios solid
+
