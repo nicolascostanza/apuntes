@@ -247,3 +247,49 @@ const jon = new Proxy(persona, handlerValidator)
 * 'nombreDeLaKey' in obj ---> devuelve true o false si la propiedad existe en ese objeto
 
 Me quede en los metodos del proxy
+
+
+-------- aca tipos de DATOS
+
+
+* Estructura de datos lineales ---> Las estructuras de datos lineales son aquellas en las que los elementos ocupan lugares sucesivos en la estructura y cada uno de ellos tiene un único sucesor y un único predecesor, es decir, sus elementos están ubicados uno al lado del otro relacionados en forma lineal. Ejemplos de estas estructuras son:
+
+** Listas enlazadas
+** Pilas
+** Colas
+
+** Listas enlazadas ---> las listas enlazadas se construyen con elementos que están ubicados en una secuencia. Aquí, cada elemento se conecta con el siguiente a través de un enlace que contiene la posición del siguiente elemento. De este modo, teniendo la referencia del principio de la lista podemos acceder a todos los elementos de la misma. Ejemplo:
+
+inicio ---> (dato, siguiente) ---> (dato, siguiente) ---> (dato, siguiente) ---> (dato, fin, siguiente = null)
+
+* pila ----> LIFO (significa en ingles ultimo en entrar es el primero en salir). Es como una pila de platos vas poniendo uno encima del otro y sacas primero el ultimo. ¿Cómo funciona? A través de dos operaciones básicas: apilar (push), que coloca un objeto en la pila, y su operación inversa, desapilar (pop), que retira el último elemento apilado.
+
+* cola ----> FIFO (significa en ingles primero en entrar primero en salir). Es como la cola del super.
+
+* Estructura de datos no lineales ---> Las estructuras de datos no lineales, también llamadas multienlazadas, son aquellas en las que cada elemento puede estar enlazado a cualquier otro componente. Es decir, cada elemento puede tener varios sucesores o varios predecesores. Ejemplos de estas estructuras son:
+
+** Árboles
+** Grafos
+
+* arboles ----> como en el dom de react un arbol se utiliza por ejemplo para una jerarquia, donde puede haber un padre y varios hijos para le mismo. Los mismos se encuentran clasificados en: árbol general, un árbol donde cada elemento puede tener un número ilimitado de sub árboles y árboles binarios, que son una estructura de datos homogénea, dinámica y no lineal en donde a cada elemento le pueden seguir como máximo dos nodos.
+
+* grafos --->  Se trata de una estructura matemática formada por un conjunto de puntos —una estructura de datos— y un conjunto de líneas, cada una de las cuales une un punto a otro. Los puntos se llaman nodos o vértices del grafo y las líneas se llaman aristas o arcos.
+
+** grafos ----> si tenemos varias ciudades unidas por puentes podemos usar grafos para saber cual es la forma de ir a todas las ciudades usando una vez cada puente.
+
+CLASE DE GRAFOS
+
+* grafos no dirigidos ---> cuando es bidireccional la relacionados
+* grafo dirigido ---> tiene un sentido la direccion de la informacion
+* grado de incidencia ---> cantidad de lineas relacionadas de un punto con otros (la cantidad de lineas q llegan al punto)
+* grafo completo ---> cuando todos sus vertices estan relacionados con todos los demas. Para saber la cantidad de relaciones que hay podemos hacerlo mediante: (cantidad de vertices * (cantidad de vertices - 1)) / 2 ---> (n * (n-1)) / 2
+* 2 grafos son iguales si la informacion que contienen en la misma. Si tienen misma info pero son de distinta forma se llaman homeomorfo
+* la relacion de un nodo con si mismo se llama lazo o bucle
+* camino hamiltoneano ---> tiene q tener grado de incidencia par o maximo dos impares. Sirve para saber si se puede recorrer un grafo sin pasar 2 veces por el mismo lado
+* siempre para recorrer un grafo usamos una cola o una pila
+* existen dos formas de recorrer un nodo, dfs y bfs
+* uno va por uno y lo recorre profundamente
+* y la otra forma agarra uno y recorre todos los hermanos o vecinos
+
+// DEPTH(dfs) ---> stack ---> pila ---> [1,2,3] ---> pop()
+// Breadth(bfs) ---> queue ---> cola ---> [1,2,3] ---> shift()

@@ -3,3 +3,4 @@ borrar cosas repetidas y explicar mejor cada cosa
 mirar el instagram de nishasingla05 y ver los tips utiles que tiene. Por ejemplo agregar el condicional para objetos
 estudiar todos los tipos de estructura de datos como pila, etc
 estudiar weak map y set weak
+hacer un curso de grafos para programacion ---> ver FrancoDiLeo youtube
