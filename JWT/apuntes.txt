@@ -1,0 +1,64 @@
+* se crea modelo para los roles que tenga nombre nomas
+* Los modelos siempre se guardan en mayuscula
+* una vez que creamos el usuario en la controladora usamos jwt. Ejemplo
+
+import jwt from 'jsonwebtoken';
+
+// cuando nos logueamos o registramos
+const token = jwt.sign(
+  {id: savedUser._id},
+  'Palabra secreta con la que firmamos, usar .env',
+  {expiresIn: En cuanto expira el token, en segundos.}
+)
+// este es el token que el front debe guardar para pedir futuras peticiones de informacion al back
+return(token)
+
+
+* Despues hacemos un middleware para validar el token y la usamos en los middleware de las routes
+import jwt from 'jsonwebtoken';
+
+export const verifyToken = (req,res,next) => {
+  const token = req.headers['x-access-token'];
+  if(!token) return Error
+  const decoded = jwt.verify(token, 'firmaque usamos')
+  req.userId = recoded.id
+
+  const user = await User.findOne(req.userId, {password: 0})
+  if(!user) return Error
+
+  next()
+}
+
+* ademas hacemos una funcion middleware para validar que role tiene
+
+export const isAdmin = (req,res,next) => {
+  const user = await User.findOne(req.userId)
+
+  const roles = await Role.find({_id: {$in: user.roles}})
+
+  for(let i = 0; roles.length, i++) {
+    if(roles[i] === 'admin'){
+      next()
+      return;
+    }
+  }
+  return Error
+}
+
+const ROLES = ['usuario', 'admin', 'moderador']
+export const checkExistRoles = (req,res,next) => {
+  if(req.body.roles){
+    for(let i = 0; i < req.body.roles; i++){
+      if(!ROLES.includes(req.body.roles[i])){
+        return Error
+      }
+    }
+  }
+
+  next()
+}
+
+
+en el middleware si queremos usar el mismo request los ponemos asi en el endpoint:
+
+app.get('/', [verifyToken, isAdmin, checkExistRoles], controllerGet)

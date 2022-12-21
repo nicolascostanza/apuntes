@@ -262,10 +262,7 @@ API REST:
 MVC: se usa para desarrollar interfaces de usuario. Divide la logica en 3 elementos. El modelo contiene la logica de tu app(logica de negocios). La vista es la representacion visual de los datos. El controlador se encarga de recibir los datos, trabajarlos y transformarlos en algo util. Usamos express y manejamos los resultados con try catch
 
 
-INVESTIGAR:
-como hacer metodos privados, encapsulamiento en nodejs
-interfaces ?¡?¡
-VER MVC Y MVVC
-que es una interfaz
-principios solid
+
+
+* La libreria morgan es la que te permite ver por consola las request cuanto tardaron y que metodo son
 

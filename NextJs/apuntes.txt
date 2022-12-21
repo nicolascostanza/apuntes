@@ -1,0 +1,49 @@
+* para crear un proyecto con next ---> npx create-next-app@latest
+* para modificar el head de nuestra app hacemos import Head from 'next/head' y la usamos como una etiqueta dentro del componente. En esta etiqueta adentro metemos todas las etiquetas que irian en el head de nuestro html
+* Para optimizar la carga de las imagenes ---> import Image from 'next/image'
+* el archivo _app.js ---> es un HOC que envuelve a toda nuestra app. Sirve para tener los estilos globales.
+* para crear una nueva ruta creamos un nuevo archivo dentro de la carpeta pages con el nombre del path que vamos a tener. Por ejemplo contact.js Tambien podemos anidar carpetas y el routing con next seguiria la misma estructura dentro de la carpeta pages
+* rutas anidadas ---> se le pone [id].js. Ejemplo: /pages/article/[id].js
+* Para que sea una SPA y no tenga que recargar todo el js necesario cada vez q cambiamos de pagina hacemos lo siguiente:
+
+import Link from 'next/link';
+
+<Link href='/about'> IR a about </Link>
+
+* Tambien podemos navegar usando algo parecido al useHistory de react de la siguiente manera
+import { useRouter} from 'next/router';
+
+const router = useRouter();
+
+// mala practica usar el button para una navegacion, en lo posible usar un link, excepto al submit de un form
+<button onClick={() => router.push('/about')}>Ir al about</button>
+
+* un fetch normal en el client side rendering:
+1) hace la peticion del html
+2) hace la peticion del javascript
+3) cuando tiene eso hace la peticion al backend con el fetch
+
+* getServerSideProps ---> tenemos el context como props en getServerSideProps que nos dice si estamos en el servidor o si queremos cambiar los headers de la request. getServerSideProps no siempre hace la request en la parte del servidor, si volvemos a una pagina y necesita la info lo hace del lado del cliente automaticamente. Fetching de datos del lado del servidor:
+
+export async function getServerSideProps(context) {
+  const response = await fetch('sadasdas')
+  const {data} = await response.json()
+
+  // para retornar esto y tenerlo en el componente como props, hacemos lo siguiente:
+  return {
+    props: {
+      data
+    }
+  }
+}
+
+* getStaticProps ---> para hacer prerendering y no esperar a que cargue todo para mostrar algo. Sirve para crear paginas estaticas en nuestra aplicacion. Esto lo ejectuta solo 1 vez
+
+
+Me quede aca:
+https://www.youtube.com/watch?v=pFT8wD2uRSE&t=3242s
+
+1:24:05
+
+
+
