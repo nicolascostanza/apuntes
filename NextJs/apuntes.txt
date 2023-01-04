@@ -39,11 +39,26 @@ export async function getServerSideProps(context) {
 
 * getStaticProps ---> para hacer prerendering y no esperar a que cargue todo para mostrar algo. Sirve para crear paginas estaticas en nuestra aplicacion. Esto lo ejectuta solo 1 vez
 
+* Image ---> lo importamos desde 'next/image' y nos optimiza las imagenes, no con url de terceros. Y ademas pide el ancho y el alto. Con imagenes propias no hay problemas, pero con url de terceros lo tenemos q poner en next.config.js, esto lo hace para evitar que te manden cosas dañinas y afecte al back
 
-Me quede aca:
-https://www.youtube.com/watch?v=pFT8wD2uRSE&t=3242s
+Le podemos poner una prop llamada layout que acepta fill o responsive o intrisic para manejar las dimensiones de la imagen. Ademas existe la prop quality que va de 100 a 0 y es la calidad que le va a dar a la imagen. Tambien existe priority que es un boolean para decir que imagen es prioritaria a cargar. Por defecto tiene lazy loading
 
-1:24:05
+Tambien tiene la prop width y heigth, y cuenta  con la prop objectFit
+
+* existe dentro de pages la carpeta api ---> y los archivos que creamos adentro con un nombre ya hace un endpoint
+
+
+
+me quede en 6:31:21
+https://www.youtube.com/watch?v=pFT8wD2uRSE&t=10911s
+
+
+
+
+
+
+
+
 
 
 

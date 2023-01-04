@@ -6,3 +6,4 @@ que es un cluster
 balanceador de carga
 que diferencia entre s2 y s3 ---> si q el codigo lo dejan en s2 y los archivos guardados en s3
 que es un sdk
+que es un pre rendering

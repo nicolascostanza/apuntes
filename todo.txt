@@ -1,3 +1,4 @@
+hacer un masonry ---> ver como se hace
 Estudiar todos los patrones de diseño y principios solid
 Estudiar que tipos de headers hay en una request HTTP, por ejemplo origin
 Estudiar los metodos que existen ademas de los comunes, por ejemplo HEAD que es como un get pero no te devuelve el resultado. Sirve para testear. O OPTIONS permite al cliente conocer las opciones o requerimientos asociados a un recurso antes de iniciar cualquier petición sobre el mismo.
