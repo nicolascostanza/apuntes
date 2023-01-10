@@ -1,0 +1,255 @@
+* caracteristicas
+lenmguaje multiparadigma
+orientado a objetos
+fuertemente tipado
+sintaxis sencilla
+lenguaje multiplataforma
+multihilos
+* desde C# podemos hacer querys a una base de datos directamente (LINQ)
+* sdk ---> software developer kit
+* para saber si tengo instalado .net 6.0 ---> dotnet en la consola y dotnet --version
+* Console.WriteLine('hola mundo') o Console.Write()
+* Console.ReadLine() ---> como un promt de js. Es un input para ingresar algo y lo podemos asignar a una variable para guardar lo que ingresan
+* para correr un programa ponemos dotnet run
+* antes de .net 6 ---> se ponia asi:
+using System;
+
+namespace NombreCarpetaProyecto
+{
+  internal class Program
+  {
+    static void Main(string[] args)
+    {
+      Console.WriteLine('hola mundo')
+    }
+  }
+}
+* para declarar una variable debemos decirle el tipo antes
+int variableEntera = 12;
+long enteroLargo = 12312312312312123123312132;
+chat letra = 'A'; ---> siempre comillas simples
+string nombre = "nicolas"; ---> siempre comillas dobles
+float numeroFlotante = 12.21321f; ---> Se le pone la f al final por sintaxis del lenguaje
+double flotantePotenciado = 12.21321321312312321d; ----> lo mismo q el float pero con d
+bool booleanoAMostrar = true;
+const float PI = 3.14f; ---> nunca cambia. se le puede poner antes private o public
+int? numerito = null; ---> permite que la variable sea null
+
+* operadores ---> son todos casi iguales. Cambia == que son dos nomas
+************************************ Objetos y Arrays ************************************
+
+* la estructura con el struct va abajo y las declaraciones arriba.
+* Ejemplo de un objeto:
+Coords misCoordenadas = new Coords(2,3);
+Console.WriteLine(misCoordenadas.X) ---> 2
+Console.WriteLine(misCoordenadas.Y) ---> 3
+
+// con readonly podemos hacer que solo sea de lectura
+public readonly struc Coords
+{
+  public Coords(double x, double y)
+  {
+    X = x;
+    Y = y;
+  }
+
+  // si le ponemos el get, es solo lectura, si le ponemos el set es tambien escritura
+  public double X { get; set; }
+  public double Y { get; }
+
+  // esto es un metodo. Este puntual es para decir que cuando se muestre se muestre con la forma q esta en el return de la funcion.
+  public oveerride string ToString() => $"({X}, {Y})";
+}
+
+// un objeto tambien podemos definirlo asi
+var persona = (nombre: "nicolas", edad: "13", programador: true);
+
+* Ejemplo de un array:
+// asi se crea un array de 3 elementos enteros
+int[] arrNumeros = new int[3]
+arrNumeros[0]= 123;
+arrNumeros[1]= 11233;
+arrNumeros[2]= 4323;
+
+// array de longitud 6, de strings
+string[] stringArray = new string[6];
+
+// array con los dias de dos formas distintas
+string[] weekDays = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+string[] weekDays = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+
+// array bidimensional
+int [,] = miArray2D = new int[2,2]; ---> seria de 2 x 2
+
+************************************ bucles ************************************
+* WHILE
+int j = 0
+while(j < 10)
+{
+  Console.Write(j)
+  j++
+}
+* FOR
+** podemos usar break dentro del bucle y se corta la ejecucion del bucle
+** si usamos continue dentro del bucle pasa a la siguiente iteracion del bucle
+for (int i = 0; i< 10; i++)
+{
+  Console.WriteLine(i)
+}
+* DO WHILE
+int j = 0;
+do
+{
+  Console.Write(j);
+  j++;
+}while (j < 10)
+* FOREACH
+
+var arr = new List<string> {"jorge", "ana", "nicolas", "julian"}
+foreach(var elemento in arr)
+{
+  Console.WriteLine($"Hola {elemento.ToUpper()}!");
+}
+
+************************************ condicionales ************************************
+
+* IF
+if (condicion) {
+  // codigo si se cumple la condicion
+} else {
+  // codigo si no se cumple la condicion
+}
+
+* SWITCH
+
+switch (condicion){
+  case condicion1:
+    Console.WriteLine('1');
+    break;
+  case condicion2:
+    Console.WriteLine('2');
+    break;
+  default:
+    Console.WriteLine("llega aca pq no cumple ninguna condicion");
+}
+
+**************************************** comandos *********************************************
+* variable.HasValue ---> devuelve true o false si tiene valor o es null. Da false si es null o undefined creo. No cuenta como vacio el 0, '', etc
+* modificar el valor de un objeto. Ejemplo:
+var p1 = new Coords(1,3);
+var p2 = pi with { X = 14}; ---> quedaaria new Coords(14,3)
+* template string ---> $"Hola {name}!"
+* arrayDeclarado.length ---> dimension array
+* .ToUpper() ---> pasa una variable a upperCase
+* string.Join("lo que va a ir entre medio de cada elemnto del array", myArr);
+* Math.Sqrt(VariableNumerica) ---> raiz cuadrada
+* Math.Max(numeros...) ---> mas grande
+* Math.Min(numeros...) ---> mas chico
+* Math.Abs(-4.7) ---> valor absoluto
+* Math.Round(9.99) ---> valor redondeado
+* Math.Ceiling(9.01) ---> redondea al entero mas grande proximo ---> 10
+* Math.Floor(9.99) ---> redondea al entero mas chico proximo ---> 9
+* .GetType() o .GetType ---> tipo de la variable
+* string texto = System.String.Empty ---> devuelve un string vacio
+* Convert.ToInt32(variableAConvertir) ---> convierte un string a entero
+* .toString() ---> convierte un numero a string
+* (float)Variable ----> castea un entero a flotante
+* string multilinea = @"
+  este es un mensaje
+  de varias
+  lineas
+";
+* DateTime.Now ---> obtenemos la fecha
+* variableTexto.Substring(caracter inicial en numero, caracter final en numero) ---> corta el texto al que le aplicamos este metodo, en base al principio y final que le pasamos por parametro
+* variableTexto.Replace("que queremos reemplazar", "por lo que lo vamos a modificar")
+* variableText.Trim() ---> saca espacios al principio y final
+* variableTexto.IndexOf('leta que queremos buscar') ---> busca y devuelve la posicion en la que se encuentra dentro del texto. Devuelve un int
+* StringBuilder texto = new StringBuilder("Hola, este es un texto generado con el paquete de string builder")
+* bool result = intTryParse(cadenaDeTexto, out variableEntera) ---> devuelve true o false si pudo convertir el string a numero con exito. Ademas lo convierte y se lo asigna al segundo parametro que pusimos despues del out
+* Array.Sort(MyArrayAOrdenar); ---> ordena el array, por defecto de menor a mayor
+* Array.Reverse(arrayACambiarElOrden) ---> agarra el array y lo invierte
+* Array.Rank(arr) ---> nos dice la dimension del array
+
+**************************************** funciones ****************************************
+
+* La funcion siempre se declara abajo y se usa arriba
+* sintaxis de una funcion
+
+int result = CalcularCuadrado(2);
+
+int CalcularCuadrado(int n) {
+  return n * n;
+}
+
+* el primer int, es el tipo de lo que va a devolver la funcion. Si no devuelve nada le ponemos void
+* Le sigue el nombre de la funcion, con sus parametros tipados.
+* Y el codigo que ejecuta con el return correspondiente si es necesario.
+
+* funciones anonimas o tambien llamadas lamda ---> () => expression. Ejemplo:
+int[] numeros = {1,2,3,4,5};
+var elevarAlCuadrado = numeros.Select(x => x * x);
+
+**************************************** metodos ****************************************
+
+* Podemos tener metodos con el mismo nombre en la clase que definamos, si el tipo del return de cada una es distinto. Esto es sobrecarga.
+* son funciones dentro de los objetos. Ejemplo:
+
+var moto = new Motos();
+moto.Arrancar();
+
+public class Motos
+{
+  public void Arrancar()
+  {
+    Console.WriteLine("Arranca");
+  }
+}
+
+* podemos hacerlos estaticos (static) o de extension
+* static ---> hace que los metodos sean de la clase. No de las instancias creadas. Ejemplo:
+
+Motos.Arrancar();
+
+class Motos
+{
+  public static void Arrancar()
+  {
+    Console.WriteLine("Arranca");
+  }
+}
+
+* Extension es como que te permite usarla en otros archivos de la aplicacion. Podemos usar la clase y el metodo si llamamos le nameSpace, solo si esta en public. Ejemplo
+
+Name_Space_Elegido_En_El_Otro_Archivo.ClaseDelOtroArchivo.MetodoDelOtroArchivo();
+
+**************************************** datos utiles ****************************************
+
+* a una variable que este en null no se le puede aplicar ningun metodo
+* para hacer un import arriba de todo en el archivo y con la palabra using. Ejemplo: using System.Text;
+* En un proyecto grande se pone el archivo GlobalUsings.cs y se pone en ese archivo global using System.Text; Esto te permite que lo puedas usar en cualquier archivo. Seria como un package json de javascript
+* para acceder a elementos de un array bidimensional, hacemos dos for y al llamar el elemento lo hacemos asi: elemento[fila,columna]
+* podemos usar dynamic ---> ajusta el tipo a lo que voy a recibir a continuacion y ademas lo puedo cambiar en caso de que sea necesario. Ejemplo: dynamic cuantaGasolinaTengo = moto.VerificarGasolina();
+
+
+
+**************************************** A investigar ****************************************
+que es ref en los objetos
+Extension en clases
+
+
+
+**************************************** donde quede ****************************************
+
+https://campus.open-bootcamp.com/cursos/17/leccion/415
+
+
+
+
+
+
+
+
+
+
+
+
