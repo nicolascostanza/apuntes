@@ -191,7 +191,7 @@ var elevarAlCuadrado = numeros.Select(x => x * x);
 
 **************************************** metodos ****************************************
 
-* Podemos tener metodos con el mismo nombre en la clase que definamos, si el tipo del return de cada una es distinto. Esto es sobrecarga.
+* Podemos tener metodos con el mismo nombre en la clase que definamos, si el tipo del return de cada una es distinto. Esto es sobrecarga. La sobrecarga solo se peude hacer en metodos de clases
 * son funciones dentro de los objetos. Ejemplo:
 
 var moto = new Motos();
@@ -222,6 +222,180 @@ class Motos
 
 Name_Space_Elegido_En_El_Otro_Archivo.ClaseDelOtroArchivo.MetodoDelOtroArchivo();
 
+**************************************** clases ****************************************
+
+Ejemplo de la creacion de una clase:
+
+Puerta door = new Puerta(300, 450, "rojo");
+
+public class Puerta
+{
+  // caracteristicas que tiene. Podemos inicializarlas por defecto, como por ejemplo el color
+  public int ancho;
+  public int alto;
+  public string color = "rojo";
+  public bool abierta;
+
+  // constructor de la clase. Aca le podemos asignar los valores al crearlo, previamente tenemos que tener declarado arriba los atributos
+  // Ademas en los parametros podemos asignarle los valores por defecto
+  public Puerta(int ancho = 100, int alto = 200, string color = "marron", bool abierta = false)
+  {
+    this.ancho = ancho;
+    this.alto = alto;
+    this.color = color;
+    this.abierta = abierta;
+  }
+
+  // metodos
+  public void Abrir()
+  {
+    abierta = true;
+  }
+  public void Cerrar()
+  {
+    abierta = false;
+  }
+  public void MostrarEstado()
+  {
+    Console.WriteLine(ancho, alto, color, material, abierta);
+  }
+  public void CambiarAltura(int altura)
+  {
+    alto = altura;
+  }
+  // en este metodo al ser el mismo el parametro que la variable usamos el this para explicarle que es la de esta instancia
+  public void Pintar(string color)
+  {
+    this.color = color
+  }
+  // destructor, lo que hace el objeto al momento de eliminarse
+  ~Puerta()
+  {
+    Console.WriteLine("La puerta se ha destruido");
+  }
+}
+
+**************************************** encapsulacion ****************************************
+
+* existen 3 niveles ---> cerrado (private), protegido (protected), abierto (public).
+* En el siguiente ejemplo no podemos acceder directamente desde el main a los atributors:
+
+Persona alguien = new Persona();
+alguien._edad ---> no podemos acceder
+alguien.Edad ---> si nos deja por le getter
+
+public class Persona
+{
+
+  // atributos
+  private string _nombre;
+  private DateTime _fechaNacimiento;
+  private int _edad;
+
+  // encapsulamiento
+  public int Edad
+  {
+    get
+    {
+      return _edad;
+    }
+    set
+    {
+      _fechaNacimiento = value;
+    }
+  }
+}
+
+**************************************** LINQ ******************************************************************
+
+* LINQ ---> es un lenguaje integrado dentro de net con el cual podemos realizar consultar con C#
+* Partes de la consulta: obtener el origen de los datos, crear la consulta, ejecutar la consulta.
+* Ejemplo:
+
+int[] numbers = new int[10] {1, 2, 3, 4, 5, 6, 7, 8, 9};
+// la consulta la podemos hacer en varias lineas de codigo
+var consulta =
+  from numero in numbers
+  where (numero % 2) == 0
+  select numero;
+
+forEach (var num in consulta){
+  Console.Write(num + " ");
+}
+
+**************************************** generics *********************************************
+
+* es para asignar valores genericos. Ejemplo:
+
+ClaseGenerica<string> str = new ClaseGenerica<string>();
+
+public class ClaseGenerica<T>
+{
+  public T Campo {get; set;}
+}
+
+**************************************** herencia *********************************************
+
+* En el siguiente ejemplo se ve como vehículo es la clase padre y las clases coche y avion heredarian las props de la clase vehículo
+
+clase vehículo ---> combustible, motor, etc
+  clase coche ---> ruedas, puerta, etc
+  clase avion ---> alas, sensores, etc
+
+* Ejemplo en codigo:
+
+Coche coche = new Coche();
+coche.Arrancar();
+coche.DetenerCoche();
+
+class Vehiculo
+{
+  public float combustible {get; set;}
+  public string motor {get; set;}
+
+  public void Arrancar()
+  {
+    Console.WriteLine("Este Vehiculo arranco");
+  }
+}
+
+// con los : se esta indicando q coche hereda de vehiculo
+class Coche : Vehiculo
+{
+  public int ruedas {get; set;}
+
+  public void DetenerCoche()
+  {
+    Console.WriteLine("El coche de detuvo");
+  }
+}
+
+**************************************** polimorfismo ****************************************
+
+* distintas salidas para metodos en funcion de los parametros pasados u objetos distintos
+
+**************************************** interfaces ******************************************
+
+* en las interfaces definimos que tipos de datos y metodos va a tener nuestras estructuras.
+* las implementaciones las hacen las clases que heredan las interfaces. Osea, tipamos con una interfaz como va a ser nuestra clase y luego la hacemos heredarla con el tipado correcto que hicimos. Ejemplo:
+
+interface IVehiculo
+{
+  void Arrancar();
+}
+
+class Vehiculo : IVehiculo
+{
+  public void IVehiculo.Arrancar()
+  {
+    Console.WriteLine("Arranco");
+  }
+}
+
+**************************************** collections *****************************************
+
+* Para poder usarlas usamos System.Collections.Generic y System.Linq
+
 **************************************** datos utiles ****************************************
 
 * a una variable que este en null no se le puede aplicar ningun metodo
@@ -229,18 +403,24 @@ Name_Space_Elegido_En_El_Otro_Archivo.ClaseDelOtroArchivo.MetodoDelOtroArchivo()
 * En un proyecto grande se pone el archivo GlobalUsings.cs y se pone en ese archivo global using System.Text; Esto te permite que lo puedas usar en cualquier archivo. Seria como un package json de javascript
 * para acceder a elementos de un array bidimensional, hacemos dos for y al llamar el elemento lo hacemos asi: elemento[fila,columna]
 * podemos usar dynamic ---> ajusta el tipo a lo que voy a recibir a continuacion y ademas lo puedo cambiar en caso de que sea necesario. Ejemplo: dynamic cuantaGasolinaTengo = moto.VerificarGasolina();
-
+* los atributos que son privados empiezan con _
+* si ponemos una variable con var antes, agarra cualquier tipo de dato
+* Para agregar elementos a un array le hacemos myArr.Add(Propiedad que agregamos) ---> seria como un push de js
+* tipos de dato:
+** IEnumerable ---> query de LINQ
+** list ---> array
+** dictionary ---> objeto
 
 
 **************************************** A investigar ****************************************
 que es ref en los objetos
 Extension en clases
-
-
+ver polimorfismo en c#
+Ver como se ordenan los arrays y System.collections.IEnumerable
 
 **************************************** donde quede ****************************************
 
-https://campus.open-bootcamp.com/cursos/17/leccion/415
+https://campus.open-bootcamp.com/cursos/17/leccion/453
 
 
 
