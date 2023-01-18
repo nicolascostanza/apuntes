@@ -376,7 +376,7 @@ class Coche : Vehiculo
 
 **************************************** interfaces ******************************************
 
-* en las interfaces definimos que tipos de datos y metodos va a tener nuestras estructuras.
+* en las interfaces definimos que tipos de datos y metodos va a tener nuestras estructuras. Sirven para tipar las clases que vamos a definir.
 * las implementaciones las hacen las clases que heredan las interfaces. Osea, tipamos con una interfaz como va a ser nuestra clase y luego la hacemos heredarla con el tipado correcto que hicimos. Ejemplo:
 
 interface IVehiculo
@@ -396,6 +396,74 @@ class Vehiculo : IVehiculo
 
 * Para poder usarlas usamos System.Collections.Generic y System.Linq
 
+**************************************** enums ***********************************************
+
+* sirve para declarar que una variable sea un grupo limitado de cosas. Por ejemplo cuando queremos que sea un dia de la semana. Ejemplo:
+
+enum Dias {
+  Lunes,
+  Martes,
+  Miercoles,
+  Jueves,
+  Viernes,
+  Sabado,
+  Domingo
+}
+
+enum Roles {
+  client = "CLIENTE",
+  admin = "ADMIN"
+}
+
+**************************************** tuplas **********************************************
+
+* Es como un objeto pero sin las keys. Ejemplo de esta estructura de datos.
+
+(string, double, int) miTupla = ("Nicolas", 1.2d, 10);
+miTupla.item1 = "Juan";
+
+**************************************** PROGRAMACINO ASINCRONA ******************************
+
+* C# es un programa multithreding(multihilo), osea que puede ejecutar varias tareas a la ves en paralelo
+* Imports que debemos utilizar para esto:
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+* para hacer algo asincrono podemos encerrarlo en una task, que seria un hilo, puede haber muchos de estos trabajando en paralelo. Ejemplo:
+
+var task1 = new Task(() => {
+  // codigo asincrono
+})
+// podemos esperar la respuesta con await. Ejemplo
+await task1.Start();
+
+* Ejemplo de una funcion asincrona:
+
+var result = await RandomAsync();
+
+static async Task<string> RandomAsync(){
+  // codigo asincrono
+}
+
+* Ejemplo de iniciar un hilo:
+
+Thread hiloPrincipal = Thread.CurrentThread;
+hiloPrincipal.name = "este es el hilo principal";
+
+// creamos un hilo paralelo, para esto tenemos q iniciarlo y pasarle eso a la creacion del hilo.
+ThreadStart refHilo = new ThreadStart(iniciarHilo);
+Thread hiloSecundario = new Thread(refHilo);
+
+static void iniciarHilo()
+{
+  Console.WriteLine("inicio el hilo");
+}
+
+* investigar el whenAll bien.
+* Como esperar Muchas Tasks en la misma linea. Ejemplo en el cual hariamos 3 awaits en 1 linea, estamos esperando esas 3 promesas:
+
+Task.WhenAll(task1, task2, task3);
+
 **************************************** datos utiles ****************************************
 
 * a una variable que este en null no se le puede aplicar ningun metodo
@@ -410,6 +478,9 @@ class Vehiculo : IVehiculo
 ** IEnumerable ---> query de LINQ
 ** list ---> array
 ** dictionary ---> objeto
+* para tener un reloj hacemos:
+Stopwatch crono = new Stopwatch();
+* despues tenemos los metodos crono.Start() y crono.Stop(). Tambien tenemos crono.Elapsed que nos dice el lapso entre arrancarlo y pararlo
 
 
 **************************************** A investigar ****************************************
@@ -417,10 +488,12 @@ que es ref en los objetos
 Extension en clases
 ver polimorfismo en c#
 Ver como se ordenan los arrays y System.collections.IEnumerable
+ver como funciona bien Task.WhenAll(task1, task2, task3);
+
 
 **************************************** donde quede ****************************************
 
-https://campus.open-bootcamp.com/cursos/17/leccion/453
+https://campus.open-bootcamp.com/cursos/17/leccion/501
 
 
 

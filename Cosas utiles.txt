@@ -1,0 +1,31 @@
+* las propiedades en el documento cuando hacemos un findOne por ejemplo, estan en _doc ---> ahi estan las props comunes del objeto js
+* A veces no hace el .save pq le faltan las propiedades de mongo al documento que busque. Generalmente es porque hice un .lean()
+* para borrar props de un documento usar $unset
+* funcion que mapea promesas
+    const getClientList = async (ids = [], mod) =>
+      await Promise.all((ids)
+        .map(async (id: any) => await mod.findOne({
+          _id: id, isActive: true, logicDelete: false
+        })));
+* CX la libreria de clases le mandas entre llaves  todas las clases que queres aplicar a ese elemento, si se la pasas comun como en un objeto se la aplica siempre, pero si en cambio se la pasas con el formato ---> [css.propiedad]: variableBooleana. Esto hace que si la variable es true aplica la clase y si es false no aplica la clase
+* para tipar las funciones que pasamos como parametros es asi: (los params de la funcion tipados) => tipado de lo que retorna, si no retorna nada se le pone void
+* las clases q veo en el html del navegador son asi: nombreDelComponente_nombreClase_hashAleatorio, eso lo genera react
+* cuando compato strings o cosas falsy, ponerle antes el !! pq a veces react renderiza un cero si es false.
+* Para crear un archivo desde la terminal es por ejemplo asi: cat > nombreArchivo.txt
+* Para eliminar una carpeta desde la terminal, nos paramos en la carpeta padre y ponemos rm -rf nombreCarpeta
+* A Los schemas de mongodb se le pueden agregar metodos. Por ejemplo si tenemos un schema user podemos hacer un metodo que encripte la contraseña, entonces luego al crear un new User podemos aplicarle el metodo creado en el schema.
+* En el caso de que en un schema tengamos una prop que se puede popular en varias collections distintas. Lo mejor que podemos hacer es pasarle a ese id la prop 'refPath': Otra prop del schema con el nombre de la collection a la que debe popular. Entonces cuando hagamos el populate de la prop ya sabe a que collection ir a buscar
+* Para podes usar el _doc de un modelo tenemos que tipar el schema y extenderlo de Document.
+* En javascript, las promesas siempre retornan promesas, asi funciona el metodo, esto es asi para poder concatenar todos los .then() que querramos
+
+
+
+
+
+
+
+
+
+
+
+

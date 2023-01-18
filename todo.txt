@@ -10,3 +10,23 @@ mirar el instagram de nishasingla05 y ver los tips utiles que tiene. Por ejemplo
 estudiar todos los tipos de estructura de datos como pila, etc
 estudiar weak map y set weak
 hacer un curso de grafos para programacion ---> ver FrancoDiLeo youtube
+
+
+
+
+
+A APRENDER
+
+* webpack
+https://webpack.js.org/
+* babel
+https://babeljs.io/
+* CURSO CERTIFICADO POR MONGO
+https://learn.mongodb.com/learning-paths/mongodb-nodejs-developer-path
+* pwa
+https://www.easylist.link/
+https://create-react-app.dev/docs/making-a-progressive-web-app/
+* app de escritorio
+https://www.electronjs.org/es/
+* cosas de js
+https://github.com/Jason-Cooke/ES6-for-humans#13-classes-in-es6
