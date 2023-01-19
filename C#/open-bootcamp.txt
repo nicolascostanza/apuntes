@@ -464,6 +464,119 @@ static void iniciarHilo()
 
 Task.WhenAll(task1, task2, task3);
 
+**************************************** manipulacion de archivos ****************************
+
+* necesitamos importar la libreria System.IO
+* Ejemplo:
+// leer un archivo
+try {
+  StreamReader sr = new StreamReader("nombreARchivo.txt");
+  var linea = sr.ReadLine(); // lee la primera linea del archivo
+  while (linea != null){
+    console.WriteLine(linea);
+    linea = sr.ReadLine();
+  }
+  sr.Close();
+} catch (Exception ex){
+  console.WriteLine(ex);
+}
+
+// escribir un archivo
+// writeLine() pisa lo que habia antes
+// el segundo parametro que le pasamos es un booleando para indicar si es escritura o append
+try {
+  StreamWriter sw = new StreamWriter("nombreArchivo.txt", false);
+  sw.WriteLine("texto q vamos a poner en el archivo creado");
+  sw.Close();
+} catch (Exception ex) {
+  console.WriteLine(ex);
+}
+
+* operaciones con archivos ---> crear archivo, leer, escribir, append(agrega, no borra lo anterior)
+
+**************************************** peticion a una api **********************************
+
+* importamos System.Net;
+
+// un get
+HttpWebRequest request = (HttpWebRequest)WebRequest.Create(@"miurl del endpoint");
+HttpWebRequest response = (HttpWebRequest)request.GetResponse();
+Stream stream = response.GetResponseStream();
+
+StreamReader reader = new StreamReader(stream);
+var json = reader.ReadToEnd();
+
+**************************************** excepciones *****************************************
+
+* tipos de excepciones
+* Exception ---> la normal y generica
+* IndexOutOfRangeException ---> pedis un indice de un array que no existe
+* NullReferenceException ---> se pidio un objeto null
+* ArgumentException ---> error de pasaje en parametros, todo lo relacionado a parametros
+* ArgumentNullException ---> queremos aplicar un metodo a algo que es null
+* ArgumentOutOfRangeException ---> cuando pasamos de parametro algo mas grande a la cantidad posible, ejemplo length + 1
+* podemos hacer un error propio, haciendo que la clase por ejemplo ErrorPropio : Exception y hacemos un metodo que maneje el error cuando pongamos throw new MetodoDeLaClaseCreada();
+
+**************************************** matrices ********************************************
+
+* son arrays de mas de una dimension
+* podemos definir un array de varias maneras:
+int[] arr1 = new int[2]; ---> tiene 2 elementos
+int[] arr2 = new int[] {1, 2, 3, 4 ,5 }; ---> tengo todos los que especifico entre llaves
+int[] arr3 = { 1, 2, 3, 4, 5, 6, 76,} ---> la forma mas corta y a mi gusto la mejor
+* foreach:
+foreach (int el in arr){
+  // el es cada elemento del array y manipulamos aca
+}
+* declaracion de una matriz
+int[,] arr2D = new int[2, 3];
+int[,] arr2dimesiones = {{1,2}, {4,5,6}};
+int[][] matrizConColumnasNoConocidas = new int[2][];
+* para recorrer un array de 2 dimenciones hacemos dos for, uno con j y uno con k. Ejemplo:
+for(int i = 0; i < 2; i++){
+  for(int j = 0; j < 3; j++){
+    Console.WriteLine(arr[i][j]);
+  }
+}
+* .length te dice la filas * columnas . Encambio el .rank nos dice el tamaño en una sola dirección
+
+**************************************** eventos *********************************************
+
+* Ejemplo:
+public class Editor{
+  public delegate void EjemploEvento();
+  // para tipar un evento se pone event
+  public event EjemploEvento ejemploEvento;
+}
+
+public class EditorCalc{
+  public delegate void EjemploDelegado();
+  public event ejemploEvento;
+
+  public void Sumar(int a, int b){
+    if(ejemploEvento != null){
+      ejemploEvento();
+      console.WriteLine("la suma es" + (a+b));
+    } else {
+      console.WriteLine("no tenes una subscripcion");
+    }
+  }
+}
+
+**************************************** debugging ******************************************
+
+* en el visual studio tenemos a la izquierda como en el vscode los puntos de quiebre
+* luego de haber marcado los puntos de interrupcion podemos darle click al depuracion. Ese boton es el mismo que compilar nada mas que cambia el nombre al agregar puntos de quiebre
+* ademas al breakpoint podemos agregarle condiciones
+
+**************************************** ordenamiento y complejidad **************************
+
+* la complejidad la determinan el tiempo(cantidad de veces que se repite un algoritmo para obtener el resultado) y espacio(memoria que necesitamos para que el problema se ejecute)
+
+**************************************** delegados, indizadores y iteradores *****************
+
+
+
 **************************************** datos utiles ****************************************
 
 * a una variable que este en null no se le puede aplicar ningun metodo
@@ -481,19 +594,20 @@ Task.WhenAll(task1, task2, task3);
 * para tener un reloj hacemos:
 Stopwatch crono = new Stopwatch();
 * despues tenemos los metodos crono.Start() y crono.Stop(). Tambien tenemos crono.Elapsed que nos dice el lapso entre arrancarlo y pararlo
-
+* existe el try catch como en js
 
 **************************************** A investigar ****************************************
 que es ref en los objetos
-Extension en clases
 ver polimorfismo en c#
 Ver como se ordenan los arrays y System.collections.IEnumerable
 ver como funciona bien Task.WhenAll(task1, task2, task3);
-
+ver como hacer un crud con las request correspondientes
+eventos como se manejan
+que es yield
 
 **************************************** donde quede ****************************************
 
-https://campus.open-bootcamp.com/cursos/17/leccion/501
+https://campus.open-bootcamp.com/cursos/17/leccion/1353
 
 
 

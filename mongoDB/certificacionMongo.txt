@@ -1,0 +1,26 @@
+* mongosh ---> mongodb por terminal
+* db.help() ---> poniendo eso en mongosh te da el manual de los comandos
+* mongodb atlas ---> DBAAS (database as a service)
+* existen 2 tipos de cluster ---> compartidos y dedicados
+* cluster compartidos ---> son mas chicos y generalmente mas baratos
+* cluster dedicados ---> son mas grandes y se pueden personalizar. Tiene aplicaciones para aplicaciones de trafico alto y bajo. Y otras cosas de seguridades que son mejores
+* Mongodb atlas tiene la ventaja de que se adapta a cualquier plataforma en la nube y podes modificarla sin problema (AWS, google cloud, etc)
+* Se pueden hacer backups
+* Los documentos son casi iguales a un JSON. Son la unidad basica de datos en mongodb
+* Una collection es un grupo de documentos agrupados bajo un nombre
+* database es el contenedor de nuestras collections
+* Los archivos JSON que enviamos se almacenan en formato BSON (significa json binario), agrega soporte a los tipos de datos adicionales que no tienen los archivos JSON
+* tipos de datos ---> string, boolean, array, object, number, date, objectId, etc !
+* objectId es un id unico generado por mongodb que actua como clave primaria para identificar cada documento como unico
+* si el documento que enviamos para crear no tiene el campo _id mongodb lo crea automaticamente
+* la capa de validacion al trabajar con bases de datos no relacionales es esencial ya que nos hace mas estricta las condiciones de nuestro schema. sino los campos por ejemplo al no mandar nada los guardaria como null o cosas que pueden generar error en el codigo de la aplicacion
+* herramienta para visualizar los datos de la DB
+
+
+***************** dudas ***********************************
+
+* que es atlas data lake, atlas data federations, atlas charts
+
+********************** me quede en **************************
+
+https://learn.mongodb.com/courses/connecting-to-a-mongodb-database
