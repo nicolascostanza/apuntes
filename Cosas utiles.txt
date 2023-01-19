@@ -17,7 +17,9 @@
 * En el caso de que en un schema tengamos una prop que se puede popular en varias collections distintas. Lo mejor que podemos hacer es pasarle a ese id la prop 'refPath': Otra prop del schema con el nombre de la collection a la que debe popular. Entonces cuando hagamos el populate de la prop ya sabe a que collection ir a buscar
 * Para podes usar el _doc de un modelo tenemos que tipar el schema y extenderlo de Document.
 * En javascript, las promesas siempre retornan promesas, asi funciona el metodo, esto es asi para poder concatenar todos los .then() que querramos
-
+* en un onchange o onclick, el evento podes obtener el codigo de la letra. e.keyCode ---> con esto podemos saber que tecla apreto y condicionar el evento
+* El virtuals de mongoose es una propiedad que seteas en el schema pero que no la vas a guardar en la base de datos. Es util para usarlo con propiedades claculables como la edad, etc.
+* en los headers de una request se mandan cosas relacionadas a el formato de la data o informacion sobre la request, en cambio en el body mandamos informacion que queremos transportar.
 
 
 
