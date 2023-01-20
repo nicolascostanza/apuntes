@@ -1,3 +1,5 @@
+************************************ INTRODUCCION ********************************************************************
+
 * mongosh ---> mongodb por terminal
 * db.help() ---> poniendo eso en mongosh te da el manual de los comandos
 * mongodb atlas ---> DBAAS (database as a service)
@@ -13,14 +15,93 @@
 * tipos de datos ---> string, boolean, array, object, number, date, objectId, etc !
 * objectId es un id unico generado por mongodb que actua como clave primaria para identificar cada documento como unico
 * si el documento que enviamos para crear no tiene el campo _id mongodb lo crea automaticamente
-* la capa de validacion al trabajar con bases de datos no relacionales es esencial ya que nos hace mas estricta las condiciones de nuestro schema. sino los campos por ejemplo al no mandar nada los guardaria como null o cosas que pueden generar error en el codigo de la aplicacion
+* la capa de validacion al trabajar con bases de datos no relacionales es esencial ya que nos hace mas estricta las condiciones de nuestro schema. sino los campos por ejemplo al no mandar nada los guardaria como null o cosas que pueden generar error en el codigo de la aplicacion 
 * herramienta para visualizar los datos de la DB
 
+************************************ CONECTAR MONGODB ********************************************************************
+
+* nos podemos conectar a una base de datos de mongo desde la terminal, mongocompass o de cualquier aplicacion
+* hay dos formas de hacer una conexion: formato standar y formato de lista de semillas de DNS
+* el formato estandar se usa para conectarse a clusters autonomos, conjuntos de replicas o clusters afiliados 
+* el formato de lista de semillas de DNS nos permite proporcionar una lista de servidores DNS a nuestra corriente de conexion(es mas flexible para el deploy y capacidad de cambiar servidores sin reconfigurar o alterar a ningun cliente)
+* cuando ponemos connect en mongodb atlas tenemos las 3 opciones de conexion.
+* en uno de los pasos nos sale el string para la conexion en el cual tenemos que cambiar la password y el username
+* sintaxis del string de conexion:
+mongodb ---> dice q es una conexion a la base de datos de mongo
++srv ---> agrega la seguridad TLS y indica a mongo que utilice la lista de semillas DNS
+username y password ---> debemos reemplazar por nuestros datos
+host ---> esta el host y el numero de puerto, que es opcional, si no se especifica el numero de puerto mongo toma por default el 27017
+options ---> despues del "?" tiene las opciones que queremos incluir a la conexion como el tiempo de espera de la conexion, TLS y SSL, opciones de lectura y escritura. El retryWrites en true indica a mongo que se reintente automaticamente cuando fallan determinados tipos de operaciones de grabacion
+
+CONEXION CON MONGOSH (MONGO SHELL)
+
+* primero tenemos que tener instalado mongodbshell o mongosh
+* seleccionamos el connect y despues la opcion de conexion por shell, seguimos los pasos y compiamos el string.
+* vamos a la terminal, pegamos el string y le damos enter. Ingresamos la contraseña de administrador o de mi cuenta en atlas, nose
+* conexion terminada y te salen los datos de la conexion realizada con exito
+* mongodbShell es un entorno REPL de nodejs. Esto quiere decir que podemos hacer js dentro de la terminal con mongosh
+
+CONEXION CON MONGODBCOMPASS
+
+* ponemos connect y elegimos la opcion de mongocompass o gui, copiamos el string de conexion
+* vas a mongodb compass y pones nueva coneccion, ponemos la url, modificamos la password y le damos a guardar y conectar
+* una vez adentro a la izquierda tenemos las collections y arriba en el medio tenemos queries(y agregations), databases (podemos ver el rendimiento y la capacidad almacenada de cada base de datos) y performance(muestra metricas de rendimiento)
+
+MONGODB DRIVERS
+
+* para saber de drivers hay que ir a mongodb.com/docs/drivers
+
+ERRORES DE CONEXION MAS COMUNES
+
+* errores de acceso de red ---> puede ser pq la ip no esta autorizada ---> ir a mongoDB atlas en la parte izquierda ---> network access ---> ip access list y agregamos nuestra ip 
+* errores de autenticacion de usuario ---> pq falta actualizar la contraseña en el string de conexion
+
+************************************ OPERACIONES CRUD *************************************************************
+
+* existen muchos operadores como el $in, $eq, etc, se pueden investigar en la documentacion de mongo
+
+CREATE
+
+* para usar una base de datos desde la terminal tenemos que poner ---> use nombreBaseDatos
+* Tenemos dos opciones, insertMany([Array de jsons a enviar]) o insertOne(json_file) 
+* lo que hacen es nombreDataBase.NombreCollection.insertOne(json_file)
+* si la collecction no existe, la crea
+* cada documento tiene el campo _id que es unico
+
+BUSQUEDA
+
+* tenemos el metodo find(condicion)
+* sintaxis: db.collection.find(condicion)
+* $in ---> podemos usar el operador $in permite traer todos los documentos que tengan un valor del array con valores que le pasamos al operador $in
+* $nin ---> la inversa, no tienen que estar esos valores que le pasamos en el array
+* $eq ---> para que sea igual a cierto valor
+* $neq ---> no tiene que ser igual a cierto valor
+
+OPERADORES DE COMPARACION
+
+* $gt y $gte ---> mas grande o (mas grande o igual) ---> "field" : { $gt: value}
+* $lt y $lte ---> mas chico o (mas chico o igual)
+
+BUSQUEDA EN UN ARRAY
+
+* Podemos hacer condiciones logicas no solo buscar un valor determinado al buscar cxon elemMatch
+* $elemMatch ---> condicion que debe cumplir un elemento del field que sea un array para que devuelva el documento. Ejemplo:
+* field: { $elemMatch: {$eq: "lo que deberia tener"}, { query2}, {query3}, ...}
+
+OPERADORES LOGICOS
+* $and ---> db.collection.find({$and: [{expresion 1}, {expresion 2}]}) ---> debe cumplir todas
+* $or ---> lo mismo q el and pero con una sola condicion que debe cumplir
+* si tenemos 2 o mas $or, usemos un $and que lo encierre, pq sino el json que enviamos termina quedandose con el or del final ya que sobreescribiria los anteriores
+
+
+getDeliveryPoints
 
 ***************** dudas ***********************************
 
 * que es atlas data lake, atlas data federations, atlas charts
+* que son DNS
+* que es TLS y SSL, son algo de seguridad ?
 
 ********************** me quede en **************************
 
-https://learn.mongodb.com/courses/connecting-to-a-mongodb-database
+https://learn.mongodb.com/courses/mongodb-crud-operations-replace-and-delete-documents
