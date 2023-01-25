@@ -573,7 +573,62 @@ public class EditorCalc{
 
 * la complejidad la determinan el tiempo(cantidad de veces que se repite un algoritmo para obtener el resultado) y espacio(memoria que necesitamos para que el problema se ejecute)
 
-**************************************** delegados, indizadores y iteradores *****************
+***************************************** delegados *****************************************************
+
+* un delegado es un callback, una funcion que vas a ejecutar en otro metodo, referencia a un metodo. Cuando lo usamos declaramos una variable que apunta a otro metodo. Se definen asi:
+<modificador de acceso (public, private, etc)> delegate <tipo de retorno> <nombre> (<parametros>);
+* ejemplo de uso:
+
+// ejecutamos lo que definimos abajo
+
+ImprimirDelegadoClase obj = new ImprimirDelegadoClase();
+obj.EjemploDelegado("paso string de valor");
+
+// definiciones
+
+public delegate void ImprimirDelegado(string value);
+
+public class ImprimirDelegadoClase {
+
+	private void Imprimir(string value) {
+		console.WriteLine(value)
+	}
+
+	public void EjemploDelegado(string str){
+		// declaramos y generamos con un delegate
+		ImprimirDelegado imprimiDelegado = new ImprimirDelegado(Imprimir) // cuando creamos la instancia de la clase le tenemos q pasar un metodo
+		// invocacion
+		imprimiDelegado(str);
+	}
+
+}
+
+* delegados disponibles por defecto
+Action<T> ---> siempre devuelve void, de 0 a 16 parametros de tipo Generics
+anonimos ---> si no tenemos q volverla a llamar y si retorna algo
+Func<in T, out TResult> ---> si retorna algo y ademas es un funcion con cuerpo
+Predicate<T> ---> siempre devuelve un true o false
+
+
+
+***************************************** indizadores o indexadores *****************************************
+
+* declaracion de un indexador
+
+class Indizador
+{
+	public int this[int index]
+	{
+
+	}
+}
+
+***************************************** dependencias ******************************************************
+
+* para inyectar dependencias hacemos en la barra de carpetas vamos a la que es la raiz del proyecto, click derecho, agregar, nuevo elemento. Elegimos clase
+* desp en el main usamos using
+* visual studio tiene una parte donde tiene todas las librerias de la nube y podemos instalarlo desde ahi a nuestro proyecto lo que querramos
+
 
 
 
@@ -604,10 +659,11 @@ ver como funciona bien Task.WhenAll(task1, task2, task3);
 ver como hacer un crud con las request correspondientes
 eventos como se manejan
 que es yield
+ver ejemplos de delegados y de indexadores
 
 **************************************** donde quede ****************************************
 
-https://campus.open-bootcamp.com/cursos/17/leccion/1353
+https://campus.open-bootcamp.com/cursos/17/leccion/1356
 
 
 
