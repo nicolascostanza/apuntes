@@ -17,7 +17,7 @@
 * En el caso de que en un schema tengamos una prop que se puede popular en varias collections distintas. Lo mejor que podemos hacer es pasarle a ese id la prop 'refPath': Otra prop del schema con el nombre de la collection a la que debe popular. Entonces cuando hagamos el populate de la prop ya sabe a que collection ir a buscar
 * Para podes usar el _doc de un modelo tenemos que tipar el schema y extenderlo de Document.
 * En javascript, las promesas siempre retornan promesas, asi funciona el metodo, esto es asi para poder concatenar todos los .then() que querramos
-
+* En mongoose tenemos el metodo sort que te ordena ascendente o descendentemente por la propiedad que querramos
 
 
 
