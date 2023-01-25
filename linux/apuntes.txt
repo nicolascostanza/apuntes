@@ -1,0 +1,42 @@
+************* COMANDOS linux ************************************
+
+* man ---> para saber el manual ---> ej: man cd
+* touch ---> se usa para crear un archivo o modificarlo ---> ej: touch file_name
+* cat ---> su funcionalidad para concatenar archivos o unir, sumar. Puede leer, concatenar archivos, combinarlos y escribir contenidos de archivos. También se utiliza para mostrar el contenido de un archivo, copiar contenido de un archivo a otro, mostrar el número de línea o mostrar $ al final de la línea. ---> ej: cat file_name
+* cd ---> cambia a otro directorio o carpeta ---> ej: cd ..
+* ls ---> muestra la lista de archivos que tiene la ruta en la que estamos ---> ej: ls
+* vim ---> es un editor de texto en consola ---> ej: vim nombre_archivo
+* sed ---> El editor de flujo es un poderoso comando de búsqueda y reemplazo masivo , pero también es un editor de texto legítimo. ---> ej: sed OPTIONS... [SCRIPT] [INPUTFILE...]
+* tar ---> Este  comando se utiliza para crear y extraer archivos de almacenamiento. Los indicadores «-cf» y «-xf» se usan para crear y extraer archivos. ---> ej: tar [options] [archive-file] [file or directory to be archived]
+* pwd ---> El comando pwd se usa para localizar la ruta del directorio de trabajo en el que te encuentras. Por ejemplo, si mi nombre de usuario es «miriam» y estoy en mi directorio Documentos, la ruta absoluta sería: /home/miriam/Documents. ---> ej: pwd [OPTION]...
+* mkdir ---> crea carpetas, tambien te da la posibilidad de crear varias carpetas a la vez ---> ej: mkdir <dirname>
+* find ---> buscar archivos y directorios según sus permisos, tipo, fecha, propiedad, tamaño, etc.. También se puede combinar con otras herramientas como grep o sed. ---> find [options] [path...] [expression]
+* rm ---> elimina cada archivo especificado en la línea de comando y directorios. Ten mucho cuidado al usarlo porque no se puede deshacer y es muy difícil recuperar archivos eliminados de esta manera. ---> ej: rm file_to_copy.txt
+* diff ---> muestra las diferencias que hay entre 2 archivos ---> ej: diff [OPTION]... FILES
+* chown ---> permite cambiar el propietario del archivo o directorio ---> ej: chown user filename(s)
+* uniq ---> nos ayuda a detectar las líneas duplicadas adyacentes y también elimina las líneas duplicadas. uniq filtra las líneas coincidentes continuas del archivo de entrada (que se requiere como argumento) y escribe los datos filtrados en el archivo de salida. ---> ej: uniq [OPTION]... [INPUT [OUTPUT]]
+* wget ---> permite descargar archivos de Internet. Admite protocolos de red populares como FTP, HTTP y HTTPS. También puede manejar proxies HTTP. ---> ej: wget [options] url_para_descarga
+* top ---> muestra una vista de los procesos en ejecución en Linux en tiempo real y muestra las tareas administradas por el kernel . También, muestra un resumen de información del sistema para ver la utilización de recursos, memoria y uso de CPU. ---> ej: top [opción] [opción]
+* grep ---> filtra el contenido de un archivo para facilitar nuestra búsqueda ---> ej: grep "linux" long.txt || grep <searchWord>
+* df ---> Se usa para mostrar la cantidad en porcentaje y KB de espacio libre en disco disponible en Linux. ---> ej: df [opciones] [sistema-de-archivo...]
+* kill ---> Se usa para cerrar una proceso que no finaliza ayudando a terminarlo de manera manual. Funciona enviando una señal que termina finalizando o eliminando un proceso o grupo de procesos en particular ---> ej: kill [options] pid
+* ping ---> nos ayuda a solucionar problemas, probar y diagnosticar problemas de conectividad de red. Este comando tiene más opciones que incluyen comprobar si se puede acceder a un host, verificar si un servidor está en funcionamiento, su conexión a Internet y posibles demoras en la red ---> ej: ping [OPTIONS] [IP or Domain]
+* ldd ---> permite a los usuarios conocer las dependencias de objetos compartidos de un archivo ejecutable o de una biblioteca compartida de un ejecutable ---> ej: ldd [OPTION]... FILE…
+* lsof ---> acrónimo de “list of open files.”, enumera información sobre los archivos que están abiertos por los procesos que se ejecutan en el sistema ---> ej: lsof [options]
+* objdump ---> Permite desensamblar archivos de objetos o archivos ejecutables. También te ayuda a obtener información adicional que puede contener un archivo binario en un formato legible ---> ej: objdump <opción(es)> <archivo(s)>
+* shutdown ---> Este comando detiene el sistema de forma segura. En el momento en el que shutdown se ejecuta, se notifica a todos los usuarios y procesos que han iniciado sesión que el sistema se está desactivando y no se permiten más inicios de sesión. Te da la opción de apagar el sistema de manera inmediata o en un momento especifico ---> ej: shutdown [OPTIONS] [TIME] [MESSAGE]
+* cp ---> copiar archivos del directorio actual a un directorio diferente ---> ej: cp escenario.jpg /home/nombredeusuario/Imagenes
+* mv ---> mover archivos, aunque también se puede usar para cambiar el nombre de los archivos ---> ej: mv archivo.txt /home/nombredeusuario/Documentos otro ej: mv nombreviejo.ext nombrenuevo.ext
+* locate ---> Puedes usar este comando para localizar un archivo, al igual que el comando de búsqueda en Windows. Además, el uso del argumento -i junto con este comando hará que no distinga entre mayúsculas y minúsculas, por lo que puedes buscar un archivo incluso si no recuerdas su nombre exacto ---> ej: locate -i escuela*nota (buscará cualquier archivo que contenga la palabra «escuela» y «nota», ya sea en mayúsculas o minúsculas.)
+* sudo ---> Abreviatura de «SuperUser Do» (SuperUsuario hace), este comando te permite realizar tareas que requieren permisos administrativos o raíz
+* du ---> Si deseas verificar cuánto espacio ocupa un archivo o un directorio, el comando du (Uso del disco, en inglés) es la respuesta. Sin embargo, el resumen de uso del disco mostrará números de bloque de disco en lugar del formato de tamaño habitual. Si deseas verlo en bytes, kilobytes y megabytes, agrega el argumento -h a la línea de comando.
+* head ---> se usa para ver las primeras líneas de cualquier archivo de texto. De manera predeterminada, mostrará las primeras diez líneas, pero puedes cambiar este número a tu gusto ---> ej: head -n NumeroDeLineas nombredearchivo.ext
+* tail ---> lo mismo que el comando head pero con las ultimas lineas ---> ej: tail -n nombredearchivo.ext
+* chmod ---> utilizado para cambiar los permisos de lectura, escritura y ejecución de archivos y directorios
+* jobs ---> mostrará todos los trabajos actuales junto con sus estados. Un trabajo es básicamente un proceso iniciado por el shell
+* uname ---> imprimirá información detallada sobre tu sistema Linux, como el nombre de la máquina, el sistema operativo, el núcleo, etc.
+* history ---> muestra los comandos que ingresaste anteriormente
+* echo ---> se usa para mover algunos datos a un archivo ---> ej: echo Hola, mi nombre es John >> nombre.txt
+* zip, unzip ---> el comando zip para comprimir tus archivos en un archivo zip y use el comando unzip para extraer los archivos comprimidos de un archivo zip
+* hostname ---> Si deseas conocer el nombre de tu host/red, simplemente escribe hostname. Agregar un -I al final mostrará la dirección IP de tu red
+* useradd, userdel ---> useradd se usa para crear un nuevo usuario, mientras que passwd agrega una contraseña a la cuenta de ese usuario. Para eliminar la cuenta de usuario, escribe userdel NombredeUsuario
