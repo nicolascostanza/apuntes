@@ -63,7 +63,7 @@ ERRORES DE CONEXION MAS COMUNES
 CREATE
 
 * para usar una base de datos desde la terminal tenemos que poner ---> use nombreBaseDatos
-* Tenemos dos opciones, insertMany([Array de jsons a enviar]) o insertOne(json_file) 
+* Tenemos dos opciones, insertMany([Array de jsons a enviar]) o insertOne(json_file)
 * lo que hacen es nombreDataBase.NombreCollection.insertOne(json_file)
 * si la collecction no existe, la crea
 * cada documento tiene el campo _id que es unico
@@ -93,8 +93,63 @@ OPERADORES LOGICOS
 * $or ---> lo mismo q el and pero con una sola condicion que debe cumplir
 * si tenemos 2 o mas $or, usemos un $and que lo encierre, pq sino el json que enviamos termina quedandose con el or del final ya que sobreescribiria los anteriores
 
+OPERADORES PARA REEMPLAZAR
 
-getDeliveryPoints
+* replaceOne(filtro, con lo que se reemplaza, opciones ) ---> reemplaza un solo documento
+* updateOne(filtro, con lo que se reemplaza, opciones ) ---> actualiza un solo documento
+* $set ---> hace una de dos cosas, añade nuevos campos y valores a un documento o reemplaza el valor de un campo por un valor especifico
+* $push ---> hace una de dos cosas, añade un valor a un array o si el campo no existe crea el array con el valor que le pasamos
+* upsert ---> es un parametro que se le pasa en el objeto de options a los metodos. Hace la query y si no existe ninguno que matchee con el filtro crea uno y lo añade. Sirve con updateOne por ejemplo.
+* findAndModify(query,newDoc,options) ---> se utiliza para devolver el documento que actualizamos. Ademas garantiza en una sola request a la base de datos actualizar y devolver el doc. Ademas hay que setear en options new: true;
+* updateMany(query, newDocModify, options) ---> busca todos los que matcheen y los modifica por lo que le pasamos. Puede que a veces no se actualicen todos y haya que volver a actualizar los que falten. Ademas, cuando se esta ejecuntando la actualizacion no queda oculta por lo tanto para transferencias bancarias o cosas de extrema seguridad no es recomendable.
+* find() ---> podemos pasarle como segundo param el nombre de las propiedades con 1 para que solo traiga esas props de cada documento. Ejemplo:
+db.companies.find({price: 100}, {name: 1, status: 1})
+
+BORRAR
+
+* deleteOne(filtro, opciones) ---> borra un documento, el primero que matchee
+* deleteMany(filtro, options) ---> borra todos los documentos que matcheen
+
+ORDENAMIENTO Y LIMITE
+
+* cursor ---> es un puntero al conjunto de resultados de una consulta. Por ejemplo el metodo find devuelve un cursor
+* sort() ---> este metodo se pasa desp del metodo find, concatenado por '.'. Sumado a eso debemos especificar el como los vamos a ordenar. Ademas podemos pasarle varios sorts concatenados uno atras del otro. Ejemplo:
+// ordenamos los encontrado en order ascendente por la propiedad name de cada documento
+db.companies.find({status: 'music'}).sort({name: 1}).sort({price: -1})
+* Para el ordenamiento alfabetico en mongodb primero se ordenan las mayusculas y luego las minusculas
+* limit(numero limite) ---> limita la cantidad de respuestas de una query. Ejemplo:
+db.companies.find({status: 'music'}).limit(3) // devuelve solo 3 companies que tengan el status en music
+
+PROYECCIONES
+
+* las proyecciones sirven para devolver solo algunos campos que nos importen de cada documento. Podemos incluir esos campos en la devolucion con el 1 y sacarlos con un 0, ejemplo:
+db.companies.find({price: 100}, {name: 1, status: 1, _id: 0})
+* en las proyecciones podemos elegir entre incluir algunos campos o excluir algunos campos. La unica excepcion a esa regla es el _id de mongo. Todo el resto de campo se debe optar por solo incluir o solo excluir.
+
+CONTEO DE DOCUMENTOS EN UNA QUERY
+
+* countDocuments(query, options) ---> sirve para contar los documentos de una consulta. Ejemplo:
+
+db.companies.countDocuments(); // cuenta todos los documentos de la coleccion
+db.companies.countDocuments({status: true}); // solo cuenta los documentos que cumplan esa condicion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+***************** datos utiles *****************
+
+* para acceder a props dentro de objetos en una query podemos hacer en el nombre del campo, osea en la key con string. Ejemplo
+db.companies.find({'address.zip': 2000})
 
 ***************** dudas ***********************************
 
@@ -104,4 +159,4 @@ getDeliveryPoints
 
 ********************** me quede en **************************
 
-https://learn.mongodb.com/courses/mongodb-crud-operations-replace-and-delete-documents
+https://learn.mongodb.com/courses/mongodb-aggregation
