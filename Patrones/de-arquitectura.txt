@@ -1,0 +1,151 @@
+
+
+************************ MVVM *******************************************
+
+El patrón de arquitectura MVVM, también conocido como Model View ViewModel, se refiere a un modelo de diseño que tiene el objetivo para llevar a cabo la separación del apartado de la interfaz de usuario (View) de la parte lógica (Model). Esto lo hace con el objetivo de que el aspecto visual sea completamente independiente.
+
+El recurso de ViewModel, por su lado, destaca como el componente que se encargará de servir como puente entre la interacción de la Vista (View) y el Modelo (Model).
+
+De manera que, para hacer uso del patrón de arquitectura MVVM, se debe comprender la manera en la que se factoriza el código de las aplicaciones en las clases adecuadas y entender su interacción con los componentes del diseño.
+
+************************ FLUX *******************************************
+
+Esta arquitectura es para frontend
+
+Flux propone una arquitectura en la que el flujo de datos es unidireccional. Los datos viajan desde la vista por medio de acciones y llegan a un Store desde el cual se actualizará la vista de nuevo. Teniendo un único camino, y un sitio donde se almacena el estado de la aplicación, es más sencillo depurar errores y saber que está pasando en cada momento
+
+Vista
+La vista serían los componentes web, ya sean construidos nativamente, con Polymer, con Angular, React, etc...
+
+Store
+La Store sería lo más parecido al modelo de la aplicación. Guarda los datos/estado de la aplicación y en Flux puede haber varias (Luego veremos que en algunas implementaciones sólo hay un único store).
+
+No hay métodos en la Store que permitan modificar los datos en ella, eso se hace a través de dispatchers y acciones.
+
+Acciones
+Un acción es simplemente un objeto JavaScript que indica una intención de realizar algo y que lleva datos asociados si es necesario. Por ejemplo si tenemos una aplicación tipo Carrito de la compra, y añadimos un item al carrito, la acción que representaría esto sería:
+
+{
+    type: 'ADD_ITEM',
+    item: item
+}
+
+Dispatcher
+Las acciones como la anterior son enviadas a un dispatcher que se encarga de dispararla o propagarla hasta la Store.
+
+La vista es la que se encarga de enviar las acciones al dispatcher.
+
+Un dispatcher no es más que un mediador entre la Store o Stores y las acciones. Sirve para desacoplar la Store de la vista, ya que así no es necesario conocer que Store maneja una acción concreta.
+
+************************ PATRON ARQUITECTURA DE 3 CAPAS *****************
+
+Es como el backend de quira en donde tenemos una carpeta de models donde estan los schemas de cada collection
+tenemos la carpeta api donde tenemos las distintas rutas cada una con su index donde estan sus rutas y su controllers donde ejectura la logica de negocio. Ademas tiene la carpeta de test correspondientes a esos endpoints
+
+Aparte tenemos la carpeta middleware donde se ejecutan los middlewares intermedios y la carpeta utils donde tenemos funciones helpers
+
+************************ PATRON DE CAPAS ********************************
+
+Este patrón se puede utilizar para estructurar programas que se pueden descomponer en grupos de subtareas, cada una de las cuales se encuentra en un nivel particular de abstracción. Cada capa proporciona servicios a la siguiente capa superior.
+
+Las 4 capas más comúnmente encontradas de un sistema de información general son las siguientes.
+
+Capa de presentación (también conocida como capa UI )
+Capa de aplicación (también conocida como capa de servicio )
+Capa de lógica de negocios (también conocida como capa de dominio )
+Capa de acceso a datos (también conocida como capa de persistencia )
+Uso
+Aplicaciones de escritorio generales.
+Aplicaciones web de comercio electrónico.
+
+************************ PATRON CLIENTE - SERVIDOR ************************
+
+Este patrón consiste en dos partes; un servidor y múltiples clientes . El componente del servidor proporcionará servicios a múltiples componentes del cliente. Los clientes solicitan servicios del servidor y el servidor proporciona servicios relevantes a esos clientes. Además, el servidor sigue escuchando las solicitudes de los clientes.
+
+Uso
+Aplicaciones en línea como correo electrónico, uso compartido de documentos y banca.
+
+************************ PATRON MAESTRO - EXCLAVO ************************
+
+Este patrón consiste en dos partes; maestro y esclavos . El componente maestro distribuye el trabajo entre componentes esclavos idénticos y calcula el resultado final de los resultados que devuelven los esclavos.
+
+Uso
+En la replicación de la base de datos, la base de datos maestra se considera como la fuente autorizada y las bases de datos esclavas se sincronizan con ella.
+Periféricos conectados a un bus en un sistema informático (unidades maestra y esclava).
+
+************************ PATRON DE FILTRO DE TUBERIA *********************
+
+Este patrón se puede usar para estructurar sistemas que producen y procesan una secuencia de datos. Cada paso de procesamiento se incluye dentro de un componente de filtro . Los datos que se procesarán se pasan a través de las tuberías . Estas tuberías se pueden utilizar para el almacenamiento en búfer o con fines de sincronización.
+
+Uso
+Compiladores Los filtros consecutivos realizan análisis léxico, análisis sintáctico y generación de código.
+Flujos de trabajo en bioinformática.
+
+************************ PATRON DE AGENTE ********************************
+
+Este patrón se usa para estructurar sistemas distribuidos con componentes desacoplados. Estos componentes pueden interactuar entre sí mediante invocaciones de servicios remotos. Un componente de intermediario es responsable de la coordinación de la comunicación entre los componentes .
+
+Los servidores publican sus capacidades (servicios y características) a un intermediario. Los clientes solicitan un servicio del intermediario y el intermediario redirecciona al cliente a un servicio adecuado desde su registro.
+
+Uso
+Software de Message Broker como Apache ActiveMQ , Apache Kafka , RabbitMQ y JBoss Messaging .
+
+************************ PATRON DE IGUAL A IGUAL ************************
+
+En este patrón, los componentes individuales se conocen como pares . Los pares pueden funcionar tanto como un cliente , solicitando servicios de otros pares, y como un servidor , proporcionando servicios a otros pares. Un par puede actuar como un cliente o como un servidor o como ambos, y puede cambiar su rol dinámicamente con el tiempo.
+
+Uso
+Redes de intercambio de archivos como Gnutella y G2 )
+Protocolos multimedia como P2PTV y PDTP .
+
+************************ PATRON DE BUS DE EVENTO ***********************
+
+Este patrón trata principalmente con eventos y tiene 4 componentes principales; fuente de evento , escucha de evento , canal y bus de evento . Las fuentes publican mensajes en canales particulares en un bus de eventos. Los oyentes se suscriben a canales particulares. Los oyentes son notificados de los mensajes que se publican en un canal al que se han suscrito anteriormente.
+
+Uso
+Desarrollo de Android
+Servicios de notificación
+
+************************ PATRON MVC ************************************
+
+Este patrón, también conocido como patrón MVC, divide una aplicación interactiva en 3 partes, como
+
+modelo — contiene la funcionalidad y los datos básicos
+vista : muestra la información al usuario (se puede definir más de una vista)
+controlador : maneja la entrada del usuario
+Esto se hace para separar las representaciones internas de información de las formas en que se presenta y acepta la información del usuario. Desacopla los componentes y permite la reutilización eficiente del código.
+
+Uso
+Arquitectura para aplicaciones World Wide Web en los principales lenguajes de programación.
+Marcos web como Django y Rails .
+
+************************ PATRON DE PIZARRA ****************************
+
+Este patrón es útil para problemas para los que no se conocen estrategias de solución deterministas. El patrón de pizarra consta de 3 componentes principales.
+
+pizarra : una memoria global estructurada que contiene objetos del espacio de solución
+fuente de conocimiento : módulos especializados con su propia representación
+componente de control : selecciona, configura y ejecuta módulos.
+Todos los componentes tienen acceso a la pizarra. Los componentes pueden producir nuevos objetos de datos que se agregan a la pizarra. Los componentes buscan tipos particulares de datos en la pizarra, y pueden encontrarlos por coincidencia de patrones con la fuente de conocimiento existente.
+
+Uso
+Reconocimiento de voz
+Identificación y seguimiento del vehículo
+Identificación de la estructura proteica
+Sonar señala la interpretación.
+
+************************ PATRON DE INTERPRETE ************************
+
+Este patrón se usa para diseñar un componente que interpreta programas escritos en un lenguaje dedicado. Especifica principalmente cómo evaluar las líneas de programas, conocidas como oraciones o expresiones escritas en un idioma particular. La idea básica es tener una clase para cada símbolo del idioma.
+
+Uso
+Lenguajes de consulta de base de datos como SQL.
+Idiomas utilizados para describir los protocolos de comunicación.
+
+
+
+
+
+
+
+

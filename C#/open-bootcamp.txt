@@ -629,8 +629,30 @@ class Indizador
 * desp en el main usamos using
 * visual studio tiene una parte donde tiene todas las librerias de la nube y podemos instalarlo desde ahi a nuestro proyecto lo que querramos
 
+***************************************** patrones de diseño *****************************************
 
+* se dividen en 2 o 3 partes. Tenemos los creacionales y estructurales y de comportamiendo (investigar despues)
 
+* creacionales ---> nos permiten crear objetos o clases, etc
+* estructurales ---> crear arquitectura
+
+* CREACIONALES:
+
+* factory ---> crear familias de objetos (creamos muchos coches con una clase coche)
+* builder ---> permite construir objetos complejos. (los que tienen muchos parametros o detalles)
+* factory method ---> Permite crear objetos mediante una super clase y debajo subclases que pueden alterar el tipo de objeto que genera la superclase. Heredan de una clase y pueden sobreescribir lo que heredan para modificarlo
+* prototype ---> permite copiar objetos existentes sin que esto dependa de su clase
+* singleton ---> permite asegurarnos que una clase tenga una unica instancia y tenemos acceso a dicha instancia
+
+* ESTRUCTURALES:
+
+* adapter ---> colaboracion entre objetos con interfaces distintas. Suele suceder cuando tenemos codigo viejo que no podemos modificar y hacemos como un "empalme" entre el output de lo viejo y el input de lo nuevo
+* bridge ---> divide una clase o varias en dos partes, abstraccion e implementacion, y ambas son independientes
+* composite ---> permite componer objetos en estructuras de tipo arbol y trabajar cada objeto por separado
+* decorator ---> colocamos objetos dentro de otros que los encapsulan sin perder sus funciones
+* facade ---> es como una fachada, haces las cosas simples cuando por detras hay muchas cosas complejas, suele ser el caso de las librerias
+* flyweigth ---> como una balanza de dos lados. Permite mas objetos dentro de una cantidad disponible de memoria ram, compartiendo las partes comunes el estado entre ellos y mantener toda la informacion de cada objeto. Principalmente para rendimiento, ahorrando memoria con datos que son iguales para muchas clases
+* proxy ---> controla el acceso al objeto original, permitiendo hacer algo antes o despues de que la solicitud llegue al objeto original
 
 **************************************** datos utiles ****************************************
 
@@ -650,6 +672,7 @@ class Indizador
 Stopwatch crono = new Stopwatch();
 * despues tenemos los metodos crono.Start() y crono.Stop(). Tambien tenemos crono.Elapsed que nos dice el lapso entre arrancarlo y pararlo
 * existe el try catch como en js
+* cuando ponemos sealed es para que solo nos deje crear una instancia de esa clase. Ej: public sealed class Singleton{ //codigo...}
 
 **************************************** A investigar ****************************************
 que es ref en los objetos
@@ -660,19 +683,3 @@ ver como hacer un crud con las request correspondientes
 eventos como se manejan
 que es yield
 ver ejemplos de delegados y de indexadores
-
-**************************************** donde quede ****************************************
-
-https://campus.open-bootcamp.com/cursos/17/leccion/1356
-
-
-
-
-
-
-
-
-
-
-
-
