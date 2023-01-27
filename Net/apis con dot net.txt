@@ -1,0 +1,47 @@
+**************************** preparacion de entorno ***************************************
+
+1) instalamos sql server la version express
+2) elegimos el basico instalamos y una ves terminada nos da el string de conexion a la DB
+3) SSMS ----> sql server managment studio
+4) abrimos el managment studio y elegimos database engine
+5) debemos verificar que tenemos instalados .net ---> en la consola ponemos dotnet --version
+6) vamos al visual studio 2022 y creamos un proyecto con asp.net core web api
+7) ya dentro del vs tenemos el explorador de servidores y desde ahi nos podemos conectar a la bd
+
+**************************** datos basicos ***********************************************
+
+* en una controller tenemos q poner esto:
+[ApiController]
+[Route("[controller]")]
+public class NombreRutaController : ControllerBase
+
+* para tener un nodemon, que seria un watcher que te actualzia las cosas sin bajar el server. Aca se llama hot reload.  alt + f10
+
+**************************** estructura de carpetas del proyecto generado ***************
+
+* appsettings.json ---> aca estarian las variables de entorno y algunas configuraciones. Aca tenemos que poner el ConnectionStrings
+* explorador de conexiones ---> ahi gestionamos las conexiones con las bases de datos que necesitemos
+* program.cs ---> este seria el index de la aplicacion. El entrypoint
+* para instalar librerias o paquetes hacemos click en la carpeta raiz del proyecto. NO EN LA SOLUCION (workspace). Luego agregar paquetes Nugets
+* EF core power tools ---> permite hacer diagramas, una extension util
+* add migration ---> crea las tablas en la bd que le decimos en el proyecto. Esto lo hacemos desde la terminal de administradores de paquetes add-migration "mensaje"
+* Update-Database -Verbose ---> crea las tablas
+* script-migration ---> corre los comandos sql para hacer todas esas tablas
+
+
+******************* DUDAS
+
+* como implem3ento el EF core power tools y agrego diagramas de . Que los visualiza
+* que hace la migracion ? con add migration etc, al crear mi squema. Creo no pude conectarme a la base de datos
+
+
+
+
+
+**** donde quede *********
+
+en el video 3, relaciones y controladores
+
+**** datos para practicar
+
+coneccion ----> Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True;
