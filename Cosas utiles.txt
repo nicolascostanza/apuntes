@@ -21,14 +21,21 @@
 * en un onchange o onclick, el evento podes obtener el codigo de la letra. e.keyCode ---> con esto podemos saber que tecla apreto y condicionar el evento
 * El virtuals de mongoose es una propiedad que seteas en el schema pero que no la vas a guardar en la base de datos. Es util para usarlo con propiedades claculables como la edad, etc.
 * en los headers de una request se mandan cosas relacionadas a el formato de la data o informacion sobre la request, en cambio en el body mandamos informacion que queremos transportar.
+* para tener algo relativo a un componente padre en css, a la etiqueta padre le asignamos una clase con position relative y a la q vamos a mover con absolute. Entonces esa clase q vamos a mover es absoluta al padre, en vez de a toda la pantalla
+* en css tenemos la prop ellipsis que nos da los ... en el texto
 
 
 
 
 
+VER BIEN **********************
+* podemos pasar props globales a travez de la navegacion con history. noseque. Aca deberia pasarle una prop state o no se bien q almacena lo q queremos pasar
+ver la navegacion del path dinamico de qira
 
 
 
+donde quede
 
+https://www.youtube.com/watch?v=AkEnidfZnCU
 
-
+3:25:29

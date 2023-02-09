@@ -1,15 +1,63 @@
-DROPDOWN
-    * instalar paquete https://www.npmjs.com/package/react-native-dropdown-select-list
-    * recibe 2 props obligatorias --> data y setSelected
-FLATLIST
-    * le pasas:
-        - la data como prop q es la info a renderizar
-        - el componente q queres dejar fijo como header ---> stickyHeaderIndices={[0]}
-        - El componente q va a quedar de encabezadoListHeaderComponent={() => <HeaderList />}
-        - el item q va a renderizar por cada vez q tiene un elemento del array data ---> renderItem
+*********************************** DROPDOWN ***********************************
+
+* instalar paquete https://www.npmjs.com/package/react-native-dropdown-select-list
+* recibe 2 props obligatorias --> data y setSelected
+
+*********************************** FLATLIST ***********************************
+
+* le pasas:
+    - la data como prop q es la info a renderizar
+    - el componente q queres dejar fijo como header ---> stickyHeaderIndices={[0]}
+    - El componente q va a quedar de encabezadoListHeaderComponent={() => <HeaderList />}
+    - el item q va a renderizar por cada vez q tiene un elemento del array data ---> renderItem
+
+*********************************** CRASH COURSE ***********************************
+Div ---> View
+P ---> Text
+img (src)---> Image(source={{uri: 'url de la imagen'}})
+input ---> TextInput
+button ---> TouchableOpacity
+onClick ---> onPress
+
+* Para iniciar una app con expo ponemos npx create-expo-app nombreApp
+* si damos expo start en la terminal y instalamos expo go en el celular, podemos escanear el codigo qr y tener la app en vivo en el celular
+* para limpiar la barra esa q te sale con el stack navigator y el nombre q le hayas puesto en la cabecera de la aplicacion:
+
+const navigator = useNavigation() // importamos desde @reac-navigation/native
+
+useLayoutEffect(() => {
+    navigation.setOptions({
+        headerShown: false // ---> limpia esa parte
+    })
+}, [])
+
+* para q tome la pantalla del celular sin la barrita de la bateria lo wrapeamos en <SafeAreaView></SafeAreaView> que viene importada desde react-native
+* para los iconos usamos react native hero icons
+* para q una parte del contenido ocupe todo el espacio le damos flex 1
+* container scrolleable ---> ScrollView importada desde react native. Wrapeamos lo que queremos scrollear con esta etiqueta.
+* para que el scroll sea horizonal ---> <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={object css}>
+* para navegar entre pantallas:
+
+const navigation = useNavigation()
+
+onPress={() => navigation.navigate('Nombre de la pantalla en el archivo de stack navigation',
+    {
+        // Aca podemos pasarle las props a la otra pantalla
+    }
+)}
+
+* Para obtener las props q fueron pasadas a la pantalla por la navegacion:
+
+const {params: { ...props } } = useRoute();
+
+* para volver a la pantalla de atras
+
+const navigation = useNavigation()
+
+onPress={navigation.goBack}
 
 
+************* a hacer
 
-
-
-
+estudiar las navegaciones
+que hace en el textinput la prop keyboardType='default'
