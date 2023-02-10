@@ -57,7 +57,25 @@ const navigation = useNavigation()
 onPress={navigation.goBack}
 
 
+
+
+
+
+
+
+
+
+
 ************* a hacer
 
 estudiar las navegaciones
 que hace en el textinput la prop keyboardType='default'
+
+
+
+
+https://www.youtube.com/watch?v=AkEnidfZnCU&t=12309s
+
+en la hora 3:49 empieza a explicar como setear redux toolkit y usarlo
+
+quede en el 3:56
