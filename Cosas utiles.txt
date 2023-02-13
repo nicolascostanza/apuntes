@@ -23,7 +23,8 @@
 * en los headers de una request se mandan cosas relacionadas a el formato de la data o informacion sobre la request, en cambio en el body mandamos informacion que queremos transportar.
 * para tener algo relativo a un componente padre en css, a la etiqueta padre le asignamos una clase con position relative y a la q vamos a mover con absolute. Entonces esa clase q vamos a mover es absoluta al padre, en vez de a toda la pantalla
 * en css tenemos la prop ellipsis que nos da los ... en el texto
-
+* Si trabajo con .save(), muto directamente las propiedades del documento.
+* Si trabajo con findByIdAndUpdate y lean o aggregaet --> spread operator y mando todo el objeto
 
 
 
