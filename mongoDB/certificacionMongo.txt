@@ -133,16 +133,110 @@ CONTEO DE DOCUMENTOS EN UNA QUERY
 db.companies.countDocuments(); // cuenta todos los documentos de la coleccion
 db.companies.countDocuments({status: true}); // solo cuenta los documentos que cumplan esa condicion
 
+AGREGATION
 
+* agregation es una tecnica que agarra los datos de la base de datos y altera los resultados sin modificar los datos en la DB. Es un consulta en varias capas
+* etapas del agregate en orden correcto (pipeline aggregation)
+** $match ---> filtrado de documentos por una condicion o un grupo de condiciones. Es importante intentarla ponerla lo mas temprana posible para reducir la cantidad de documento y operaciones
+** $group ---> agrupamos documentos por una clave de grupo. Aca sale un documento para cada clave de grupo ingresada.
+** $sort ---> los agarra y los ordena segun como queramos( 1 para ascendente, -1 para desendente)
+** $limit ---> limita la cantidad de documetnos resultantes
+** $project ---> determina la forma de salida de los documentos que van a resultar de la query. O permite agregar nuevos campos q la agregation hara. Se pueden especificar por inclusion( le ponemos 1 al value del field en cueston) o exclusion ( le ponemos 0 si lo queremos excluir). Si los campos son nuevo podemos especificarles el valor que queremos asignarle. Seria como una capa de mapeo en donde elegimos que campos si y que campos no
+** $set ---> en lugar de espeficiar como en el project state, esto añade o modifica campos existentes
+** $count ---> cuenta la cantidad de documentos en la pipeline y te devuelve ese numero
+** $out ---> crea una nueva collection a partir de la pipeline de aggregation. Guarda los documentos devuelvo por el aggregate en una nueva collection. Siempre debe ser la ultima etapa. Tener cuidado que a veces la puede sobreescribir. Recibe db: y el nombre de la colelction y coll: con el nuevo nombre de la collection. Cuando usamos esto el resultado de la query esta vacio.
 
+* cuando un campo tiene antes el '$' significa que es la via de acceso al campo especifico. Nos permite referirnos al valor del campo
 
+* ejemplo de pipeline de aggregate:
 
+db.collection.aggregate([
+  {
+    $match: { "state": "CA"}
+  },
+  {
+    $group:
+    {
+      _id: "$city", // group key
+      totalZip: { $count: {}}
+    }
+  },
+  {
+    $sort : {
+      pop: -1
+    }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      state: 1,
+      zip: 0,
+    }
+  },
+  {
+    $set: {
+      isAdult: // aca restariamos de la fecha actual a la fecha de nacimiento y deberia ser mayor a 18 años
+    }
+  },
+  {
+    $count: "campoAContar"
+  },
+  {
+    $out: "nombre de la nueva collection en donde lo va a guardar"
+  }
+])
 
+INDEX O INDICES
 
+* los indices son estructuras de datos especiales que almacenan una pequeña parte de los datos de las collections de una forma ordenada que es facil de recorrer y buscar de forma eficiente
+* los indices apuntan a la identidad del documento y permiten buscar, acceder o editar rapidamente
+* se usan para mejorar el rendimiento y la rapidez de la query
+* por defecto solo hay un indice creado por collection ( _id ). Los indices tienen un costo de rendimiento en escritura (agregar o editar)
+* indices mas comunes ---> de campo compuesto o individuales. La diferencia es q el compuesto esta hecho con mas de un campo
 
+* createIndex() Ejemplo:
 
+db.coll.createIndex({email: 1}, {unique: true}) ---> creamos un indice por email y le decimos q va a ser unico para cada documento. Ademas al ponerle unique hace q no podamos asignarle el mismo mail a dos cuentas
 
+* getIndexes() Ejemplo:
 
+db.coll.getIndexes() --> devuelve todos los indices q tiene esa collection
+
+* explain() ---> sirve para determinar si alguno de los indices se esta usando en la query. Devuelve un objeto con una prop q se llama winningPlan que explica el metodo q uso para la query y cuales intento pero los rechazo, etc
+* en winningPlan tenemos opciones como:
+** IXSCAN ---> indica q busco por un indice existente
+** COLLSCAN ---> indica q no encontro un indice por el cual hacer la consulta
+** FETCH ---> indica q solo fue de lectura
+** SORT ---> indica q fue de ordenamiento ??
+
+* Ejemplo:
+
+db.coll.explain().find({// query})
+
+* indices Compuestos ---> cuando definimos un indice en algun campo q sea un array ya es conciderado indice compuesto. Existe una limitacion de un array por indice. Ejemplo de creacion de uno compuesto.
+
+db.coll.createIndex({email: 1, account: 1})
+
+* los indices son estructuras ordenadas, por lo cual importa q el primer indice sea el mas relevante. La orden de importancia va asi en un indice compuesto es asi:
+
+1) de igualdad
+2) de ordenamiento
+3) de rango
+
+* borrado de indices
+
+* se puede borrar cualquier indice menos el _id
+* si no estas seguro si el indice es necesario, es preferible ocultarlo a eliminarlo. Ya que mongo los omite en las busquedas.
+* ocultamiento de indice. Sirve para q mongo no los utilice en las consulta, pero continua actualizandolo cuando agregamos o editamos. Ejemplo:
+
+** ocultamiento
+db.coll.hideIndex('nombre indice')
+
+** borrado
+db.coll.dropIndex('nombre del indice')
+db.coll.dropIndexes(['indice 1', 'indice 2', '...etc'])
 
 
 
@@ -150,13 +244,26 @@ db.companies.countDocuments({status: true}); // solo cuenta los documentos que c
 
 * para acceder a props dentro de objetos en una query podemos hacer en el nombre del campo, osea en la key con string. Ejemplo
 db.companies.find({'address.zip': 2000})
+* $toUpper: "nombre campo" ---> convierte a uppercase
+* para la etapa de project en el aggregate hay muchas funciones de suma, division, promedio, etc en mongo
 
 ***************** dudas ***********************************
 
 * que es atlas data lake, atlas data federations, atlas charts
 * que son DNS
 * que es TLS y SSL, son algo de seguridad ?
+* estudiar etapas del aggregate
+* ESTUDAIR Y VER ETAPAS FALTANTES ---> $unwind y $bucket
+* ver los tipos de winningPlan que hay cuando usamos explain() en una query. Aca tengo info para guiarme:
+
+Check if an index is being used on a query
+Use explain() in a collection when running a query to see the Execution plan. This plan provides the details of the execution stages (IXSCAN (busco por un indice creo) , COLLSCAN (no busca por indice), FETCH (es solo lectura), SORT (ordena), etc.).
+
+The IXSCAN stage indicates the query is using an index and what index is being selected.
+The COLLSCAN stage indicates a collection scan is perform, not using any indexes.
+The FETCH stage indicates documents are being read from the collection.
+The SORT stage indicates documents are being sorted in memory.
 
 ********************** me quede en **************************
 
-https://learn.mongodb.com/courses/mongodb-aggregation
+https://learn.mongodb.com/courses/mongodb-atlas-search
