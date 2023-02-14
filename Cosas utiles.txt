@@ -25,7 +25,7 @@
 * en css tenemos la prop ellipsis que nos da los ... en el texto
 * Si trabajo con .save(), muto directamente las propiedades del documento.
 * Si trabajo con findByIdAndUpdate y lean o aggregaet --> spread operator y mando todo el objeto
-
+* Si tengo un middleware de validacion puedo pasar la lo que quiera a la siguiente funcion con req.customNombre = variableAPasar. Despues ponemos next() y deberiamos podes acceder en la siguiente funcion mediante req.customNombre
 
 
 
