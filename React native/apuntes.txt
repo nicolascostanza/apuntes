@@ -56,21 +56,58 @@ const navigation = useNavigation()
 
 onPress={navigation.goBack}
 
+* podemos detectar desde q tipo de dispositivo se esta utilizando la app con:
 
+import { Platform} from 'react-native';
 
+Platform.OS === 'ios' || 'android'
 
+* tambien se probee Platform.select({}) ---> recibe uyn objeto con las plataformas y lo que queremos hacer
 
+plaform({
+    ios: {
+        // lo que quiero
+    },
+    android: {
+        // codigo
+    },
+    default: {
+        // codigo
+    }
+})
 
+* tambien podemos tener todo tipo de datos del celular como la version en Platform
 
+* si a un archivo le ponemos .tipoDelSistema lo detecta y lo carga solo cuando lo necesita, esto es util para splitear codigo para diferentes dispositivos. Ejemplo:
 
+BigButton.ios.js
+BigButton.android.js
 
+import BigButton from './BigButton'; // te importa cualquiera de los dos segun el tipo de dispositivo q este usando el usuario
+
+* el fast refresh puede no modificar todo si tenemos algo memorizado con usememo o algo por el estilo, cuidado.
+
+* en el emulador si apretamos ctrl + m tenemos el menu de desarrolladores
+
+* tenemos la prop style en cada componente q le podemos pasar clases de css, ademas podemos pasarle mas de una. Ejemplo:
+
+<Text style ={[styles.title, styles.fondo]} />
+
+* si la imagen viene en base64 podemos pasarsela como source={{uri: imagenQQueremos}}
+
+* Existe la etiqueta <ImageBackground source={...} /> que permite poner una imagen de fondo, ya q no existe la prop background image en css de react native
+
+* tenemos props de css raras para los borders. Por ejemplo:  borterTopLeftRadius
+
+* Tenemos la etiqueta Animated que podemos animar.
 
 
 ************* a hacer
 
-estudiar las navegaciones
 que hace en el textinput la prop keyboardType='default'
 
+leer y estudiar la documentacion de animations en react native documentacion
+leet y estudiar performance de react native documentacion
 
 
 
