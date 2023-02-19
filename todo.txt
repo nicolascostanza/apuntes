@@ -1,12 +1,6 @@
 hacer un masonry ---> ver como se hace
 Estudiar todos los patrones de diseño y principios solid
-Estudiar los metodos que existen ademas de los comunes, por ejemplo HEAD que es como un get pero no te devuelve el resultado. Sirve para testear. O OPTIONS permite al cliente conocer las opciones o requerimientos asociados a un recurso antes de iniciar cualquier petición sobre el mismo.
 Estudiar doc de joi y react hook forms
-
-
-
-
-
 
 A APRENDER
 
@@ -14,8 +8,6 @@ A APRENDER
 https://webpack.js.org/
 * babel
 https://babeljs.io/
-* CURSO CERTIFICADO POR MONGO
-https://learn.mongodb.com/learning-paths/mongodb-nodejs-developer-path
 * pwa
 https://www.easylist.link/
 https://create-react-app.dev/docs/making-a-progressive-web-app/
