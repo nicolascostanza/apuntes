@@ -1,1 +1,23 @@
+HEADERS REQUEST HTTP
 
+headers en las request http
+
+* Host ---> Es el nombre del host, incluyendo dominio y subdominio si existe
+* User-Agent ---> El User-Agent contiene información como el nombre y versión del navegador y del sistema operativo y el idioma por defecto. De esta forma los sitios web pueden saber información acerca de los sistemas de los visitantes. Pueden saber si accedes desde un celular o pc de escritorio.
+* Accept-Language ---> muestra el lenguaje por defecto del usuario
+* Accept-Encoding ---> Formatos de codificación que soporta el navegador. El servidor web puede enviar el HTML resultante en un formato comprimido, lo que ahorra hasta un 80% de bandwidth y tiempo de carga
+* If-Modified-Since ---> Si no se ha modificado el resource desde esa fecha, el servidor devolverá un código de respuesta 304 Not Modified, sin contenido, ya que el navegador cargará el contenido de la caché
+* Authorization ---> Cuando un sitio web solicita autorización, el navegador abre una ventana de login. Cuando insertas los datos de entrada, el navegador envía otro request, pero esta vez contiene. El dato incluido esta codificado en base-64
+
+headers en las response http
+
+* Cache-Control ---> Campo usado para especificar las directivas que se deben cumplir por los mecanismos de caché durante la cadena request/response. Estos mecanismos de caché incluyen gateways y proxies que el ISP puede estar utilizando. "public" significa que la respuesta puede ser cacheada por cualquiera. "max-age" indica por cuantos segundos es válida. Permitir que el sitio web sea cacheado reduce el consumo de memoria en el servidor y reduce los tiempos de carga. Se puede evitar el cacheo con "no-cache":
+* Content-Type ---> Indica el mime-type del documento. El navegador decide entonces como interpretar los contenidos.
+* Content-Disposition ---> Este header indica al navegador que abra una caja de descarga de archivos, en lugar de analizar el contenido.
+* Content-Length ---> Cuando el contenido se va a enviar al navegador, el servidor puede indicar el tamaño en bytes
+* Last-Modified ---> Indica la última fecha de modificación del documento en formato GMT.
+* Location ---> Header utilizado para las redirecciones. Si el código de respuesta es 301 o 302, el servidor debe también enviar este header.
+* WWW-Authenticate ---> Un sitio web puede enviar este header para identificar al usuario a través de HTTP. Cuando el navegador ve este header, abrirá una ventana de login.
+* Content-Encoding ---> Header enviado cuando el contenido está comprimido.
+
+La cabecera authorization bearer es un tipo de header de una petición HTTP que carga con información relevante al tipo de usuario con el objetivo de darle autoridad para ejecutar la acción requerida en la petición.
