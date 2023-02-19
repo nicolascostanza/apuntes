@@ -21,3 +21,16 @@ headers en las response http
 * Content-Encoding ---> Header enviado cuando el contenido está comprimido.
 
 La cabecera authorization bearer es un tipo de header de una petición HTTP que carga con información relevante al tipo de usuario con el objetivo de darle autoridad para ejecutar la acción requerida en la petición.
+
+Metodos HTTP
+
+* GET ---> devuelve recursos
+* POST ---> crea
+* DELETE ---> elimina
+* PUT ---> edita un recurso completo, con lo nuevo que le envies
+* PATCH ---> edita con modificaciones parciales, no edita todo el recurso como el PUT
+* HEAD ---> pide una respuesta idéntica a la de una petición GET, pero sin el cuerpo de la respuesta
+* CONNECT ---> establece un túnel hacia el servidor identificado por el recurso
+* OPTIONS ---> es utilizado para describir las opciones de comunicación para el recurso de destino
+* TRACE ---> realiza una prueba de bucle de retorno de mensaje a lo largo de la ruta al recurso de destino
+
