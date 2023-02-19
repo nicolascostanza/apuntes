@@ -40,3 +40,15 @@
 * zip, unzip ---> el comando zip para comprimir tus archivos en un archivo zip y use el comando unzip para extraer los archivos comprimidos de un archivo zip
 * hostname ---> Si deseas conocer el nombre de tu host/red, simplemente escribe hostname. Agregar un -I al final mostrará la dirección IP de tu red
 * useradd, userdel ---> useradd se usa para crear un nuevo usuario, mientras que passwd agrega una contraseña a la cuenta de ese usuario. Para eliminar la cuenta de usuario, escribe userdel NombredeUsuario
+* printenv ---> printenv NombreVariableEntorno para ver la variable de entorno
+
+para instalar un paquete con linux
+1) me paro en la carpeta donde esta el archivo descargado
+2) pongo ll busco el archivo y me fijo si tiene el -x q es el permiso de ejecucion
+3) si no lo tiene se lo agrego con sudo chmod +x nombreDelArchivo
+3.1) chmod es para modificar
+4) una vez q ya lo tiene pongo sudo apt install ./nombreDelARchivo y listo
+
+para ejecutar un archivo .bin
+1) te pones en la carpeta donde lo tengas, ves si tiene permisos de ejecucion con ll
+2) sudo sh nombreDelArchivo.bin
