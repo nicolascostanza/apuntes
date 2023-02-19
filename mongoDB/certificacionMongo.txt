@@ -238,6 +238,97 @@ db.coll.hideIndex('nombre indice')
 db.coll.dropIndex('nombre del indice')
 db.coll.dropIndexes(['indice 1', 'indice 2', '...etc'])
 
+SEARCH INDEX O INDICES DE BUSQUEDA
+
+* search atlas es una busqueda rapida e inteligente q probee mongo, sirve para q los usuarios finales pongan lo que quieren y con su algoritmo lo busque rapidamente sin hacer una demora rapida como si estuvieramos haciendo a mano la logica de busqueda y las request necesarias para esa logica.
+* los index de busqueda no son los mismo que los index de la base de datos, son para busquedas de usuarios y trabajan por relevancia, como una busqueda de google seria
+* index de busqueda se utilizan para la busqueda basada en la relevancia 
+* los componentes de un index de busqueda de atlas incluyen informacion sobre los analizadores que se estan utilizando, el tipo de la correlacion (si es dinamico o no), una opcion para almacenar documentos completos en memoria para un rendimiento posterior a un aggregate y las correlaciones a campos
+* index search con correlacion dinamica significa que cuando se ejecuta el algoritmo todos los campos se indexaran (menos booleanos, object id, indicadores de fecha y hora)
+* lucene.standar ---> lucene es una libreria de motor de busqueda de codigo abierto creo, standar se refiere a como vamos a tokenizar los datos en trozos de busqueda
+* dinamic mapping ---> se deja on para que mire a travez de todos los fields
+* si creamos un search index, desp podemos desde mongo atlas o compass, y buscar por cualquier palabra que tenga el documento y aparece
+* indexacion estatica hace q la query sea mas rapida, esto se haria con dinamic mapping desabilitado y agregar los campos necesarios a mano. Para esto desactivamos dinamic mapping cuando creamos un search index y ponemos add field, luego elegimos el campo que queremos y vemos q el data type sea string,
+* en la pipeline de agreggate existe la etapa $search, la cual dentro tiene $compound(especifica como se deben clasificar los resultados). Aca podemos rankear de que campos nos interesan mas o menos para la busqueda (orden de importancia)
+
+must ---> solo incluyen los q matcheen con esta condicion
+must not ---> lo contrario a must
+should ---> asignara un peso a cada registro
+filter ---> elimina cualquier resultado de la busqueda anterior q no coincida con la condicion de este filtro
+
+* podemos hacer un agregate desde mongo atlas o mongo compass yendo a la tab de aggregate. Ejemplo de search
+
+$search {
+  "compound": {
+    "must": [{
+      "text": {
+        "query": "field",
+        "path": "habitat"
+      }
+    }],
+    "should": [{
+      "range": {
+        "gte": 45,
+        "path": "wingspan_cm",
+        "score": {"constant": {"value": 5}}
+      }
+    }]
+  }
+}
+
+* $searchMeta ---> personaliza los resultados de la busqueda categorizandolos. Los separa en distintas facetas o bloques, las facetas son cubos en los que agrupamos nuestros resultados de busqueda. Ejemplo de una pipeline de aggregate para personalizar:
+
+$searchMeta: {
+    "facet": {
+        "operator": {
+            "text": {
+            "query": ["Northern Cardinal"],
+            "path": "common_name"
+            }
+        },
+        "facets": {
+            "sightingWeekFacet": {
+                "type": "date",
+                "path": "sighting",
+                "boundaries": [ISODate("2022-01-01"), 
+                    ISODate("2022-01-08"),
+                    ISODate("2022-01-15"),
+                    ISODate("2022-01-22")],
+                "default" : "other"
+            }
+        }
+    }
+}
+
+
+TRANSACCIONES
+
+* por ejemplo al realizar una transferencia, debe sacarse el dinero de una cuenta y luego sumarsela a la otra, deben suceder todas juntas o si falla en el medio q no se ejecute ninguna accion
+* ACID transaccion ---> son un grupo de operacion de base de datos que se completaran conjuntamente como una unidad o fallaran todas y no se ejecutara ninguna 
+* ACID ---> es un acronimo que se usa para describir las propiedades que tienen las transacciones (atomicidad, consistencia, aislamiento, durabilidad)
+* atomicidad ---> o se ejecutan todas con exito o no se ejecuta ninguna
+* consistencia ---> todos los cambios realizados por las operaciones deben ser coherentes
+* aislamiento ---> varias transacciones pueden ocurrir al mismo tiempo sin afectar el resultado de otras transacciones, tambien garantiza que los efectos de las operaciones en una transaccion se aislen de otras operaciones que se ejecuten en la base de datos al mismo tiempo
+* durabilidad ---> garantiza q los cambios que realicen las operaciones en una transaccion son persistentes incluso en el caso de una falla de energia o de hardware
+* el findOneAndUpdate tiene atomicidad ya q es uno solo, pero si debemos actualizar varios hay q ver como hacer para q ocurran todos o no ocurra ninguno
+* Para hacer una transaccion multiple y abortarla en caso de que falle:
+* abrimos una session() en el try ---> es un grupo de operaciones de base de datos que estan relacionadas y se deben ejecutar en conjunto. Es importante saber que tiene por defecto de tiempo de ejecucion 1 minuto. Es como se hacen en los endpoints del back de qira
+
+const session = await startSession();
+session.startTransaction();
+// request necesarias, en tiempo de 1 minuto, poniendole el .session() a cada una
+// si termina bien al final del try ponemos
+await session.commitTransaction();
+// si termina mal en el catch ponemos 
+await session.abortTransaction();
+// en el finally ponemos
+session.endSession();
+
+*** TODO 
+
+
+
+
 
 
 ***************** datos utiles *****************
@@ -263,7 +354,4 @@ The IXSCAN stage indicates the query is using an index and what index is being s
 The COLLSCAN stage indicates a collection scan is perform, not using any indexes.
 The FETCH stage indicates documents are being read from the collection.
 The SORT stage indicates documents are being sorted in memory.
-
-********************** me quede en **************************
-
-https://learn.mongodb.com/courses/mongodb-atlas-search
+existen muchisimas etapas en el aggregate, investigar
