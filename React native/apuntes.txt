@@ -101,6 +101,8 @@ import BigButton from './BigButton'; // te importa cualquiera de los dos segun e
 
 * Tenemos la etiqueta Animated que podemos animar.
 
+* Si queremos que el text se mantenga en una linea ponemos a la etiqueta text la pro numberOfLines={1}
+
 
 ************* a hacer
 
