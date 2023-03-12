@@ -52,3 +52,12 @@ para instalar un paquete con linux
 para ejecutar un archivo .bin
 1) te pones en la carpeta donde lo tengas, ves si tiene permisos de ejecucion con ll
 2) sudo sh nombreDelArchivo.bin
+
+* Cosas que usas siempre
+mkdir ---> crear carpeta
+touch ---> crear archivo
+echo ---> console log de terminal
+chmod ---> modificar permisos de lectura escritura o ejecucion
+nano ---> editor de texto de la terminal q ya viene instalado en linux
+
+
