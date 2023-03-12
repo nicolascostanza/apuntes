@@ -27,16 +27,12 @@
 * Si trabajo con findByIdAndUpdate y lean o aggregaet --> spread operator y mando todo el objeto
 * Si tengo un middleware de validacion puedo pasar la lo que quiera a la siguiente funcion con req.customNombre = variableAPasar. Despues ponemos next() y deberiamos podes acceder en la siguiente funcion mediante req.customNombre
 * Para linkear bien y pushear un repo a github tenemos q generar la key en developer settings, ya que no acepta mas la password de la cuenta. Aca podemos ver como se hace ---> https://stackoverflow.com/questions/68775869/message-support-for-password-authentication-was-removed-please-use-a-personal
-
-
-VER BIEN **********************
-* podemos pasar props globales a travez de la navegacion con history. noseque. Aca deberia pasarle una prop state o no se bien q almacena lo q queremos pasar
-ver la navegacion del path dinamico de qira
-
-
-
-donde quede
-
-https://www.youtube.com/watch?v=AkEnidfZnCU
-
-3:25:29
+* le pasas un archivo js y te crea los types de typescript ---> app.quicktype.io
+* para tipar el set del useState ---> React.Dispatch<React.SetStateAction<tipo del state>>
+* Si comiteaste y pusheaste en una branch que no es: 
+1) Desde la branch local que hiciste el commit mal: git reset --soft HEAD~1
+2) git stash -u
+3) git checkout ramaQueQueres
+4) git stash apply
+5) Volves a hacer el commit
+6) Pusheas desde la rama que queres
