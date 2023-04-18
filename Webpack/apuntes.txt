@@ -1,0 +1,202 @@
+* webpack es un agrupador de modulos estaticos para aplicaciones con javascript
+
+* webpack necesita el const path = require('path') para poder conseguir rutas absolutas
+
+* __dirname es algo q hace q busque y encuentre la ruta del directorio del repositorio en cuestion, osea la ruta raiz del proyecto pero con ruta absoluta
+
+* el loader es una biblioteca que transforma mi codigo y va a hacer q webpack lo entienda y lo transforme a algo q pueda entender el navegador. Es como un preprocesador. El loader q usamos para react es Babel
+
+* plugin, añade una funcionalidad a webpack
+
+* sourceMap ---> sirve para generar 2 archivos en el bundler, 1 para q lo vea el usuario compilado y lindo y otro para poder debugear mejor y q te diga bien las lineas de codigo
+
+********************* CONCEPTOS CORE ******************************
+
+* entry ---> es el punto de entrada de la aplicacion desde donde se empieza a contruir las ramas de dependencias. Por defecto esta en: ./src/index.js
+
+* output ---> esta propiedad indica a webpack dónde emitir los paquetes que crea y cómo nombrar estos archivos. Por defecto es ./dist/main.js para el archivo de salida principal y la carpeta ./dist para cualquier otro archivo generado.
+
+ejemplo de entry y output config
+
+const path = require('path');
+
+module.exports = {
+  entry: './path/to/my/entry/file.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'my-first-webpack.bundle.js',
+  },
+};
+
+* loaders ---> Por defecto, webpack sólo entiende archivos JavaScript y JSON. Los loaders permiten a webpack procesar otros tipos de archivos y convertirlos en módulos válidos que pueden ser consumidos por tu aplicación y añadidos al gráfico de dependencias. En el config tienen 2 propiedades:
+
+1) La propiedad test identifica qué archivo o archivos deben ser transformados.
+2) La propiedad use indica qué cargador debe utilizarse para realizar la transformación.
+
+ejemplo de loaders config
+
+const path = require('path');
+
+module.exports = {
+  output: {
+    filename: 'my-first-webpack.bundle.js',
+  },
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+};
+
+esta rule quiere decir "Hey compilador webpack, cuando te encuentres con una ruta que resuelva a un archivo '.txt' dentro de una sentencia require()/import, utiliza el raw-loader para transformarlo antes de añadirlo al bundle."
+
+* Plugins ---> Mientras que los cargadores se utilizan para transformar determinados tipos de módulos, los plugins pueden aprovecharse para realizar una gama más amplia de tareas, como la optimización de paquetes, la gestión de activos y la inyección de variables de entorno. Para usar un plugin, necesitas requerirlo() y añadirlo al array de plugins. La mayoría de los plugins son personalizables mediante opciones. Ya que puedes usar un plugin múltiples veces en una configuración para diferentes propósitos, necesitas crear una instancia del mismo llamándolo con el operador new.
+
+ejemplo
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack'); //to access built-in plugins
+
+module.exports = {
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+};
+
+* mode ---> sirve para setear distintos entornos como dev, qa, uat, produccion. Por defecto es produccion, sirve para pasar cosas condicionalmente dependiendo el environment
+
+* Browser compatibility ---> Webpack soporta todos los navegadores compatibles con ES5 (IE8 e inferiores no son compatibles). Webpack necesita Promise para import() y require.ensure(). Si quieres soportar navegadores más antiguos, necesitarás cargar un polyfill antes de usar estas expresiones.
+
+* chunk ---> es cómo trocear los bundles con Webpack: hacer paquetes de código Javascript más reducidos, incorporando únicamente el código que necesitas para cada vista de la aplicación
+
+******************************* entry en profundidad **********************************
+
+* tenemos disponible un shorthand para:
+
+module.exports = {
+  entry: {
+    main: './path/to/my/entry/file.js',
+  },
+};
+
+module.exports = {
+  entry: './path/to/my/entry/file.js',
+};
+
+* ademas se pueden pasar multiples entry points para trocear el bundler, por ejemplo sirve para cargar el js q se necesite en cada vista. Ejemplo:
+
+module.exports = {
+  entry: ['./src/file_1.js', './src/file_2.js'],
+  output: {
+    filename: 'bundle.js',
+  },
+};
+
+* la sintaxis de objeto es mas verbosa, requiere escribir mas pero es la mas escalable en aplicaciones. Sintaxis entry: { <entryChunkName> string | [string] } | {}
+
+Se le pueden pasar las siguientes propiedades:
+
+* dependOn ---> Los puntos de entrada de los que depende el punto de entrada actual. Deben cargarse antes de cargar este punto de entrada.
+
+* filename ---> Especifica el nombre de cada archivo de salida en disco.
+
+* import ---> Módulo(s) que se cargan al arrancar.
+
+* library ---> especifica las opciones de libreria que se van a utilizar para bundlear desde el entry actual
+
+* runtime ---> El nombre del chunk de tiempo de ejecución. Cuando se establece, se creará un nuevo chunk de tiempo de ejecución. Se puede establecer en false para evitar un nuevo trozo de tiempo de ejecución desde webpack 5.43.0.
+
+* publicPath ---> Especifica una dirección URL pública para los archivos de salida de esta entrada cuando se hace referencia a ellos en un navegador.
+
+runtime y dependOn no deben usarse juntos en un mismo entry point, van a causar un error. Tambien asegurarme de que el runtime no apunte a un entrypoint o nombre del mismo
+
+******************************* output en profundidad *******************************
+
+* solo puede haber una, caso contrario del entry point
+
+* Si su configuración crea más de un "chunk" (como en el caso de múltiples puntos de entrada o al utilizar plugins como CommonsChunkPlugin), debe utilizar sustituciones para asegurarse de que cada archivo tiene un nombre único. Ejemplo
+
+module.exports = {
+  entry: {
+    app: './src/app.js',
+    search: './src/search.js',
+  },
+  output: {
+    filename: '[name].js',
+    path: __dirname + '/dist',
+  },
+};
+
+// writes to disk: ./dist/app.js, ./dist/search.js
+
+******************************* loaders en profundidad *******************************
+
+* los loaders son funciones de preprocesamiento, osea le aplica cosas al proyecto y los podes ir encadenando hasta llegar al ultimo, y en el proceso ir puliendo
+
+* Los loaders son transformaciones que se aplican al código fuente de un módulo. Permiten preprocesar archivos al importarlos o "cargarlos". Por lo tanto, los loaders son algo así como "tareas" en otras herramientas de construcción y proporcionan una poderosa manera de manejar los pasos de construcción front-end. Los loaders pueden transformar archivos de un lenguaje diferente (como TypeScript) a JavaScript o cargar imágenes en línea como URL de datos. Los loaders te permiten incluso importar archivos CSS directamente desde tus módulos JavaScript.
+
+* la forma recomendada de implementarlo es en Configuración: especificandolos en tu archivo webpack.config.js.
+
+* los loaders pueden encadenarse, pueden ser sincronos o asincronos, se ejecutan en nodejs. Los plugins suelen darle mas caracteristicas a los loaders, los loaders pueden emitir archivos arbitrarios adicionales
+
+* module.rules te permite especificar varios loaders dentro de tu configuración de webpack. Esta es una forma concisa de mostrar los loaders, y ayuda a mantener un código limpio. También le ofrece una visión completa de cada cargador respectivo. Estos se ejecutan de derecha a izquierda o DE ABAJO A ARRIBA. Ejemplo:
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+          { loader: 'sass-loader' },
+        ],
+      },
+    ],
+  },
+};
+
+// primero va sass-loader, desp css-loader y desp style-loader
+
+******************************* plugins en profundidad *******************************
+
+* sirven para hacer cualquier otra cosa que un loader no pueda hacer
+
+* Un plugin de webpack es un objeto JavaScript que tiene un método apply. Este método apply es llamado por el compilador webpack, dando acceso a todo el ciclo de vida de la compilación.
+
+* desde que a los plugins se le puede pasar parametros, en la config se debe poner new para instanciar el plugin cada vez q lo utilice el bundler
+
+********************************** avanzado **********************************
+
+********************************** federacion de modulos **********************************
+Varias compilaciones separadas deben formar una única aplicación. Estos builds separados actúan como contenedores y pueden exponer y consumir código entre builds, creando una única aplicación unificada.
+
+Esto se conoce a menudo como Micro-Frontends, pero no se limita a eso.
+
+
+Distinguimos entre módulos locales y remotos. Los módulos locales son módulos normales que forman parte de la compilación actual. Los módulos remotos son módulos que no forman parte de la compilación actual, sino que se cargan en tiempo de ejecución desde un contenedor remoto.
+
+La carga de módulos remotos se considera una operación asíncrona. Cuando se utiliza un módulo remoto, estas operaciones asíncronas se colocarán en la(s) siguiente(s) operación(es) de carga de chunk que se encuentre(n) entre el módulo remoto y el punto de entrada. No es posible utilizar un módulo remoto sin una operación de carga de trozos.
+
+Una operación de chunk loading es normalmente una llamada a import(), pero también se soportan construcciones más antiguas como require.ensure o require([...]).
+
+Un contenedor se crea a través de una entrada de contenedor, que expone el acceso asíncrono a los módulos específicos. El acceso expuesto se divide en dos pasos
+
+cargar el módulo (asíncrono)
+evaluar el módulo (síncrono).
+El paso 1 se realizará durante la carga del chunk. El paso 2 se realizará durante la evaluación del módulo intercalado con otros módulos (locales y remotos). De esta forma, el orden de evaluación no se ve afectado por la conversión de un módulo de local a remoto o viceversa.
+
+Es posible anidar contenedores. Los contenedores pueden utilizar módulos de otros contenedores. También son posibles las dependencias circulares entre contenedores.
+
+
+aca me quede https://webpack.js.org/concepts/module-federation/
+
+
+
+
+
+

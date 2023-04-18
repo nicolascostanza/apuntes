@@ -1,1 +1,8 @@
 * al crear indices para una collection en mongodb, hacemos q la query sea mas rapida ?
+
+
+
+* lo que hace webpack es bundlear, pero que es bien ?
+* pq webpack tiene la posibilidad de hacerlo por partes y como se haria
+* que es un loader en webpack
+* que es la federacion de modulos

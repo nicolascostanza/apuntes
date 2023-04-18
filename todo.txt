@@ -5,7 +5,7 @@ Estudiar doc de joi y react hook forms
 A APRENDER
 
 * webpack
-https://webpack.js.org/
+https://webpack.js.org/ --- en progreso
 * babel
 https://babeljs.io/
 * pwa
