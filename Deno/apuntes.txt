@@ -1,0 +1,51 @@
+* entorno de ejecucion para js y ts
+
+*********************** CARACTERISTICAS DESTACABLES ********************
+
+* no brinda acceso al environment, archivo ni networks por defecto
+* soporta TypeScript
+* podes compilarlo todo en un simple ejecutable
+* te da un linter
+* hay librerias en la standar q son librerias q soporta deno directamente (lo tiene separado del core)
+
+*********************** DATOS ***********************
+
+* ctrl + shift + p initilize deno y le damos yes y no (no para apis inestables)
+* solo permite ESModules, no usar npm, tiene acceso a la api de la web
+* para ejecutar un archivo con deno ponemos deno run --allow-net nombreArchivo  // se le pone el allow para q te permita tener acceso. Ademas podemos ponerle watch para q escuche cambios en tiempo real (como un nodemon)
+* para hacer un bundler hacemos deno bundle nombreArchivo > NombreDondeLoGuardamos
+* el formateador por defecto se usa asi en terminal: deno fmt nombreArchivo   // con eso ya alcanza
+* soporta instalaciones de paquetes con npm de la siguiente forma:
+import express from "npm:express@^4.17";
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
+app.listen(3000);
+console.log("listening on http://localhost:3000/");
+
+* tiene top level await
+* tiene eventos del navegador
+* tiene localstorage, sirve para almacenar y no tener q usar memoria. Al menos q borres la carpeta con el cache
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
