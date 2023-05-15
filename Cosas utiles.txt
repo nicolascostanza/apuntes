@@ -1,34 +1,60 @@
 * las propiedades en el documento cuando hacemos un findOne por ejemplo, estan en _doc ---> ahi estan las props comunes del objeto js
+
 * A veces no hace el .save pq le faltan las propiedades de mongo al documento que busque. Generalmente es porque hice un .lean()
+
 * para borrar props de un documento usar $unset
+
 * funcion que mapea promesas
     const getClientList = async (ids = [], mod) =>
       await Promise.all((ids)
         .map(async (id: any) => await mod.findOne({
           _id: id, isActive: true, logicDelete: false
         })));
+
 * CX la libreria de clases le mandas entre llaves  todas las clases que queres aplicar a ese elemento, si se la pasas comun como en un objeto se la aplica siempre, pero si en cambio se la pasas con el formato ---> [css.propiedad]: variableBooleana. Esto hace que si la variable es true aplica la clase y si es false no aplica la clase
+
 * para tipar las funciones que pasamos como parametros es asi: (los params de la funcion tipados) => tipado de lo que retorna, si no retorna nada se le pone void
+
 * las clases q veo en el html del navegador son asi: nombreDelComponente_nombreClase_hashAleatorio, eso lo genera react
+
 * cuando compato strings o cosas falsy, ponerle antes el !! pq a veces react renderiza un cero si es false.
+
 * Para crear un archivo desde la terminal es por ejemplo asi: cat > nombreArchivo.txt
+
 * Para eliminar una carpeta desde la terminal, nos paramos en la carpeta padre y ponemos rm -rf nombreCarpeta
+
 * A Los schemas de mongodb se le pueden agregar metodos. Por ejemplo si tenemos un schema user podemos hacer un metodo que encripte la contraseña, entonces luego al crear un new User podemos aplicarle el metodo creado en el schema.
+
 * En el caso de que en un schema tengamos una prop que se puede popular en varias collections distintas. Lo mejor que podemos hacer es pasarle a ese id la prop 'refPath': Otra prop del schema con el nombre de la collection a la que debe popular. Entonces cuando hagamos el populate de la prop ya sabe a que collection ir a buscar
+
 * Para podes usar el _doc de un modelo tenemos que tipar el schema y extenderlo de Document.
+
 * En javascript, las promesas siempre retornan promesas, asi funciona el metodo, esto es asi para poder concatenar todos los .then() que querramos
+
 * En mongoose tenemos el metodo sort que te ordena ascendente o descendentemente por la propiedad que querramos
+
 * en un onchange o onclick, el evento podes obtener el codigo de la letra. e.keyCode ---> con esto podemos saber que tecla apreto y condicionar el evento
+
 * El virtuals de mongoose es una propiedad que seteas en el schema pero que no la vas a guardar en la base de datos. Es util para usarlo con propiedades claculables como la edad, etc.
+
 * en los headers de una request se mandan cosas relacionadas a el formato de la data o informacion sobre la request, en cambio en el body mandamos informacion que queremos transportar.
+
 * para tener algo relativo a un componente padre en css, a la etiqueta padre le asignamos una clase con position relative y a la q vamos a mover con absolute. Entonces esa clase q vamos a mover es absoluta al padre, en vez de a toda la pantalla
+
 * en css tenemos la prop ellipsis que nos da los ... en el texto
+
 * Si trabajo con .save(), muto directamente las propiedades del documento.
+
 * Si trabajo con findByIdAndUpdate y lean o aggregaet --> spread operator y mando todo el objeto
+
 * Si tengo un middleware de validacion puedo pasar la lo que quiera a la siguiente funcion con req.customNombre = variableAPasar. Despues ponemos next() y deberiamos podes acceder en la siguiente funcion mediante req.customNombre
+
 * Para linkear bien y pushear un repo a github tenemos q generar la key en developer settings, ya que no acepta mas la password de la cuenta. Aca podemos ver como se hace ---> https://stackoverflow.com/questions/68775869/message-support-for-password-authentication-was-removed-please-use-a-personal
+
 * le pasas un archivo js y te crea los types de typescript ---> app.quicktype.io
+
 * para tipar el set del useState ---> React.Dispatch<React.SetStateAction<tipo del state>>
+
 * Si comiteaste y pusheaste en una branch que no es:
 1) Desde la branch local que hiciste el commit mal: git reset --soft HEAD~1
 2) git stash -u
@@ -36,4 +62,52 @@
 4) git stash apply
 5) Volves a hacer el commit
 6) Pusheas desde la rama que queres
+
 * npx servor carpetaConElHtml ---> es un paquete muy chiquito q le decis donde esta el index.html y lo sirve en un server local para que lo puedas ver
+
+* para generar un id unico sin ninguna libreria extra usamos window.crypto.randomUUID()
+
+* props nuevas que se van a venir en CSS
+1) Object-view-box: inset(top rigth bottom left) ---> sirve para elegir q pedazo de una imagen q tenés de fondo mostras. Útil para selecciónae las personas de fondo.
+2) Aspect-ratio: 16/9 --> para los videos
+3) & ---> anidamiento de selectores cómo con sass pero nativo
+
+* Así podemos sacar el valor de un input en el onsubmit de un form sin ningún state, osea manejar un input de forma no controlada. Con vanilla javascript:
+
+// este handleSubmit sale del onSubmit de la etiqueta <Form>
+const handleSubmit = (event) => {
+  event.preventDefault();
+  const fields = new window.FormData(event.target)
+  const fieldEnCuestion = fields.get('name en el field del html')
+  // si hay muchos inputs. En vez de la liena de arriba iria esta
+  const {field1, field2, ..., etc} = Object.fromEntries(new window.FormData(event.target))
+}
+
+* Para validar q el input todavía no le ingreso nada hacemos eso con useRef pq perdiste su valor entre renders. Es un singleton para inputs. Ejemplo:
+
+const isFirstInput.current = useRef(true)
+
+if(isFirstInput.current){
+  isFirstInput.current = valueInput === ''
+  return
+}
+
+* Para saber si mover la logica a un customhook o a un util/helper me fijo si lo q voy a mover tiene algun hook.
+
+* para hacer un main responsivo como de ecommerce comun o peliculas, con 3-2-1 filas segun el tamaño de la pantalla hacemos lo siguiente en css
+
+// este componente es el padre
+
+main{
+  width: 100%
+}
+
+// este componente es el <ul>, q adentro mapeariamos las <li>
+
+.ulEnCuestion{
+  display: grid;
+  width: 100%;
+  grid-templates-columns: repeat(auto-fit, minmax(200px, 1fr))
+}
+
+* un debounce ---> es, mientras el usuario escribe no hacemos nada hasta q le damos un tiempito y si no puso nada en ese tiempo entonces si ejecutamos lo que queremos hacer. Existen librerias q lo hacen, sino se puede hacer un setTimeOut

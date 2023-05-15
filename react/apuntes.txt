@@ -214,6 +214,95 @@ const DetailsComponent = () => (
 * Para modificarlo en el setState() es conveniente agarrar el estado previo y las props en vez de usar el mismo state (this.state.laVaribleQSea)
 * en react los datos siempre fluyen de padres a hijos. El flujo es unidireccional
 
+* En el ciclo de vida hay 3 fases
+1- montaje
+2- actualizacion
+3- desmontaje
+
+FASE MONTAJE
+
+* constructor ---> se ejecuta al crear la instancia del componente. En el constructor podes inicializar el estado y enlazar manejadores de eventos
+
+* render ---> es el unico metodo requerido. Cuando se ejecuta examina las props, el estado y pinta el html en el DOM
+
+* componentDidMount ---> se ejecuta luego de que el componente se haya insertado en el DOM. Seria como el primer useEffect. Sirve para hacer request a una api externa, etc
+
+FASE ACTUALIZACION
+
+* componentDidUpdate --> cuando algo se actualizo se ejecuta lo q tenga dentro
+
+FASE DESMONTAJE
+
+* componentWillUnmount ---> se ejecuta al destruir el componente del DOM
+
+Ejemplo:
+
+import React, { Component } from 'react';
+
+class ComponenteEjemplo extends Component {
+  // props y state local
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hora: new Date().toLocaleTimeString()
+    };
+
+    this.temporizador = null;
+  }
+
+  // esto se ejecuta luego de el primer render del DOM
+  componentDidMount() {
+    console.log('codigo');
+  }
+
+  // permite pasar las props y estado previo por si las necesitas antes de actualizarlo
+  componentDidUpdate(prevProps, prevState) {
+    console.log('el estado o las props cambiaron, entonces el componente se va a volver a renderizar');
+    console.log(prevProps, prevState);
+  }
+
+  // se ejecuta cuando el componente ya no existe
+  componentWillUnmount() {
+    console.log('el componente ha sido eliminado del DOM');
+  }
+
+  // funcion comun q cambia cada segundo
+  tictac = () => {
+    this.temporizador = setInterval(() => {
+      this.setState({
+        hora: new Date().toLocaleTimeString
+      });
+    }, 1000);
+  };
+
+  // eventos de onclick de botones iniciar y detener
+  iniciar = () => {
+    this.tictac();
+  };
+
+  detener = () => {
+    clearInterval(this.temporizador);
+  };
+
+  render() {
+    return (
+      <>
+        <h2>ciclo de vida de los componentes de vida</h2>
+        <h3>{this.state.hora}</h3>
+        <button type="button" onClick={this.iniciar}>
+          iniciar
+        </button>
+        <button type="button" onClick={this.detener}>
+          detener
+        </button>
+      </>
+    );
+  }
+}
+
+export default ComponenteEjemplo;
+
 ********************************* MANEJANDO EVENTOS ******************************************************
 
 * es muy similar a manejar eventos en el dom. Las diferencias son:
@@ -258,6 +347,7 @@ const DetailsComponent = () => (
 * El input de tipo file solo es de lectura por lo tanto es un componente no controlado
 * Si trabajamos con mas de 1 input al mismo tiempo es conveniente a cada input asignarle un name y hacer q el name sea igual al value. Entonces en el onchange hacemos una funcion q tome el name y le asigne el nuevo value para asi tener una funcion reutilizable
 * si a un input le damos el value en null o undefined hace q no se pueda modificar
+* La diferencia entre inptus no controlados es q toma los valores desde el dom en cambio los inputs controlados q son con onchange y un state el state es el q modifica al input por lo tanto react decide q toma el input. Estos casos controlados son útiles para validaciones en los inputs
 
 ********************************* LEVANTANDO EL STATE ****************************************************
 
@@ -306,6 +396,10 @@ const DetailsComponent = () => (
 * El componente Provider acepta una prop value que se pasará a los componentes consumidores que son descendientes de este Provider
 * Todos los consumidores que son descendientes de un Provider se vuelven a renderizar cada vez que cambia la prop value del Provider
 * Debido a que Context usa la identidad por referencia para determinar cuándo se debe volver a renderizar, hay algunos errores que podrían provocar renderizados involuntarios en los consumidores cuando se vuelve a renderizar en el padre del proveedor. Por ejemplo, el código a continuación volverá a renderizar a todos los consumidores cada vez que el Proveedor se vuelva a renderizar porque siempre se crea un nuevo objeto para value
+* Usar use context cuando tenés un estado que no cambia muchas veces. O cuando querés pasar funciones en vez de valores. En caso contrario usar Redux, Redux toolkit, etc
+* Si usamos un customHook q usa un context el primer checkeo es un ir ===undefined y devolvemos un throw new error con mensaje q no está encerrado el componente con ese provider
+* Cuando usamos context es mejor tener un useResucer q un useState ya q van a ser estados más complejos
+
 
 ********************************* ERROR BOUNDARIES ********************************************************
 
@@ -445,6 +539,8 @@ const name = useRef('valorPorDefecto')
 2) luego en los lugares que queremos le modificamos el valor. Al ser un objeto, debemos acceder al a propiedad current
 name.current = 'Cambio el nombre';
 
+* El useRef() ---> nos permite referencias o acceder a un elemento del dom y al cambiar su valor no ejecuta un nuevo render, el valor es mantenido durante todo el ciclo de vida del componente. A diferencia del useState q cada vez q cambiar se vuelve a renderizar
+
 ********************************* useMemo *********************************
 * memorizamos un valor y solo si una dependencia q le pasamos en el segundo parametro cambia volvemos a memorizar el nuevo valor
 * Sirve para no hacer renders innecesarios. Ejemplo
@@ -494,6 +590,11 @@ const contadorReducer = (state: typeof initialState, action: actionType) => {
 const [contadorState, dispatch] = useReducer(contadorReducer, initialState, init)
 
 () => dispatch({type: 'incrementar'})
+
+********************************* useId *********************************
+
+* genera un id unico random que va a ser unico en toda la aplicacion. Se usa para darle ids a etiquetas html como el <select>
+* NO USAR cuando mapeamos elemenos y se lo ponemos en la key, al igual q math random y uuid. Esta mal ya que en cada render va a otorgarte un id unico diferente. Por lo cual react al comparar keys siempre las va a ver distintas y va a renderizar todo de nuevo
 
 
 ********************************* useParams *********************************
