@@ -89,7 +89,324 @@ query {
   }
 }
 
+***************************************** GRAPHQL SERVER *****************************************
 
+* Diferencia entre GRAPHQL y REST APIs ---> graphql lenguaje de consultas. Rest APIs, es una arquitectura para recuperar o modificar recusos de una base de datos
+
+* Tenemos dos tipos centrales: querys y mutations. Las querys son para consultas y las mutations para crear, editar, borrar y todo tipo de cosas que sea modificar.
+
+* Lo primero que tenemos que hacer es definir nuestros schemas. Ejemplo:
+
+const typeDefinitions = gql`
+	type Address {
+		city: String!
+		street: String!
+	}
+
+	type Person {
+		name: String!
+		phone: String
+		address: Address!
+		id: ID!
+	}
+
+  // querys
+	type Query {
+		personCount: Int!
+		allPersons: [Person]!
+		findPerson(name: String!): Person
+	}
+
+  // mutations
+	type Mutation {
+		addPerson(
+			name: String!
+			phone: String
+			street: String!
+			city: String!
+		): Person
+	}
+`
+
+* Luego en los resolvers, definimos las querys, mutations y campos dinamicos que necesitemos. Ejemplo:
+
+const resolvers = {
+	Query: {
+		personCount: () => personas.length,
+		allPersons: () => personas,
+		// El root o prev puede aparecer, es el valor que tienen los datos antes de ejecutar ese metodo
+		findPerson: (root, args) => {
+			const {name} = args;
+			return personas.find((persona) => persona.name === name);
+		}
+	},
+	// Capa para mapear datos q devuelve con el nombre que nos gustaria o para generar campos dinamicos, ejemplo es mayor de edad. Previamente hay q definirlo
+	// Person: {
+	// 	address: (root) => `${root.city} - ${root.street}`
+	// }
+
+	Mutation: {
+		addPerson: (root, args) => {
+			if(personas.find((person) => person.name === args.name)){
+				throw new UserInputError('Nombre repetido', {
+					invalidArgs: args.name
+				})
+			}
+			const person = {...args, id: uuid()};
+			personas.push(person);
+			return person
+		}
+	},
+
+	// o describimos campos nuevos para q los pueda resolver cuando los buscamos
+	Person: {
+		address: (root) => {
+			return {
+				street: root.street,
+				city: root.city
+			}
+		}
+	}
+}
+
+* Asi se hace una query:
+
+query {
+  findPerson(name: "Nicolas") {
+    address {
+      city
+    }
+  }
+}
+
+
+* Asi se hace una mutation:
+
+mutation {
+  addPerson(
+    name: "nikito"
+    phone: "123123123"
+    street: "barra"
+    city: "La Paz"
+  ) {
+    address {
+      city
+      street
+    }
+    name
+    phone
+    id
+  }
+}
+
+* Manejo de errores y validaciones. Lo hariamos con validaciones en las mutations y querys. Hay distintos tipos de errores para retornar, estan en la docu. Un ejemplo con uno de ellos, el UserInputError:
+
+Mutation: {
+  addPerson: (root, args) => {
+    if(personas.find((person) => person.name === args.name)){
+      throw new UserInputError('Nombre repetido', {
+        invalidArgs: args.name
+      })
+    }
+    const person = {...args, id: uuid()};
+    personas.push(person);
+    return person
+  }
+},
+
+* Tambien se les pueden agregar Enums
+
+* Si se da la situacion que queremos hacer una query 2 veces, osea utilizar el mismo pero una vez con parametros y otra sin por ejemplo, le cambiamos el nombre a cada key. Ejemplo:
+
+query {
+  personCount
+  allPersonsWithoutFilter: allPersons {
+    name
+  }
+  allPersonsWithPhone: allPersons(phone: YES) {
+    name
+    phone
+  }
+}
+
+
+
+
+
+***************************************** GRAPHQL CLIENT *****************************************
+
+* EN GRAPHQL SIEMPRE SE INTERACTUA MEDIANTE POST, y siempre hay un solo endpoint desde el que se hacen todas las request
+
+* Tenes la posibilidad de catchear la informacion y no hacer las request de nuevo
+
+* Tenemos 3 opciones generales: useQuery, useLazyQuery, useMutation
+
+* Como se le pasan varibles y props a estos 3 hooks. Ejemplo:
+
+useHookQueQuiero({
+  variables: { ...las variables que voy a pasar a la query},
+  Options que voy a usar, por ejemplo onComplete: ....
+})
+
+* useQuery ---> se ejecuta cuando se monta el componente (como un useEffect basico sin dependencias). Le podemos sacar las props {loading, error, refetch, data, ...y algunas mas}
+
+refetch ---> sirve para volver a ejecutar ese pedazo de codigo
+
+{pollInterval: 2000} ---> hacel a request cada 2 segundos, compara los resultados y actualiza la ui
+Ejemplo:
+
+const ALL_PERSONS = gql`
+  query {
+    allPersons(phone: YES) {
+      name
+      phone
+      id
+      address {
+        city
+        street
+      }
+    }
+  }
+`;
+
+function App() {
+  const { data, error, loading } = useQuery(ALL_PERSONS);
+
+  if (error) return <p>Error</p>;
+
+  if (loading) return <p>Loading...</p>;
+
+  return <Persons persons={data?.allPersons} />
+}
+
+
+* useLazyQuery ---> se ejecuta solo cuando nosotros le decimos, a diferencia de useQuery. Se le pueden pasar variables que va a tomar para q haga la request. Ejemplo:
+
+const FIND_PERSON = gql`
+  query findPersonByName($nameToSearch: String!) {
+    findPerson(name: $nameToSearch) {
+      name
+      phone
+      id
+      address {
+        city
+        street
+      }
+    }
+  }
+`;
+function Persons({ persons = [] }) {
+	const [getPerson, result] = useLazyQuery(FIND_PERSON)
+	const [person, setPerson] = useState(null);
+
+	const showPerson = name => {
+    // ACA se le pasa la variable que vamos a usar y que estamos definiendo arriba en el findPerson
+		getPerson({variables: {nameToSearch: name}})
+	}
+
+	useEffect(() => {
+		if(result.data){
+			setPerson(result.data.findPerson)
+		}
+	}, [result])
+
+	if(persons === null) return null
+
+	if(person){
+		return (
+			<div>
+				<h2>{person.name}</h2>
+				<h2>{person.address.city} - {person.address.street}</h2>
+				<h2>{person.phone}</h2>
+				<h2>{person.id}</h2>
+				<button onClick={() => setPerson(null)}>Close</button>
+			</div>
+		)
+	}
+
+  return (
+    <div>
+      <h3>Persons</h3>
+      {persons.map((person) => (
+        <div key={person.id} onClick={() => showPerson(person.name)}>
+          {person.name} - {person.phone}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+* useMutation ---> sirve para modificar elementos, no para hacer consultas. Por ejemplo, crear, editar, eliminar, etc. Ejemplo:
+
+import { ALL_PERSONS } from "./App";
+
+const CREATE_PERSON = gql`
+  mutation createPerson(
+    $name: String!
+    $phone: String
+    $street: String!
+    $city: String!
+  ) {
+    addPerson(name: $name, phone: $phone, city: $city, street: $street) {
+      name
+      phone
+      id
+      address {
+        city
+        street
+      }
+    }
+  }
+`;
+
+function PersonForm() {
+  const [values, setValues] = useState(null);
+	const [createPerson, {loading, data, error}] = useMutation(CREATE_PERSON, {
+    // esto es para que cuando ejecuto la mutacion se hagan de nuevo ciertas request, en este caso ALL_PERSONS
+		refetchQueries: [{query: ALL_PERSONS}]
+	});
+
+  const handleOnChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+		createPerson({variables: values})
+
+    setValues(null);
+  };
+  return (
+    <div>
+      <h2>Create new Person</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="Name">Name</label>
+          <input name="name" type="text" onChange={handleOnChange} />
+        </div>
+        <div>
+          <label htmlFor="Phone">Phone</label>
+          <input name="phone" type="number" onChange={handleOnChange} />
+        </div>
+        <div>
+          <label htmlFor="City">City</label>
+          <input name="city" type="text" onChange={handleOnChange} />
+        </div>
+        <div>
+          <label htmlFor="street">Street</label>
+          <input name="street" type="text" onChange={handleOnChange} />
+        </div>
+				<button>Create</button>
+      </form>
+    </div>
+  );
+}
+
+* tiene props como onError, onComplete, etc. Estan en la docu
+* IMPORTANTISIMO ---> si vos queres que modifique la ui luego de hacer una mutacion, DEBES devolverle el id cuando lo termines, para q vea y compare solo, ADEMAS DEBEMOS pasarle todos los datos que se modificaron y que queremos sincronizar y actualizar.
 
 
 
