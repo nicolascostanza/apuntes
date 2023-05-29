@@ -1,0 +1,76 @@
+******************************** Clase 01 ********************************
+
+* Para ejecutar un archivo python ponemos en la terminal "python: path Al archivo en cuestion"
+* No existen las constantes, para indicar q no se debe modificar el valor usamos el nombre de la variable en mayusculas
+* Para comentarios de una linea usamos el "#". Si son de varias lineas usamos """ y """, al principio y al final
+* sintaxis de operadores logicos: and, or, not
+* para saber el tipo de dato de la variable: type(variableEnCuestion)
+* para pedir un valor por teclado al usuario: input('Ingrese nombre: ') . Este comando retorna siempre un string
+* para mostrar cosas en la pantalla: print(variable en cuestion)
+* conversion de tipos de datos:
+
+** para pasar a entero: int(variable)
+** para pasar a flotante: float(variable)
+
+* Declaracion de multiples variables en una misma linea. Ejemplo:
+
+nombre, apellido, edad = 'Nicolas', 'Costanza', 25
+
+******************************** Clase 02 ********************************
+
+* Las listas en python son arrays
+* para declarar una lista hay dos opciones:
+
+lista = list()
+lista = []
+
+* Para generar sub arrays o obtener solo una parte del array. [start:end:salto(opcional)]. Podemos hacer:
+
+listaCursos = ['asd', 'fgds', 'dsfsdfs', 'kdfskgks']
+subLista= listaCursos[0:2]   # ---> esto excluye al elemento en la posicion 2 del array. No incluye el final
+
+* Podemos invertir el array haciendo una sublista con [::-1]
+* Agregar elementos a un array:
+
+** agrega elemento al final del array: .append(variableAAgregar)
+** agrega elemento en el indice que querramos: .inset(numero del indice, variableAAgregar)
+** agrega un array a otro: .extend(ArrayAAgregar)
+** elimina un elemento del array: .remove(Valor del elemento a borrar del array) O tambien podemos: del nombreArray[0]
+** elimina todos los elementos del array: .clear()
+
+* para saber la dimension del array usamos la funcion len(nombreVariableDelArray)
+* metodos de arrays:
+
+** ordenar array: .sort() ---> por defecto la ordena de menor a mayor. Si queremos que sea al revez: .sort(reverse=True)
+** el numero menor de un array: min(variableArray)
+** el numero mayor de un array: max(variableArray)
+** saber si existe un elemento en un array: valorACheckear in nombreVariableDelArray
+** conocer el indice de cierto valor en el array: .index(valorEnCuestion) ---> devuelve el indice del array. Si esta repetido, devuelve el primero. Si no encuentra el valor retorna un error
+
+******************************** Clase 03 ********************************
+
+* las tuplas son INMUTABLES, no se pueden modificar elementos ni agregar nuevos. Son arrays pero que no se pueden modificar, solo pueden ser consultados
+* Al ser inmutables y de solo lectura se almacenan en otra parte de la memoria, lo que hace mas rapido acceder a elementos(Mas performante)
+* Para crear una tupla:
+
+tupla = ('hola', 123, 123.21, True)
+
+* Para acceder a un elemento por su indice y para hacer subTuplas se manejan igual que en listas(Arrays)
+* La diferencia entre tuplas y listas es la forma que se definen: () ---> tuplas. [] ---> listas. Se define una o otra en funcion de si son modificables o no
+* generar tuplas desde listas ---> tuple(NombreVariableDelArray)
+* Descomprimir: para indicar que son los valores restantes se usa "*", si no queremos trabajar con ellos ponemos: "*_". Ejemplo:
+
+numeros = (1, 2, 3, 4, 5)
+uno, dos, tres, *resto_valores = numeros  # *resto_valores = [4, 5]
+
+uno, dos, tres, *valor_que_no_uso, cinco = numeros  # asi indico q los del medio no los uso
+
+uno, _, tres, *valor_que_no_uso, cinco = numeros  # indicamos que el numero dos no es tenido en cuenta tampoco
+
+* Comprimir. Junta elementos indice por indice. Ejemplo:
+
+lista = [1,2,3,4]
+tupla = (7,8,12)
+
+resultado = zip(tupla, lista)  # retorna un elemento tipo zip, luego podemos modificarlo al tipo de dato que querramos. Podemos comprimir varias tuplas o listas al mismo tiempo.
+tuple(resultado)  # quedaria ((1,7), (2,8), (3,12)) .Los elementos que sobren y no tendan contra parte de las otras variables los corta y no son tenidos en cuenta

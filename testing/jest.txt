@@ -95,3 +95,30 @@ REDUX TEST
 * el mock con los valores iniciales se hace a mano y se obtiene con la funcion getMockState()
 * los reducers son los que se usan en serio
 * y se mockea las peticiones de la API y usas eso para simular las respuestas
+
+******************************* NET NINJA ********************************
+
+* hay 3 tipos de test ---> unit test, intregation test y end to end
+
+* unit test ---> testean los componentes aisladamente, con las props mockeadas q nosotros querramos. Pero testean uno a uno
+
+* integration test ---> testean las interacciones entre los distintos componentes
+
+* end to end ---> testean procesos y flujos enteros como login o registro
+
+* un bloque de test contiene las siguientes partes:
+
+1) renderiza el componente q vamos a testear
+
+2) buscamos los elementos que queremos que interactuen con el
+
+3) interactuamos con esos elementos
+
+4) pedimos los resultados esperados
+
+* Sacando el elemento metodo screen desde la libreria de la siguiente forma vamos a poder hacer screen. y ver todos los metodos disponibles que tiene:
+
+import { screen } from '@testing-library/react';
+
+por ejemplo tenemos los metodos getAllBy... .Se suelen usar estos antes de los findBy
+
