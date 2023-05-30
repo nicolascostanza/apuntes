@@ -1,0 +1,25 @@
+* El comando "Bash.exe" es utilizado para iniciar el subsistema de Windows para Linux (WSL) en Windows 10
+
+************************************ COMANDOS ************************************
+
+* ls ---> lista lo elementos visibles
+* ls -a ---> lista todos los elementos, incluidos los invisibles
+* ls -la ---> lista todos los elementos, incluidos los invisibles, y los permisos
+* mkdir <nombre carpeta nueva> ---> crea carpetas
+* touch <nombre archivo nuevo> ---> crea archivos
+* cd ---> navegacion entre carpetas
+* pwd ---> te muestra la ruta absoluta donde estamos
+* cp <archivo que vamos a copiar> <ruta donde vamos a poner la copia> ---> copia archivos. Ejemplo: ""
+* cp -r <nombre carpeta> <ruta donde la vamos a copiar> ---> copia la carpeta, pero ademas trae todo lo q tenga la carpeta adentro gracias a la flag "-r"
+* mv <archivo a mover> <ruta donde lo vamos a mover> ---> movemos un archivo de lugar
+* clear ---> limpia la terminal
+* rm <nombre archivo a eliminar> ---> elimina un archivo
+* rm -r <ruta de la carpeta a eliminar> ---> elimina una carpeta
+* nano <nombre archivo texto> ---> nano es un editor que trae linux directamente en la terminal. Con este comando lo abrimos y podemos editar.  Con este comando tambien podemos crear un archivo.
+* cat <nombre archivo texto que queremos ver que tiene> ---> ver el contenido del archivo ".txt". Tambien sirve para concatenar archivos de texto
+* su ---> cambiamos a "superusuario". Nos va a pedir contraseña que antes tendriamos que haber configurado con el comando sudo. Para salir de este modo tenemos q poner "exit"
+* sudo password ---> significa super user do. Seteamos la contraseña para el usuario root
+* passwd ---> cambio de contraseña
+* reboot ---> reinicia nuestra computadora (checkear por las dudas)
+* sudo halt ---> apaga nuestra computadora
+* sudo init 0 ---> apaga la pc tambien

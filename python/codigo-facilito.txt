@@ -16,6 +16,8 @@
 
 nombre, apellido, edad = 'Nicolas', 'Costanza', 25
 
+* print() ---> imprime en consola lo que pongamos entre parentesis
+
 ******************************** Clase 02 ********************************
 
 * Las listas en python son arrays
@@ -74,3 +76,346 @@ tupla = (7,8,12)
 
 resultado = zip(tupla, lista)  # retorna un elemento tipo zip, luego podemos modificarlo al tipo de dato que querramos. Podemos comprimir varias tuplas o listas al mismo tiempo.
 tuple(resultado)  # quedaria ((1,7), (2,8), (3,12)) .Los elementos que sobren y no tendan contra parte de las otras variables los corta y no son tenidos en cuenta
+
+******************************** Clase 04 ********************************
+
+* Los string son inmutables. Una vez definido un string no podemos modificarlos en tiempo de ejecucion
+* Metodos de string
+
+** .split() ---> de una cadena de caracteres te devuelve una lista (array). Por defecto divide a la cadena entre espacios. Sino le pasamos por parametro al metodo el string por el cual vamos a dividir. De segundo parametro es un numero con el cual podemos quedarnos tal cantidad de coincidencias del string y las demas las ignora
+** '-'.join(ListaEnCuestion) ---> genera un string desde un array, separados por el caracter q le pasamos antes del .join()
+** %s ---> sirve para generar string mediante otros strings. Ejemplo:
+    nombre = 'Nicolas'
+    apellido = 'Costanza'
+    nombreCompleto = 'Mr. %s %s.' %(nombre, apellido) # Se reemplazan las variables en orden por los %s
+** .format() ---> nombreCompleto = 'Mr. {} {}.'.format(nombre, apellido) # Se pueden asignar mediante nombres como objetos en el caso de necesitarlo
+** FStrings ---> Esta es la mejor forma, son como los templates strings. Ejemplo:
+    nombreCompleto = f'Mr. {nombre} {apellido}.'
+* .count('texto a buscar') ---> devuelve la cantidad de veces q existe ese texto en el string que busquemos
+* in ---> 'texto' in variableTexto # da true o false
+* .upper() ---> pasa todo el string a mayusculas
+* .lower() ---> pasa todo el string a minusculas
+* .startswith('string a validar') ---> devuelve un booleano para saber si empieza el string con el parametro q le pasamos
+* .endswith('string a validar') ---> devuelve un booleano para saber si termina el string con el parametro q le pasamos
+* .ljust(20) ---> justifica a la izquierda el texto. 20 es el numero de espacios que se van a ubicar a la derecha para justificarlo
+* .djust(20) ---> justifica a la derecha el texto. 20 es el numero de espacios que se van a ubicar a la izquierda para justificarlo
+* .center(20) ---> centra el texto. El 20 da, 10 espacios a la derecha y 10 a la izquierda
+
+******************************** Clase 05 ********************************
+
+* Los diccionarios son mutables (podemos modificar sus elementos). No tiene indices sino keys. Cada elemento tiene una clave:valor. Es un objeto de Javscript. Ejemplo
+
+diccionario = {}
+diccionario = dict()
+diccionario = {"dinero": 123, "esAdmin": true, "nombre": "Nicolas"}
+diccionario = {"dinero": 123, 10: true, (1, 2, 3): "Nicolas"}
+
+* Acesso a keys del diccionarios
+
+print(diccionario['dinero']) # muestra 123. No se puede acceder con '.' como en js
+
+* Metodos de diccionarios
+
+** .keys() ---> devuelve una lista(Array) con las keys del diccionario
+** .values() ---> devuelve una lista(Array) con los values del diccionario
+** .items() ---> devuelve una lista(Array) de 2 elementos por posicion, con la clave y valor. Seria como el object.entries de javascript
+** .get() ---> obtiene el value de una key en especifico. Ejemplo:
+
+diccionario.get('dinero', 100) # busca la key dinero, si no esta da 100 por defecto
+
+** .setDefault() ---> obtiene el value de una key en especifico. En caso de que no la encuentre le setea un valor.
+
+** del ---> elimina una propiedad del diccionario
+
+del diccionario['dinero']
+
+** .pop(key a eliminar) ---> le pasamos la key y borra esa propr del diccionario
+** .clear() ---> elimina todas las props del diccionario
+
+******************************** Clase 06 ********************************
+
+* el tipo de dato None es como null en javascript. Significa vacio
+* Datos que toma como false
+
+** None
+** False
+** 0
+** 0.0
+** ''
+** []
+** ()
+** {}
+
+* IF | ELSE | ELIF
+
+if expressionBooleana:
+    # un tab para adentro y lo que entraria dentro del if
+elif expressionBooleana:
+    # un tab para adentro y lo que entraria dentro del elif
+else:
+    # tab para adentro y lo q va en el else
+
+* Operador ternario
+
+calificacion = 8
+color = 'Verde' if calificacion >= 6 else 'Rojo'
+
+* WHILE ---> se puede utilizar el else. Ejemplo
+
+contador = 1
+
+while contador <= 10:
+    # un tab para adentro y codigo dentro del while
+    contador += 1
+else:
+    print('Fin del ciclo')
+
+* FOR ---> permite iterar sobre listas, diccionarios, tuplas, strings. Ejemplo:
+
+usuarios = ['nico', 'ale', 'facu']
+
+for usuario in ususarios:
+    # un tab para adentro y metemos el codigo por cada iteracion
+
+* range ---> es un tipo q tiene python, sirve para hacer un rango. Sintaxis y ejemplo:
+
+range(inicio, final, salto por cada elemento)
+# Comienza por default en cero y el numero como final no lo incluye, siempre se para uno antes
+rango = range(11) # 0 - 10
+
+* enumerate ---> sirve para iterar utilizando indices. Ejemplo:
+
+numeros = [10, 20, 30, 40]
+
+for indice, valor in enumerate(numeros, opcional un numero en el cual inicia el indice):
+    print(indice, valor)
+
+* break ---> sirve para indicar que el bucle for corte
+* continue ---> sirve para indicar que se corte esta iteracion del bucle, pero siga con la siguiente iteracion
+
+******************************** Clase 07 ********************************
+
+* Sintaxis para definir una funcion
+
+def nombreFuncion(variables):
+    # un tab para adentro y aca esta el cuerpo de la funcion
+    return # lo que quiero retornar. Se puede retornar mas de un valor, en esos casos devuelve un tupla con los valores
+
+* Se puede desestructurar el return de la funcion. Ejemplo:
+
+primerElementoReturn, segundoElementoReturn = funcionSumaYSaluda(1, 2, 'pedro')
+
+* valores por defecto a parametros. Por convencion los valores por defecto con el igual no se deja con espacios, ademas los que tengan valores por defecto deben ir al final de la lista de parametros. Se puede ademas cuando se llama a la funcion pasarle argumentos con el nombre q tienen los parametros. Ejemplo
+
+def areaCirculo(radio, pi=3.14):
+
+areaCirculo(pi=3.1416512, radio=1423)
+
+* Funciones con n cantidad de argumentos. Si queremos q tome el resto de los argumentos q pasamos como una tupla pasamos '*args' si en cambio queremos que sea un diccionario ponemos '**kwargs'. Ejemplo
+
+def promedios(*args): # tupla
+    return sum(args) / len(args)
+
+
+def usuarios(**kwargs): # diccionario
+    print(kwargs)
+
+
+def combinacion(*args, **kwargs):
+    print(args, kwargs)
+
+promedios(10, 3, 6, 2)
+usuarios(fernando=[10, 8, 10], nicolas=[6, 8 ,4])
+combinacion(1, 2, 4, nombre='nicolas', apellido='pepito')
+
+* Por convencion si tenemos definidas dos funciones tenemos q darle dos espacios entre medio
+* tenemos el metodo id para identificar si dos variables son exactamente la misma
+* SCOPE ---> El scope de una variable depende donde previamente fue declaradas, puede ser globalmente, en una funcion, bucle, o condicional. Entonces pueden ser utilizadas en todo el ambiente donde hayan sido declaradas
+* Si tenemos una variable global y la queremos modificar dentro de una funcion q tiene otra variable con ese mismo nombre. Podemos hacer lo siguiente
+
+animal = 'leon'
+
+def imprimir_animal():
+    global animal # con esto indicamos q no vamos a usar una variable local sino la global
+    print(animal)
+
+* FUNCIONES LAMBDA ---> Es una funcion expresada en una sola linea de codigo ademas de no poseer nombre. Siempre va a retornar lo que este en esa linea de codigo. Se utiliza la palabra reservada 'lambda'. Sintaxis y ejemplo
+lambda <parametros> : <cuerpo de la funcion>
+
+funcion_area = lambda base, altura : base * altura
+
+print(funcion_area(123, 94))
+
+* CALLBACKS ---> funciones pasadas como argumentos en otras funciones
+
+* Si quisieramos cambiar el valor de una variable de un nivel superior que no sea el global se le indica con nonlocal.
+* CLOUSURE --->  es una función que recuerda y tiene acceso a las variables en el ámbito local en el que se creó, incluso después de que ese ámbito haya finalizado su ejecución. En otras palabras, un closure es una función que captura el estado de su entorno cuando se define y puede acceder a ese estado más tarde, incluso si se llama desde un ámbito diferente. Ejemplo
+
+def saludar(username):
+    mensaje = f'Hola {suername}'
+
+    def mostrar_mensaje():
+        print(mensaje)
+    return mostrar_mensaje
+
+username = 'Nicolas'
+respuesta = saludar(username)
+repuesta() # aca podemos acceder a la variable mensaje desde una funcion que ya no existe
+
+La funcion saludar es un clousure ya que retorna una funcion la cual puede acceder a las variables locales aun cuando la primera ya haya terminado
+
+* DECORADORES ---> es una funcion toma como valor de entrada o input, una funcion. Y a su vez retorna otra funcion. Se usa cuando queremos extender funcionalidades a una funcion o cuando no queremos tocar la funcion base. Es como envolver una funcion con otras funcionalidades extra en una nueva funcion declarada, sirve para no tocar la funcion base (en el ejemplo es la funcion b). En resumen: ES UNA FUNCION QUE TIENE COMO OBJETIVO EXTENDER FUNCIONALIDADES DE OTRA FUNCION. Estructura base:
+
+# funcion_a ---> funcion principal (DECORADOR)
+# funcion_b ---> funcion de decorar
+# funcion_c ---> funcion decorada
+
+def funcion_a(funcion_b):
+    def funcion_c():
+        print('extendemos la funcionalidad. Codigo antes de llamar a la funcion b')
+        funcion_b()
+        print('extendemos la funcionalidad. codigo desp de llamar a la funcion b)
+    return funcion_c
+
+@funcion_a
+def saludar(): # esta seria la funcion_b
+    print('hola. Nos concontramos en una funcion')
+
+saludar() # aca estamos ejecutando la funcion_c
+
+* GENERADORES ---> es un tipo especial de funcion la cual retorna objetos q facilmente podemos iterar, esto sin que la funcion finalice. Con la palabra 'yield' suspenderemos de forma momentanea la ejecucion de la funcion. Esto nos permite retornar valores sin que la funcion termine. Ejemplo:
+
+def pares():
+    for numero in range(0, 100):
+        yield numero # pausa momentaneamente la funcion hasta q se necesite continuar. Retorna el valor y la funcion suspende su ejecucion
+
+for par in pares():
+    print(par)
+
+* Si llamamos a la funcion(previamente guardada en una variable) dentro de la funcion next() hace su proxima iteracion hasta el yield nuevamente.
+
+* para decidir si usamos generadores o no hay que tener en cuenta la forma en la cual vamos a iterar cada uno de los objetos que el generador genera y retorna. Permite obtener la informacion bajo demanda, osea solo cuando se necesite, no tenerlo todo de una. Esto impacta en el uso de memoria, la optimiza mucho mas ya q no ocupamos memoria hasta realmente necesitarla. Es recomendable utilizarlo cuando usemos colecciones de miles o cientos de miles
+
+* DOCSTRING ---> comentario que se coloca en la primera linea de codigo de nuestra funcion, sirve para describir y documentar lo que hace la funcion. El Docstring va a ser almacenado en el archivo "__doc__" . Los objetos documentales son los siguientes: modulos, clases, metodos, funciones. ADEMAS ACA PODEMOS TESTEAR NUESTRA FUNCION. Primero hacemos de cuenta que estamos en la terminal. y en la linea de abajo ponemos lo q se espera de resultado. Ejemplo
+
+def my_funcion():
+    """
+    Aca se inserta la descripcion de la funcion...
+    >>> my_funcion(*args)
+    valorResultadoEsperado
+    """
+
+print(my_funcion.__doc__) # imprime lo q documente con mi funcion
+print(help(my_funcion)) # tambien lo muestra
+
+* Para probar los test q hicimos de la funcion vamos a la terminal y hacemos lo siguiente
+
+python -m doctest archivoEnCuestion
+
+******************************** Clase 08 ********************************
+
+* Ejemplo de una clase
+
+class Usuario:
+    pass # No se puede dejar la clase sin ningun atributo. Para saltarnos el problema ponemos pass
+
+cody = Usuario() # instanciamos una clase
+
+* Podemos dividir los atributos en dos tipos (clase e instancia)
+
+** Atributos de clase ---> basta con crear variables dentro de la clase. Estas luego podemos acceder y modificarlas. Ejemplo:
+
+class User:
+    username = 'nombre'
+    email = ''
+
+User.username = 'Nicolas'
+
+print(User.username) # asi accedemos a atributos de la clase
+
+** Atributos de instancia ---> Son los que pertenecen al objeto instanciado de la clase. Si queremos acceder a un atributo, primero verifica que si esta ese elemento en la instancia, luego verifica si esta en la clase(esto solo funciona para lectura), si no encuentra nada lanza un error. Mediante el atributo de la instancia llamado "__dict__" podemos ver en tiempo de ejecucion(dinamicamente) las propiedades que tiene la instancia.
+
+user1 = User()
+print(user1.dni) # lanza un error
+print(user1.__dict__) # muestra las propiedades de la instancia
+user1.username = 'Pepito' # añadimos la propiedad a la instancia. Atributo de instancia.
+
+* Metodos en las clases
+
+class Usuario:
+
+    def inicializar(self, username, password): # metodo de una clase. El parametro self hace referencia a la misma instancia que lo llame, seria como el this en javascript
+        self.username = username
+        self.password = password
+
+user1 = Usuario('nico', 'asdasd')
+user2 = Usuario(''pepito', 'password2')
+
+* INIT ---> mediante este metodo inicializar los atributos de un objeto al momento de instanciarlo. Ejemplo:
+
+class Usuario:
+    def __init__(self, username, password): # Se ejecuta este metodo cuando se instancia una clase
+        print('Estamos creando un usuario')
+        self.username = username
+        self.password = password
+
+user1 = Usuario('user1', 'password2') # al instanciar el objeto hay q pasarle los argumentos q va a usar el __init__
+
+* HERENCIA ---> cuando una clase agarra props y metodos de otra clase. Python permite la herencia multiple( una clase hereda de varias clases)
+
+class Mascota: # clase padre
+    pass
+
+class Felino:
+    def cazar():
+        print('cazandoo...')
+
+class Gato(Mascota, Felino): # clase hija. Se le pasa entre parentesis la clase padre de la cual va a heredar. Aca tenemos herencia multiple
+
+    def comer(self):
+        print('comiendo...')
+
+    def dormir(self):
+        print('durmiendo...')
+
+duke = Gato()
+duke.comer() # hereda el metodo de la clase padre Mascota
+duke.cazar() # hereda el metodo de la clase padre Felino
+
+* Sobreescritura de metodos o sobrecarga de metodos, es cuando una clase hija puede moficiar los metodos de la clase padre. En base al ejemplo de arriba:
+
+class Gato(Mascota, Felino):
+    def __init__(self, nombre):
+        self.nombre = nombre
+
+    def comer():
+        print('el gato esta comiendo...')
+
+    def dormir():
+        print('el gato esta durmiendo...')
+
+patricio = Gato('rocco')
+
+patricio.comer() # esto es una sobrecarga. Sobreescribimos los metodos para q no busque en los padres
+patricio.dormir() # esto es una sobrecarga. Sobreescribimos los metodos para q no busque en los padres
+
+* La funcion super nos permite acceder a la clase padre inmediata o mas cercana. Ejemplo:
+
+class Gato(Mascota, Felino):
+
+    def comer():
+        super().comer() # ejecuta el metodo de la clase padre inmediata
+        print('el gato esta comiendo...')
+
+* Existen metodos de instancia y de clase. Ejemplo de creacion de metodos de clase:
+
+class Circulo:
+
+    pi = 3.141516
+
+    @classmethod # sirve para indicar que es un metodo de clase
+    def area(cls, radio): # cls indica a la misma clase. Sirve para acceder a otros metodos o propiedades. Es como self pero de la clase, en cambio self es de la instancia.
+        return cls.pi * (radio ** 2)
+
+resultado = Circulo.area(14)
+print(resultado)
