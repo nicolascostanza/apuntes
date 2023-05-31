@@ -1,17 +1,6 @@
-hacer un masonry ---> ver como se hace
-Estudiar todos los patrones de diseño y principios solid
-Estudiar doc de joi y react hook forms
-
-A APRENDER
-
-* webpack
-https://webpack.js.org/ --- listo
-* babel
-https://babeljs.io/
-* pwa
-https://www.easylist.link/
-https://create-react-app.dev/docs/making-a-progressive-web-app/
-* app de escritorio
-https://www.electronjs.org/es/
-* cosas de js
-https://github.com/Jason-Cooke/ES6-for-humans#13-classes-in-es6
+DUDAS
+* para que funciona zip()
+APRENDER
+* slicing ":" para metodos de listas
+* asincronismo
+* paquetes matplotlib y seaborn ---> para trabajar con graficos

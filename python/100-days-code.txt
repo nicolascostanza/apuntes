@@ -50,6 +50,7 @@ else:
 * | or ---> se puede escribir de las dos formas. condicion para que se cumpla una de las condiciones. Ejemplo: condicion1 or condicion2.
 * ~ not ---> se puede escribir de las dos formas. negador del resultado de la condicion, cambia el booleano
 
+* para correr un archivo nos paramos en el y apretamos f5
 
 
 

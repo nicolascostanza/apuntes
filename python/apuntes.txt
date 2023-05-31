@@ -1,0 +1,682 @@
+******************************** DATOS ********************************
+
+* Ejecucion de un archivo en la terminal ---> "python: path Al archivo en cuestion"
+* Ejecucion de un archivo desde VSCode. Te pones en el archivo y apretas F5
+* Las constantes no existen. Por convencion para reconocerlas se declaran con MAYUSCULAS
+* Comentarios ---> Una linea: '#'. Varias lineas: """ o ''' al principio y final
+* Descomprimir ---> es como el destructuring de js pero con otra sintaxis. Ejemplo
+
+    numeros = (1, 2, 3, 4, 5, 6)
+    uno, _, tres, *resto_valores, seis = numeros # resto_valores = 4 y 5
+
+* Compresion ---> inverso de descomprimir(Destructuring). Ejemplo
+
+    lista = [1,2,3,4]
+    tupla = (7,8,12)
+
+* el tipo de dato None es como null en javascript. Significa vacio
+* Datos que toma como false
+
+** None
+** False
+** 0
+** 0.0
+** ''
+** []
+** ()
+** {}
+
+* tenemos el metodo id para identificar si dos variables son exactamente la misma
+* dir() ---> te tira todas las props y metodos q tiene algo
+
+******************************** STRINGS ********************************
+
+* Los strings son INMUTABLES. Una vez definido un string no podemos modificarlos en tiempo de ejecucion. Cualquier operación que parezca modificar una cadena en realidad crea una nueva cadena con los cambios realizados.
+* metodos de strings
+
+** lower() ---> Retorna una nueva cadena en minúsculas.
+** upper() ---> Retorna una nueva cadena en mayúsculas.
+** capitalize() ---> Retorna una nueva cadena con el primer carácter en mayúscula y el resto en minúsculas.
+** title() ---> Retorna una nueva cadena con cada palabra iniciando con mayúscula.
+** strip() ---> Retorna una nueva cadena sin espacios en blanco al inicio o final.
+** split(separador) ---> Retorna una lista de subcadenas separadas por el separador dado.
+** join(iterable) ---> Retorna una nueva cadena concatenando los elementos del iterable utilizando la cadena como separador.
+** replace(viejo, nuevo) ---> Retorna una nueva cadena reemplazando todas las ocurrencias del valor "viejo" con el valor "nuevo".
+** startswith(prefijo) ---> Verifica si la cadena comienza con el prefijo especificado.
+** endswith(sufijo) ---> Verifica si la cadena termina con el sufijo especificado.
+** isalpha() ---> Verifica si la cadena contiene solo letras alfabéticas.
+** isdigit() ---> Verifica si la cadena contiene solo dígitos.
+** isalnum() ---> Verifica si la cadena contiene solo letras y números.
+** isspace() ---> Verifica si la cadena contiene solo espacios en blanco.
+** count(subcadena) ---> Retorna la cantidad de ocurrencias de la subcadena en la cadena.
+** index(subcadena) ---> Retorna el índice de la primera ocurrencia de la subcadena en la cadena.
+** find(subcadena) ---> Retorna el índice de la primera ocurrencia de la subcadena en la cadena, o -1 si no se encuentra.
+** startswith(prefijos) ---> Verifica si la cadena comienza con alguno de los prefijos especificados.
+** endswith(sufijos) ---> Verifica si la cadena termina con alguno de los sufijos especificados.
+** isupper() ---> Verifica si la cadena está en mayúsculas.
+** ljust(20) ---> justifica a la izquierda el texto. 20 es el numero de espacios que se van a ubicar a la derecha para justificarlo
+** djust(20) ---> justifica a la derecha el texto. 20 es el numero de espacios que se van a ubicar a la izquierda para justificarlo
+** center(20) ---> centra el texto. El 20 da, 10 espacios a la derecha y 10 a la izquierda
+
+******************************** OPERADORES RELACIONALES ********************************
+
+* == ---> igual
+* != ---> distinto
+* < ---> menor que
+* > ---> mayor que
+* <= ---> menor o igual que
+* >= ---> mayor o igual que
+
+******************************** OPERADORES LOGICOS ********************************
+
+* and &
+* or |
+* not
+
+******************************** LISTAS ********************************
+
+* Son iterables (arrays)
+* Podemos obtener una sublista. Sintaxis y ejemplo:
+
+    [start:end:salto(opcional)] # sintaxis
+    listaCursos = ['python', 'javascript', 'c', 'mongodb']
+    subLista= listaCursos[0:2]
+
+* Podemos invertir la lista haciendo una la siguiente sublista [::-1]
+* Metodos de listas
+
+** .append(variable) ---> agrega la variable al final de la lista
+** .insert(indice, variable) ---> agrega la variable en el indice que indicamos
+** .extend(lista) ---> agrega una lista a otra
+** .pop(indice) ---> elimina un elemento. Si queremos borrar el ultimo ponemos -1
+** .remove(valor elemento) ---> elimina un elemento de la lista mediante un valor, tambien podemos hacelos asi: del lista[indice]
+** .clear() ---> elimina todos los elementos de la lista. La deja vacia
+** .sort() ---> por defecto la ordena de menor a mayor. Si queremos que sea al revez: .sort(reverse=True)
+** .reverse() ---> invierte los elementos de una lista
+** len(nombreVariableLista) ---> dimension de la lista
+** min(variableArray) ---> el numero menor de un lista
+** max(variableArray) ---> el numero mayor de un lista
+** in ---> saber si existe un elemento en un lista: valor in lista
+** .index(valor) ---> devuelve el indice de la lista. Si esta repetido, devuelve el primero. Si no encuentra el valor retorna un error
+
+******************************** TUPLAS ********************************
+
+* Son listas Inmutables. Son para solo lectura, por lo tanto se almacenan en otra parte de la memoria, lo cual las hace mas performante al consultarlas.
+* Sintaxis
+
+tupla = ('hola', 123, 123.21, True)
+
+******************************** CONJUNTOS ********************************
+
+* Son otro tipo de dato, sirve para representar conjuntos matematicos. Son colecciones desordenadas de elementos ÚNICOS (no permiten duplicados, como el set de JS). Se pueden agregar o eliminar elemenos, pero no modificar uno ya existente. No son ordenados, por lo cual no podemos acceder a ellos mediante indices. Son útiles para operaciones de conjuntos como uniones, intersecciones y diferencias. Ejemplo
+
+    frutas = {'manzana', 'naranja', 'plátano', 'manzana'}
+
+* Metodos de conjuntos
+
+** add(elemento) ---> Agrega un elemento al conjunto.
+** remove(elemento) ---> Elimina un elemento del conjunto. Si el elemento no existe, se genera un error.
+** discard(elemento) ---> Elimina un elemento del conjunto. Si el elemento no existe, no se genera ningún error.
+** pop() ---> Elimina y devuelve un elemento aleatorio del conjunto.
+** clear() ---> Elimina todos los elementos del conjunto, dejándolo vacío.
+** copy() ---> Crea una copia superficial del conjunto.
+** union(otros_conjuntos) ---> Retorna un nuevo conjunto que es la unión del conjunto actual con uno o más conjuntos adicionales.
+** intersection(otros_conjuntos) ---> Retorna un nuevo conjunto que contiene los elementos comunes entre el conjunto actual y uno o más conjuntos adicionales.
+** difference(otros_conjuntos) ---> Retorna un nuevo conjunto que contiene los elementos que están en el conjunto actual pero no en uno o más conjuntos adicionales.
+** symmetric_difference(otros_conjuntos) ---> Retorna un nuevo conjunto que contiene los elementos que están en el conjunto actual o en uno o más conjuntos adicionales, pero no en ambos.
+** issubset(otro_conjunto) ---> Verifica si el conjunto actual es un subconjunto del otro conjunto.
+** issuperset(otro_conjunto) ---> Verifica si el conjunto actual es un superconjunto del otro conjunto.
+** isdisjoint(otro_conjunto) ---> Verifica si el conjunto actual y el otro conjunto no tienen elementos en común.
+** len() ---> Retorna la cantidad de elementos en el conjunto.
+
+******************************** DICCIONARIOS ********************************
+
+* Los diccionarios son MUTABLES. No tienen indices, tienen keys. Cada elemento tiene una estructura clave:valor. Las keys de un diccionario deben ser de un tipo de datos inmutable, como strings, numeros o una tupla. Ejemplo
+
+    diccionario = {"dinero": 123, 10: True, (1, 2, 3): "Nicolas"}
+
+* Acceso a keys de un diccionario
+
+    diccionario['dinero'] # daria 123
+
+* Metodos de diccionarios
+
+** .keys() ---> devuelve una lista(Array) con las keys del diccionario
+** .values() ---> devuelve una lista(Array) con los values del diccionario
+** .items() ---> devuelve una lista(Array) de 2 elementos por posicion, con la clave y valor. Seria como el object.entries de javascript
+** .clear() ---> elimina todos los elementos
+** .pop(key a eliminar) ---> le pasamos la key y borra esa prop del diccionario. Se pueden eliminar varias a la vez
+** .setDefault() ---> obtiene el value de una key en especifico. En caso de que no la encuentre le setea un valor.
+** del ---> elimina una propiedad del diccionario
+** dict.fromkeys(iterable, valor a lo que vamos a igualar todos los elementos q pasamos en el argumento 1) ---> crea un diccionario con cada key q le paso y los valores None (vacios). Ejemplo
+
+    diccionario = dict.fromkeys("asdasdas", 'valor a igualar')
+
+** .get() ---> obtiene el value de una key en especifico. Ejemplo
+
+    diccionario.get('dinero', 100) # busca la key dinero, si no esta da 100 por defecto
+
+******************************** CONDICIONALES ********************************
+
+* No existe un switch como en javascript
+* Ejemplo if, elif, else
+
+    if expressionBooleana:
+        # un tab para adentro y lo que entraria dentro del if
+    elif expressionBooleana:
+        # un tab para adentro y lo que entraria dentro del elif
+    else:
+        # tab para adentro y lo q va en el else
+
+* Sintaxis y ejemplo de operador ternario
+
+    <si es true> if <condicion> else <si es false>
+    calificacion = 8
+    color = 'Verde' if calificacion >= 6 else 'Rojo'
+
+******************************** WHILE ********************************
+
+* Podemos utilizar el else. Ejemplo
+
+    contador = 1
+    while contador <= 10:
+        # un tab para adentro y codigo dentro del while
+        contador += 1
+    else:
+        print('Fin del ciclo')
+
+******************************** FOR ********************************
+
+* Permite iterar sobre listas, diccionarios, tuplas, strings. Ejemplo
+
+    usuarios = ['nico', 'ale', 'facu']
+
+    for usuario in ususarios:
+        # un tab para adentro y metemos el codigo por cada iteracion
+
+    for datos in diccionario.items(): # asi podemos iterar un diccionario, si lo hacemos comun solo nos itera las keys
+        key = datos[0]
+        value = datos[1]
+        print(key, value)
+
+* Ejemplo de for en una linea
+
+    numeros = [2, 3, 4, 6]
+    numeros_duplicados = [x*2 for x in numeros]
+
+* break ---> sirve para indicar que el bucle for corte
+* continue ---> sirve para indicar que se corte esta iteracion del bucle, pero siga con la siguiente iteracion
+* podemos recorrer dos listas de igual cantidad de elementos al mismo tiempo de la siguiente manera
+
+    numeros = [1,2,3]
+    animales = ['perro', 'gato', 'vaca']
+
+    for numero, animal in zip(numeros, animales):
+        print(numero, animal)
+
+* Se puede hacer un for en una sola linea. Ejemplo
+
+    nombres = ['nico', 'pepito']
+    #linea del for
+    [print(name) for name in nombres]
+    # [<lo_que_tiene_q_hacer_en_cada_iteracion> for <nombre_variable> in <nombre_lista>]
+
+******************************** RANGE ********************************
+
+* Es un tipo q tiene python, sirve para hacer un rango. Sintaxis y ejemplo
+
+    range(inicio, final, salto por cada elemento)
+    # Comienza por default en cero y el numero como final no lo incluye, siempre se para uno antes
+    rango = range(11) # 0 - 10
+
+******************************** ENUMERATE ********************************
+
+* Sirve para iterar elementos utilizando sus indices. Ejemplo
+
+    numeros = [10, 20, 30, 40]
+
+    for indice, valor in enumerate(numeros, opcional un numero en el cual inicia el indice):
+        print(indice, valor)
+
+******************************** METODOS O FUNCIONES DE PYTHON ********************************
+
+* type(variable) ---> tipo de dato de la variable
+* input('mensaje') ---> para que el usuario ingrese un valor. Siempre obtenemos un string
+* print() ---> mostramos en pantalla
+* str(variable) ---> la convierte a string
+* int(variable) ---> la convierte a entero
+* bool(variable) ---> lo convierte a booleano
+* float(variable) ---> la convierte a flotante
+* tuple() ---> crea una tupla
+* dict() ---> crea un diccionario
+* list() ---> crea una lista
+* set() ---> crea un conjunto vacio
+* sum(valores) ---> los suma a todos
+* all( iterable ) ---> devuelve true si todos los valores del iterable son true
+* zip() ---> se utiliza para combinar elementos de varias secuencias (como listas, tuplas o conjuntos) en una secuencia de tuplas. Ejemplo
+
+    nombres = ['Juan', 'María', 'Carlos']
+    edades = [25, 30, 35]
+
+    # Combina elementos de dos listas en una secuencia de tuplas
+    result = zip(nombres, edades)
+    # El resultado es un iterador que contiene: [('Juan', 25), ('María', 30), ('Carlos', 35)]
+
+******************************** FUNCIONES ********************************
+
+* Sintaxis para definir una funcion
+
+    def nombreFuncion(variables):
+        # un tab para adentro y aca esta el cuerpo de la funcion
+        return # lo que quiero retornar. Se puede retornar mas de un valor, en esos casos devuelve un tupla con los valores
+
+* Por convencion para asignar valores por defecto a los parametros se debe hacer asi
+
+    def areaCirculo(radio, pi=3.14):
+
+* Por convencion si tenemos definidas dos funciones tenemos q darle dos espacios entre medio
+* Para pasar argumentos a las funciones en el orden que querramos debemos indicar el nombre de cada valor. Ejemplo
+
+    areaCirculo(pi=3.1416512, radio=1423)
+
+* Si no sabemos la cantidad de elementos que vamos a recibir por parametros o queremos representar los parametros pasados como argumentos q no fueron identificados podemos hacer dos cosas
+
+1) *args ---> si los queremos tener en una tupla
+2) **kwargs ---> si queremos tenerlos en un diccionario
+
+* Ejemplo con los dos implementados
+
+    def ejemplo(*args, **kwargs):
+        for arg in args:
+            print(arg) # 1, 2
+        for clave, valor in kwargs.items():
+            print(clave, valor) # Alice, 25
+
+    ejemplo(1, 2, nombre="Alice", edad=25)
+
+* SCOPE ---> El scope de una variable depende donde previamente fue declaradas, puede ser globalmente, en una funcion, bucle, o condicional. Entonces pueden ser utilizadas en todo el ambiente donde hayan sido declaradas o en niveles inferiores. Nunca existira en niveles superiores
+* Si tenemos una variable global y la queremos modificar dentro de una funcion q tiene otra variable con ese mismo nombre. Podemos hacer lo siguiente
+
+    animal = 'leon'
+    def imprimir_animal():
+        global animal # con esto indicamos q no vamos a usar una variable local sino la global
+        print(animal)
+
+* FUNCIONES LAMBDA ---> Es una funcion expresada en una sola linea de codigo ademas de no poseer nombre. Siempre va a retornar lo que este en esa linea de codigo. Se utiliza la palabra reservada 'lambda'. Sintaxis y ejemplo
+lambda <parametros> : <cuerpo de la funcion>
+
+funcion_area = lambda base, altura : base * altura
+funcion_area(123, 94)
+
+* Si quisieramos cambiar el valor de una variable de un nivel superior que no sea el global se le indica con nonlocal.
+* CALLBACKS ---> funciones pasadas como argumentos en otras funciones
+* CLOUSURE --->  es una función que recuerda y tiene acceso a las variables en el ámbito local en el que se creó, incluso después de que ese ámbito haya finalizado su ejecución. En otras palabras, un closure es una función que captura el estado de su entorno cuando se define y puede acceder a ese estado más tarde, incluso si se llama desde un ámbito diferente. Ejemplo
+
+    def saludar(username):
+        mensaje = f'Hola {suername}'
+
+        def mostrar_mensaje():
+            print(mensaje)
+        return mostrar_mensaje
+
+    username = 'Nicolas'
+    respuesta = saludar(username)
+    repuesta() # aca podemos acceder a la variable mensaje desde una funcion que ya no existe
+
+    # La funcion saludar es un clousure ya que retorna una funcion la cual puede acceder a las variables locales aun cuando la primera ya haya terminado
+
+* DECORADORES ---> Es una funcion que toma como parametro una funcion y en su ejecucion declara otra funcion embebe a la funcion pasada por parametro con mas funcionalidades o lineas de codigo para extender su funcionamiento. Sirve para no tocar la funcion base. En resumen: ES UNA FUNCION QUE TIENE COMO OBJETIVO EXTENDER FUNCIONALIDADES DE OTRA FUNCION. Ejemplo
+
+    # funcion_a ---> funcion principal (DECORADOR)
+    # funcion_b ---> funcion de decorar
+    # funcion_c ---> funcion decorada
+
+    def funcion_a(funcion_b):
+        def funcion_c():
+            print('extendemos la funcionalidad. Codigo antes de llamar a la funcion b')
+            funcion_b()
+            print('extendemos la funcionalidad. codigo desp de llamar a la funcion b)
+        return funcion_c
+
+    @funcion_a
+    def saludar(): # esta seria la funcion_b
+        print('hola. Nos concontramos en una funcion')
+
+    saludar() # aca estamos ejecutando la funcion_c
+
+* FUNCIONES GENERADORAS ---> Son funciones especiales que generan una secuencia de valores en lugar de devolver un único valor. Estas funciones utilizan la palabra clave yield en lugar de return para generar valores de forma iterativa. Cuando se invoca una función generadora, devuelve un objeto generador que puede recorrerse usando un bucle for u otras técnicas de iteración. Ejemplo
+
+    def pares():
+        for numero in range(0, 100):
+            yield numero # pausa momentaneamente la funcion hasta q se necesite continuar. Retorna el valor y la funcion suspende su ejecucion
+
+    for par in pares():
+        print(par)
+
+
+* Si llamamos a la funcion(previamente guardada en una variable) dentro de la funcion next() hace su proxima iteracion hasta el yield nuevamente.
+* para decidir si usamos generadores o no hay que tener en cuenta la forma en la cual vamos a iterar cada uno de los objetos que el generador genera y retorna. Permite obtener la informacion bajo demanda, osea solo cuando se necesite, no tenerlo todo al principio. Esto impacta en el uso de memoria, la optimiza mucho mejor ya que no ocupamos memoria hasta realmente necesitarla. Es recomendable utilizarlo cuando usemos colecciones de miles o cientos de miles
+* DOCSTRING ---> comentario que se coloca en la primera linea de codigo de nuestra funcion, sirve para describir y documentar lo que hace la funcion. El Docstring va a ser almacenado en el archivo "__doc__" . Los objetos documentales son los siguientes: modulos, clases, metodos, funciones. ADEMAS ACA PODEMOS TESTEAR NUESTRA FUNCION. Primero hacemos de cuenta que estamos en la terminal. y en la linea de abajo ponemos lo q se espera de resultado. Ejemplo
+
+    def my_funcion():
+        """
+        Aca se inserta la descripcion de la funcion...
+        >>> my_funcion(*args)
+        valorResultadoEsperado
+        """
+
+    print(my_funcion.__doc__) # imprime lo q documente con mi funcion
+    print(help(my_funcion)) # tambien lo muestra
+
+* Para probar los test q hicimos de la funcion vamos a la terminal y hacemos lo siguiente
+
+    python -m doctest archivoEnCuestion
+
+************************************************* EXCEPCIONES *************************************************
+
+* Sintaxis
+
+try:
+    # codigo intentando algo
+except Expection:
+    # codigo cuando fallo lo que intentamos
+else:
+    # es opcional, se ejecuta si todo fue bien y no entro al except
+finally:
+    # codigo que se ejecuta siempre, haya salido por el try o por el except
+
+* Es buena idea siempre manejar bien los errores. Tenemos la clase Expection que es la general de todos los errores y tenemos cada excepcion en particular. Por ejemplo ValueError, ZeroDivisionError, etc. Entonces podriamos tener dos except
+* Para lanzar un error usamos raise. Ejemplo: raise ValueError
+* Lista de excepciones comunes en Python
+
+** Exception ---> La clase base para todas las excepciones en Python.
+** ValueError ---> Se genera cuando una función recibe un argumento con el tipo correcto, pero un valor inapropiado.
+** TypeError ---> Se genera cuando se realiza una operación en un objeto de un tipo incorrecto.
+** IndexError ---> Se genera cuando se realiza una indexación fuera del rango válido de una secuencia.
+** KeyError ---> Se genera cuando se intenta acceder a una clave inexistente en un diccionario.
+** FileNotFoundError ---> Se genera cuando se intenta abrir un archivo que no existe.
+** ZeroDivisionError ---> Se genera cuando se realiza una división por cero.
+** NameError ---> Se genera cuando se utiliza un identificador no definido.
+** TypeError ---> Se genera cuando se realiza una operación en un objeto de un tipo incorrecto.
+** AttributeError ---> Se genera cuando se intenta acceder a un atributo que no existe en un objeto.
+** ImportError ---> Se genera cuando hay un problema al importar un módulo.
+** OverflowError ---> Se genera cuando un cálculo numérico excede los límites del tipo de datos.
+** PermissionError ---> Se genera cuando no se tienen los permisos necesarios para acceder a un archivo o directorio.
+** KeyboardInterrupt ---> Se genera cuando el usuario presiona la combinación de teclas para interrumpir la ejecución del programa (por lo general, Ctrl+C).
+
+* Creacion de una excepcion
+
+class MiExcepcion(Exception):
+    def __init__(self, err):
+        print(f'creamos nuestra clase con el error {err}')
+
+************************************************* CLASES Y POO *************************************************
+
+* Ejemplo de una clase
+
+class Usuario:
+    pass # No se puede dejar la clase sin ningun atributo. Para saltarnos el problema ponemos pass
+
+cody = Usuario() # instanciamos una clase
+
+* Podemos dividir los atributos en dos tipos (clase e instancia)
+
+** Atributos de clase ---> basta con crear variables dentro de la clase. Estas luego podemos acceder y modificarlas. Ejemplo:
+
+class User:
+    username = 'nombre'
+    email = ''
+
+User.username = 'Nicolas'
+
+print(User.username) # asi accedemos a atributos de la clase
+
+** Atributos de instancia ---> Son los que pertenecen al objeto instanciado de la clase. Si queremos acceder a un atributo, primero verifica que si esta ese elemento en la instancia, luego verifica si esta en la clase(esto solo funciona para lectura), si no encuentra nada lanza un error. Mediante el atributo de la instancia llamado "__dict__" podemos ver en tiempo de ejecucion(dinamicamente) las propiedades que tiene la instancia.
+
+user1 = User()
+print(user1.dni) # lanza un error
+print(user1.__dict__) # muestra las propiedades de la instancia
+user1.username = 'Pepito' # añadimos la propiedad a la instancia. Atributo de instancia.
+
+* Metodos en las clases
+
+class Usuario:
+
+    def inicializar(self, username, password): # metodo de una clase. El parametro self hace referencia a la misma instancia que lo llame, seria como el this en javascript
+        self.username = username
+        self.password = password
+
+user1 = Usuario('nico', 'asdasd')
+user2 = Usuario(''pepito', 'password2')
+
+* INIT ---> mediante este metodo inicializar los atributos de un objeto al momento de instanciarlo. Ejemplo:
+
+class Usuario:
+    def __init__(self, username, password): # Se ejecuta este metodo cuando se instancia una clase
+        print('Estamos creando un usuario')
+        self.username = username
+        self.password = password
+
+user1 = Usuario('user1', 'password2') # al instanciar el objeto hay q pasarle los argumentos q va a usar el __init__
+
+* HERENCIA ---> cuando una clase agarra props y metodos de otra clase. Python permite la herencia multiple( una clase hereda de varias clases)
+
+class Mascota: # clase padre
+    pass
+
+class Felino:
+    def cazar():
+        print('cazandoo...')
+
+class Gato(Mascota, Felino): # clase hija. Se le pasa entre parentesis la clase padre de la cual va a heredar. Aca tenemos herencia multiple
+
+    def comer(self):
+        print('comiendo...')
+
+    def dormir(self):
+        print('durmiendo...')
+
+duke = Gato()
+duke.comer() # hereda el metodo de la clase padre Mascota
+duke.cazar() # hereda el metodo de la clase padre Felino
+
+* Sobreescritura de metodos o sobrecarga de metodos, es cuando una clase hija puede moficiar los metodos de la clase padre. En base al ejemplo de arriba:
+
+class Gato(Mascota, Felino):
+    def __init__(self, nombre):
+        self.nombre = nombre
+
+    def comer():
+        print('el gato esta comiendo...')
+
+    def dormir():
+        print('el gato esta durmiendo...')
+
+patricio = Gato('rocco')
+
+patricio.comer() # esto es una sobrecarga. Sobreescribimos los metodos para q no busque en los padres
+patricio.dormir() # esto es una sobrecarga. Sobreescribimos los metodos para q no busque en los padres
+
+* La funcion super nos permite acceder a la clase padre inmediata o mas cercana. Ejemplo:
+
+class Gato(Mascota, Felino):
+
+    def comer():
+        super().comer() # ejecuta el metodo de la clase padre inmediata
+        print('el gato esta comiendo...')
+
+* Existen metodos de instancia y de clase. Ejemplo de creacion de metodos de clase:
+
+class Circulo:
+
+    pi = 3.141516
+
+    @classmethod # sirve para indicar que es un metodo de clase
+    def area(cls, radio): # cls indica a la misma clase. Sirve para acceder a otros metodos o propiedades. Es como self pero de la clase, en cambio self es de la instancia.
+        return cls.pi * (radio ** 2)
+
+resultado = Circulo.area(14)
+print(resultado)
+
+************************************************* MODULOS, PAQUETES O LIBRERIAS *************************************************
+
+* Los modulos son un archivo ".py". Existen 3 tipos de modulos
+
+** de python
+** de terceros
+** de nosotros mismos
+
+* Sintaxis para usar un modulo
+
+    import nombre_archivo
+    from nombre_archivo import * # aca importamos todo el modulo y usamos con su nombre.
+    import nombre_archivo as modulo # estamos renombrando el modulo a "modulo"
+    from nombre_archivo import nombre_de_lo_que_necesito # aca nos traemos solo una parte del modulo
+
+* Para traerte un modulo propio que este carpetas mas atras existe el modulo de python sys. Ejemplo de implementacion
+
+    import sys
+    # ahora agrego la ruta q me hace falta para importar lo necesario
+    sys.path.append("c/ruta_al_archivo_necesario")
+    import lo_que_necesito
+
+* Los paquetes son una carpeta con muchos modulos (muchos archivos ".py"). Para reconocer que es un paquete python busca el archivo "__init__.py"
+
+************************************************* MANIPULACION DE ARCHIVOS TXT *************************************************
+
+* Manipulacion de archivos txt de forma nativa
+    * Abrir un archivo
+
+        archivo_sin_leer = open('ruta_desde_la_carpeta_que_lo_contiene', encoding='UTF-8') #agregamos el encoding para que lea todos los caracteres bien del archivo txt
+
+    * Leer un archivo
+
+        archivo_sin_leer.read()
+
+    * Leer un archivo txt liena por linea
+
+        archivo_sin_leer.readlines() # devuelve una lista con strings linea por linea del archivo .txt
+
+    * Cerrar un archivo
+
+        archivo.close()
+
+* Cuando un archivo se lee, si queremos volver a leerlo primero tenemos que cerrarlo y volverlo a abrir
+
+* Lectura de archivos ".txt" de forma optima. Con el siguiente ejemplo, abre el archivo, ejecuta lo que necesito y cierra el archivo. Por defecto viene en modo de lectura
+
+    with open('carpeta_contenedora\\nombre_archivo.txt', encoding='UTF-8') as archivo:
+        print('codigo al abrir el archivo)
+        print(archivo)
+        print('al terminar se cerrara el archivo solo')
+
+* Escritura de archivo de forma optima
+
+    with open('carpeta_contenedora\\nombre_archivo.txt', 'w', encoding='UTF-8') as archivo:
+        # Nos va a pizar todo lo anterior, no lo agrega al final
+        archivo.write('pisamos lo que tenia')
+        # Escribimos varias lineas, sobreescribe tambien
+        archivo.writelines(['hola\n', 'segunda linea'])
+
+* Agregando texto al archivo de forma optima
+
+    with open('carpeta_contenedora\\nombre_archivo.txt', 'a', encoding='UTF-8') as archivo:
+        # Agrega el texto, no lo sobreescribe
+        archivo.write('pisamos lo que tenia')
+
+************************************************* CSV *************************************************
+
+* Los archivos csv sirven para trabajar con excel. Generalmente este tipo de archivos se leen con pandas (libreria)
+* Los archivos csv tienen la primera fila de texto el encabezado con el nombre de las propiedas y luego fila por fila valores. Ejemplo de estructura
+nombre_columna_1, nombre_columna_2, nombre_columna_3
+valor_1_fila_1, valor_2_fila_1, valor_3_fila_1
+valor_1_fila_2, valor_2_fila_2, valor_3_fila_2
+
+* Lectura de archivos cvs
+
+    import csv
+    with open('carpeta_contenedora\\nombre_archivo.cvs') as archivo:
+        reader = csv.reader(archivo)
+        # devuelve un iterable y abajo lo mostramos
+        for row in reader:
+            print(row)
+
+************************************************* PANDAS *************************************************
+
+* Para instalar pandas primero tenemos que tener instalado pip
+* Pip es un sistema de gestión de paquetes utilizado para instalar y administrar bibliotecas y paquetes de software de terceros. Es como npm para Python
+* Para instalar pandas tiramos el siguiente comando
+
+    py -m pip install pandas
+
+* Leer archivo csv con pandas. Ademas podemos cambiarle el nombre a los encabezados
+
+    import pandas as pd
+    df = pd.read_csv('carpeta_contenedora\\nombre_archivo.csv', names=['nombre_encabeza1', 'nombre_encabeza1'])
+    # muestro una columna
+    print(df['nombre_columna'])
+
+* df ---> significa "data frame" son estructuras de datos bidimensionales similares a una hoja de calculo
+
+* Ordenamiento por una columna. Devuelve una copia ordenada, por defecto lo hace de mayor a menor. Ejemplo
+
+    orden_ascendente = df.sort_values('encabeza_columna_a_ordenar')
+    orden_descendente = df.sort_values('encabeza_columna_a_ordenar', ascending=False)
+
+* Concatenamiento de archivos
+
+    df1 = pd.read_csv('carpeta_contenedora\\nombre_archivo.csv', names=['nombre_encabeza1', 'nombre_encabeza1'])
+    df2 = pd.read_csv('carpeta_contenedora\\nombre_archivo.csv', names=['nombre_encabeza1', 'nombre_encabeza1'])
+    df_concatenado = pd.concat([df1, df2])
+
+* Acceso a filas. Tenemos 2 opciones. "head" que lee de principio a fin y "tail" que lee de fin a principio
+
+    encabezado = df.head(0) # tenemos una lista con los encabezados
+    primeras_filas = df.head(3) # 3 es la cantidad de filas a leer
+    ultimas_filas = df.tail(2) # por defecto es 5 pero podemos modificarlo a las ultimas 2
+
+* Acceso a la cantidad de columnas del archivo. Esto se hace con shape. Ejemplo
+
+    filas_y_columnas_totales = df.shape()
+    print(filas_y_columnas_totales) # devuelve una tupla de dos dimensiones (cantidad_filas, cantidad_columnas)
+
+* Acceso a elemento especifico mediante encabezado y indice. Se hace con loc o iloc, segun el caso. Tienen una lista de dos elementos [fila, columna]. Ejemplo
+
+    elemento_especifico = df.loc[indice_de_la_fila, 'nombre_encabezado']
+
+* Acceso a elemento especifico solo mediante indices
+
+    elemento_especifico = df.iloc[indice_de_la_fila, indice_de_la_columna]
+
+* Acceso a todos los valores de una columna o fila
+
+    todos_los_valores_por_columna = df.iloc[:,1] # los ":" indican todos. Filas = todos, columna = 1
+    todos_los_valores_por_fila = df.iloc[2,:] # los ":" indican todos. Fila = 2, columna = todos
+
+* Acceso a la fila mediante una query
+
+    query = df.loc([df['edad'] > 30, :])
+
+* Convertir a string los datos de una columna
+
+    df['encabezado_columna'] = df['encabezado_columna'].astype(str)
+
+* Reemplazar un valo en una columna
+
+    df['encabezado_columna'].replace(valor_a_modificar,valor_por_el_que_modificaremos, inplace=True)
+
+* Eliminar fila con datos vacios
+
+    filas = df.dropna()
+
+* Eliminar columnas con datos vacios
+
+    columnas = df.dropna(axis=1)
+
+* Duplicar una fila
+
+    df = df.drop_duplicates()
+
+* Crear un archivo csv
+
+    nuevo_df_to_csv = df.to_csv('nombre_ruta_a_guardar.csv')
