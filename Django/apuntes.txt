@@ -1,0 +1,70 @@
+* Django es un FRAMEWORK
+
+************************ COMO INSTALAR DJANGO ************************
+
+1) creamos el entorno virtual ---> python -m venv env
+2) encendemos el entorno virtual ---> ejecutamos el comando activate desde el directorio raíz de tu entorno virtual. Nos paramos en la carpeta que contenga una carpeta llamada "env" o "venv" y tiramos el siguiente comando. En resumen, tenemos que ejecutar el archivo activate dentro de donde hayamos creado el entorno virtual. ---> env\Scripts\activate
+3) Una vez q cambie el prompt de la terminal y este activo, instalamos django ---> pip install django
+4) checkeamos que tenga una version instalada de django ---> python -m django --version
+5) listo
+
+************************* datos
+
+* django-admin es un CLI para que creemos nuestro proyecto y lo pongamos a correr. Para esto tiramos el siguiente comando
+
+    django-admin startproject nombre_proyecto ruta_donde_lo_creamos('.')
+
+* Este comando de arriba te genera dos cosas, la carpeta con el nombre del proyecto y un archivo manage.py
+* Para poner a correr nuestro proyecto ponemos. Si no sale un mensaje de que hay como cosas que faltan migrar tiramos el comando de aca abajo tambien
+    python manage.py migrate # este si falta migrar
+    python manage.py runserver # este para iniciar el server
+
+* archivos que te genera el proyecto
+
+** manage.py ---> sirve para tener un CLI interno de nuestro proyecto. Sirve para crear los scripts necesarios para el proyecto en cuestion
+
+** asgi.py y wsgi.py ---> es donde estamos montando el servidor (es donde ponemos el puerto q va a escuchar, etc)
+
+** urls.py ---> es donde agregamos todos los paths a los que vamos a poder acceder en nuestra app. Seria como el router de nuestra app. Se agregan aca:
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+    ]
+
+** settings.py ---> tiene toda la info como la base de datos q usamos, variables de entorno, etc
+
+* Para crear un superusuario para entrar en el login que ya trae por defecto tiramos el siguiente comando
+
+    python manage.py createsuperuser
+
+* Migraciones ---> son una manera incremental que tenemos para actualizar el esquema o como esta formada la base de datos
+
+* Django Project ---> es una aplicacion web impulsada por django framework, tambien considerada como el punto de entrada de nuestro sitio web
+
+* Django Apps ---> son librerias pequeñas diseñadas para representar un aspecto unico del proyecto. Puede haber propias o de terceras. Por ejemplo: carrito de compras, pasarela de pagos, etc... Son partes de nuestro proyecto (modularizamos nuestro proyecto)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**** COSAS QUE CREO SON ASI ******
+
+me parece q la carpeta q tengo env a la altura de manage.py seria como el nodemodules donde tengo las librerias instaladas.
+
+A la altura de manage.py tengo q tener los archivos readme.md o .git pero no subir la carpeta env
+
+** quede en https://codigofacilito.com/videos/clase-de-introduccion-a-django
+en -1:12:22

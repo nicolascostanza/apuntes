@@ -1,0 +1,62 @@
+* Nginx es un software de servidor web de código abierto que también funciona como servidor proxy inverso, equilibrador de carga y caché HTTP. Nginx es conocido por su alto rendimiento, estabilidad y escalabilidad.
+* Caracteristicas principales
+
+** Servidor web ---> Nginx puede servir contenido estático como HTML, CSS, JavaScript, imágenes y videos. Está diseñado para manejar eficientemente un gran número de conexiones concurrentes y entregar contenido rápidamente.
+
+** Proxy inverso ---> Nginx actúa como intermediario entre los clientes y los servidores backend. Puede recibir solicitudes de los clientes y reenviarlas a los servidores backend adecuados según varios criterios como algoritmos de equilibrio de carga, disponibilidad del servidor o patrones de URL específicos.
+
+** Equilibrador de carga ---> Nginx puede distribuir las solicitudes entrantes entre múltiples servidores backend, lo que permite mejorar el rendimiento y la escalabilidad. Ayuda a distribuir equitativamente la carga de trabajo y garantizar la alta disponibilidad de las aplicaciones web dirigiendo el tráfico a los servidores menos ocupados.
+
+** Caché ---> Nginx tiene capacidades de caché incorporadas que pueden mejorar significativamente el rendimiento de los sitios web y las aplicaciones web. Puede almacenar en memoria contenido estático que se accede con frecuencia y servirlo directamente a los clientes, reduciendo la carga en los servidores backend y disminuyendo los tiempos de respuesta.
+
+** Terminación de SSL/TLS ---> Nginx puede manejar el cifrado y descifrado de SSL/TLS, aliviando a los servidores backend de esta tarea intensiva en recursos. Puede descargar el procesamiento SSL/TLS, mejorando el rendimiento general y permitiendo el uso de funciones de seguridad avanzadas.
+
+** Soporte para HTTP/2 y WebSocket ---> Nginx admite el último protocolo HTTP/2, que ofrece un rendimiento y eficiencia mejorados en comparación con su predecesor, HTTP/1. También tiene soporte incorporado para WebSocket, un protocolo de comunicación que permite una comunicación bidireccional en tiempo real entre clientes y servidores.
+
+* Nginx es un backend q funciona mediante una estructura de arbol basada en contextos
+* Dos conceptos principales
+
+** Directivas ---> una funcion que realiza una accion. Estan compuestas por un nombre seguidas de parametros. Estas funcionan dentro de un contexto. Ejemplo
+
+    auth_basic "string"
+
+** Contexto ---> una directiva en la cual definimos un cuerpo a travez de llaves. El contexto se llamara http Ejemplo
+
+    http {
+        directive "string"
+    }
+
+* Dentro de Nginx existen los contextos core. Estos son los que nos permiten definir a toda la funcionalidad basica de nginx. A continuacion una lista
+
+** Main ---> contexto q contiene a toda la configuracion. Es el unico q no contiene un cuerpo. Este es un contexto global
+
+** Events ---> es usado para definir la configuracion sobre las conexiones de usuario. Por ejemplo la cantidad de conexiones a aceptar, numero de procesadores, etc. Este se puede definir una sola vez. Es un contexto global
+
+** Http ---> definimos a las directivas para la administracion de peticiones http/https
+
+** Server ---> es un contexto q definiremos dentro del contexto http para poder trabajar con multiples configuraciones. Lo que es tambien conocido como virtual host. Dentro de este contexto definiremos directivas para configurar a nuestro host, por ejemplo el puerto a escuchar, los archivos a retornar, etc
+
+** Location ---> nos permite poder manipular la peticion de los usuarios. Podemos cambiar el comportamiento de una peticion. Por ejemplo redirigir al usuario cada vez q acceda a una ruta que no tiene permisos, aunque esta tambien puede estar dentro de Server.
+
+** Upstream ---> aca podemos definir a un conjunto de servidores los cuales podemos usar para hacer balanceo de cargas, proxy reversivo. Este contexto se debe encontrar dentro del contexto http, pero fuera del contexto de server
+
+** Mail ---> ????
+
+** If ---> podemos definir ciertas condicionales por ejemplo una redireccion si se cumple "x" condicion
+
+* Para instalar nginx en linux tiramos el siguiente comando
+
+    sudo apt-get install nginx
+
+
+
+
+
+
+
+
+
+
+
+
+

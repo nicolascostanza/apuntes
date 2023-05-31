@@ -111,3 +111,11 @@ main{
 }
 
 * un debounce ---> es, mientras el usuario escribe no hacemos nada hasta q le damos un tiempito y si no puso nada en ese tiempo entonces si ejecutamos lo que queremos hacer. Existen librerias q lo hacen, sino se puede hacer un setTimeOut
+
+* La diferencia entre API REST y API RESTFULL es que una API REST Proporciona un conjunto de reglas y convenciones para construir servicios web que se pueden consumir y utilizar por aplicaciones cliente. Y la APIRESTFULL es una API RESTful es una API que sigue los principios de la arquitectura REST de manera más estricta. Una API RESTful se adhiere a ciertos principios estandares como por ejemplo:
+
+** Uso de los métodos HTTP adecuados ---> GET, POST, PUT, ...
+** Uso de URLs para identificar recursos
+** Uso de códigos de estado HTTP
+** Independencia de estado: Una API RESTful es stateless, lo que significa que cada solicitud contiene toda la información necesaria para comprender y procesar la solicitud sin necesidad de mantener un estado persistente en el servidor.
+** Representación de recursos: Los recursos en una API RESTful se representan en un formato determinado, como JSON o XML.

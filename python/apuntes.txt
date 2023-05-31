@@ -410,6 +410,131 @@ class MiExcepcion(Exception):
     def __init__(self, err):
         print(f'creamos nuestra clase con el error {err}')
 
+************************************************* ASINCRONISMO *************************************************
+
+* Python no tiene manejo de asincronismo por defecto, hay q instalar librerias
+* Corutinas ---> Las corutinas son funciones especiales que pueden suspenderse y reanudarse en puntos específicos sin bloquear la ejecución del programa. Se definen utilizando la sintaxis async def y pueden contener la palabra clave await para esperar la finalización de operaciones asíncronas. Las corutinas son la base de la programación asíncrona en Python. Ejemplo
+
+    import asyncio
+
+    async def greet(name):
+        print("Hola,", name)
+        await asyncio.sleep(1)
+        print("Adiós,", name)
+
+    async def main():
+        await greet("Juan")
+        await greet("María")
+        await greet("Pedro")
+
+    asyncio.run(main())
+
+* Event Loops ---> es una estructura que ejecuta y coordina corutinas y otras tareas asíncronas. Se encarga de manejar la ejecución de las corutinas, esperar la finalización de operaciones asíncronas y manejar eventos externos como E/S (Input/Output) y temporizadores. En el módulo asyncio, se utiliza el bucle de eventos para ejecutar el código asíncrono y garantizar la no bloqueabilidad y concurrencia.
+
+* En resumen, las corutinas permiten escribir código asíncrono en Python, mientras que los bucles de eventos son responsables de ejecutar y coordinar estas corutinas y otras tareas asíncronas. Al usar corutinas y bucles de eventos en conjunto, puedes lograr una programación asíncrona eficiente y reactiva en Python. El módulo asyncio de Python proporciona la infraestructura necesaria para trabajar con corutinas y bucles de eventos. Proporciona una forma poderosa y flexible de escribir código asíncrono y manejar la concurrencia en aplicaciones.
+
+* Future ---> Un objeto Future representa el resultado de una operación asíncrona que aún no se ha completado. Puede considerarse como una promesa de un valor que se resolverá en el futuro.
+
+* Task ---> Una tarea en asyncio es una unidad de trabajo que encapsula una corutina. Se crea una tarea utilizando asyncio.create_task() para ejecutar una corutina en el bucle de eventos. Las tareas permiten que múltiples corutinas se ejecuten concurrentemente.
+
+* asyncio.sleep() ---> frezea la app por el numero q le pasemos como argumento
+
+* await ---> se utiliza dentro de una corutina para indicar que se debe esperar la finalización de una operación asíncrona antes de continuar.
+
+* asyncio.wait() ---> sirve para esperar múltiples tareas
+
+* asyncio.gather() ---> sirve para recolectar los resultados de varias tareas, y muchas otras funciones y clases para interactuar con E/S, redes y bases de datos
+
+* Ejemplos de distintas resquest a una API REST
+
+** METODO GET
+
+    import asyncio
+    import httpx
+
+    async def make_request(url):
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            return response.json()
+
+    async def main():
+        url = "https://api.example.com/data"  # URL de la API del backend
+        response = await make_request(url)
+        print("Respuesta del backend:", response)
+
+    asyncio.run(main())
+
+** METODO POST
+
+    import asyncio
+    import httpx
+
+    async def make_post_request(url, data):
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, json=data)
+            return response.json()
+
+    async def main():
+        url = "https://api.example.com/data"  # URL de la API
+        data = {"nombre": "Juan", "edad": 25}  # Datos a enviar en la solicitud POST
+        response = await make_post_request(url, data)
+        print("Respuesta de la API:", response)
+
+    asyncio.run(main())
+
+** METODO PUT
+
+    import asyncio
+    import httpx
+
+    async def make_put_request(url, data):
+        async with httpx.AsyncClient() as client:
+            response = await client.put(url, json=data)
+            return response.json()
+
+    async def main():
+        url = "https://api.example.com/data/123"  # URL de la API
+        data = {"nombre": "Juan", "edad": 25}  # Datos a enviar en la solicitud PUT
+        response = await make_put_request(url, data)
+        print("Respuesta de la API:", response)
+
+    asyncio.run(main())
+
+** METODO PATCH
+
+    import asyncio
+    import httpx
+
+    async def make_patch_request(url, data):
+        async with httpx.AsyncClient() as client:
+            response = await client.patch(url, json=data)
+            return response.json()
+
+    async def main():
+        url = "https://api.example.com/data/123"  # URL de la API
+        data = {"nombre": "Juan", "edad": 25}  # Datos a enviar en la solicitud PATCH
+        response = await make_patch_request(url, data)
+        print("Respuesta de la API:", response)
+
+    asyncio.run(main())
+
+** METODO DELETE
+
+    import asyncio
+    import httpx
+
+    async def make_delete_request(url):
+        async with httpx.AsyncClient() as client:
+            response = await client.delete(url)
+            return response.json()
+
+    async def main():
+        url = "https://api.example.com/data/123"  # URL de la API
+        response = await make_delete_request(url)
+        print("Respuesta de la API:", response)
+
+    asyncio.run(main())
+
 ************************************************* CLASES Y POO *************************************************
 
 * Ejemplo de una clase

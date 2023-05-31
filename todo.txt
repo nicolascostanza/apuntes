@@ -1,6 +1,5 @@
 DUDAS
 * para que funciona zip()
 APRENDER
-* slicing ":" para metodos de listas
 * asincronismo
 * paquetes matplotlib y seaborn ---> para trabajar con graficos
