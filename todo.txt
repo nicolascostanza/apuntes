@@ -3,3 +3,24 @@ DUDAS
 APRENDER
 * asincronismo
 * paquetes matplotlib y seaborn ---> para trabajar con graficos
+
+ESTUDIAR CUANDO ES MEJOR UN MAP O UN OBJETO
+CUALES SON TODAS LAS VENTAJAS DE SET O MAP
+
+En términos de rendimiento, la elección entre un `Map` y un objeto (`Object`) en JavaScript depende del contexto y los requisitos específicos de tu caso de uso. Ambas estructuras tienen características y comportamientos diferentes que pueden afectar su rendimiento en diferentes escenarios.
+
+Aquí hay algunos aspectos a considerar:
+
+1. Acceso por clave: Los `Map` en JavaScript están optimizados para acceder a los valores utilizando cualquier tipo de clave, incluyendo objetos y tipos primitivos, mientras que los objetos se basan en las propiedades con nombres de cadena. Si necesitas un acceso rápido y eficiente a los valores utilizando claves más complejas, los `Map` pueden ser más adecuados y eficientes.
+
+2. Iteración de elementos: Los `Map` ofrecen métodos específicos para iterar a través de los elementos de manera más sencilla, como `forEach()` o `for...of`. En cambio, para iterar sobre las propiedades de un objeto, es necesario utilizar métodos adicionales o convertirlo a un arreglo.
+
+3. Orden de los elementos: Un `Map` conserva el orden de inserción de los elementos, lo que significa que los elementos se recorren en el mismo orden en que se agregaron. En cambio, el orden de las propiedades en un objeto no está garantizado y puede variar según la implementación.
+
+4. Tamaño y rendimiento: En general, para conjuntos de datos pequeños, la diferencia de rendimiento entre un `Map` y un objeto es insignificante. Sin embargo, a medida que el tamaño de los datos crece, los `Map` pueden tener una ventaja en el rendimiento debido a su eficiencia en el acceso y búsqueda de elementos.
+
+En resumen, si necesitas acceder a los valores utilizando claves más complejas, iterar de manera más sencilla o conservar el orden de los elementos, los `Map` pueden ser más adecuados en términos de rendimiento. Por otro lado, si solo necesitas propiedades de cadena simples y no requieres las características adicionales proporcionadas por los `Map`, los objetos pueden ser igualmente eficientes.
+
+
+
+

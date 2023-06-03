@@ -1,0 +1,149 @@
+********************************* MEMORIZACION *********************************
+
+* la memorización es una técnica que permite almacenar en caché los resultados de cálculos costosos y reutilizarlos en futuras llamadas con los mismos valores de entrada. Esto puede mejorar el rendimiento al evitar el cálculo repetido y utilizar los resultados previamente calculados desde la caché. Esto es lo que utiliza la libreria "re-select" de react con los selectores por detras. Cuando lo que vas a retornar es distinto cada vez, pese a que estes pasando los mismos argumentos (por ejemplo algun calculo con la hora actual o lectura|escritura de un archivo o realizar solicitudes a una base de datos) no tiene sentido implementar una memoizacion. En resumen, si tenes una funcion no pura (devuelve distinto resultado pese a que tenga los mismos argumentos), NO USAR MEMORIZACION NI RESELECT
+* Algunos puntos a tener en cuenta para saber si debemos memorizar algo o no:
+
+** Complejidad del cálculo: Si la función realiza cálculos costosos o procesos computacionalmente intensivos, puede tener sentido utilizar la memorización para evitar recalcular el resultado cuando los mismos datos de entrada se utilizan nuevamente.
+
+** Frecuencia de reutilización: Si la función se llama repetidamente con los mismos argumentos o en un bucle, la memorización puede mejorar significativamente el rendimiento al evitar cálculos redundantes.
+
+** Inmutabilidad de los datos de entrada: Si los datos de entrada son inmutables, es decir, no cambian después de su creación, es más seguro aplicar la memorización, ya que los resultados almacenados en caché no se volverán obsoletos.
+
+** Espacio en memoria disponible: La memorización implica almacenar resultados en caché, lo que puede consumir memoria adicional. Si el espacio en memoria es limitado, es posible que desees limitar la cantidad de resultados almacenados en caché o considerar otros enfoques de optimización.
+
+* Ejemplo basico de memorizacion:
+
+function square(n, cache = {}) {
+  if (cache[n]) {
+    return cache[n];
+  } else {
+    const result = n * n;
+    cache[n] = result;
+    return result;
+  }
+}
+
+console.log(square(5));  // Output: 25
+console.log(square(5));  // Output: 25, Esta vez no hara el calculo al ya haberlo hecho y tenerlo en cache, saca la respuesta de ahi
+
+* Existen 3 tipos comunes de memorizacion avanzada:
+
+1) memorizacion en cascada ---> Dividimos en varias cache. En lugar de tener una sola memoria caché, se utilizan varias capas de caché, cada una con diferentes niveles de granularidad. Cada capa de caché almacena resultados calculados en diferentes etapas del proceso de cálculo. En resumen, tenemos varias caches que se van anidando una debajo de otra. Ejemplo:
+
+function complexCalculation(n) {
+  if (complexCalculation.cache1[n]) {
+    return complexCalculation.cache1[n];
+  } else {
+    // Realizar cálculos complejos de la etapa 1
+    const result1 = /* ... */;
+
+    if (complexCalculation.cache2[result1]) {
+      return complexCalculation.cache2[result1];
+    } else {
+      // Realizar cálculos complejos de la etapa 2
+      const result2 = /* ... */;
+
+      // Almacenar resultados en la memoria caché
+      complexCalculation.cache1[n] = result1;
+      complexCalculation.cache2[result1] = result2;
+
+      return result2;
+    }
+  }
+}
+
+complexCalculation.cache1 = {};
+complexCalculation.cache2 = {};
+
+console.log(complexCalculation(5));  // Output: Resultado complejo para n = 5
+console.log(complexCalculation(5));  // Output: Resultado complejo para n = 5
+
+2) Memorización parcial ---> se utiliza cuando solo se desea almacenar en caché una parte de los resultados de una función, en lugar de memorizar todos los posibles resultados. Se utiliza cuando solo algunos valores de entrada específicos son propensos a cálculos repetidos. En el caso de abajo solo la catcheamos si es un valor que nos importa, Ejemplo:
+
+function complexCalculation(n) {
+  if (n === complexCalculation.interestingValue && complexCalculation.cache[n]) {
+    return complexCalculation.cache[n];
+  } else {
+    // Realizar cálculos complejos
+    const result = /* ... */;
+
+    if (n === complexCalculation.interestingValue) {
+      complexCalculation.cache[n] = result;
+    }
+
+    return result;
+  }
+}
+
+complexCalculation.cache = {};
+complexCalculation.interestingValue = 5;
+
+console.log(complexCalculation(5));  // Output: Resultado complejo para n = 5
+console.log(complexCalculation(5));  // Output: Resultado complejo para n = 5
+console.log(complexCalculation(10)); // Output: Resultado complejo para n = 10
+
+3) Memorización con límites de tamaño ---> es una técnica que impone un límite en el tamaño de la caché utilizada para almacenar los resultados memorizados. Cuando la caché alcanza su límite máximo, se pueden aplicar diferentes estrategias para gestionar el espacio limitado, como la eliminación de resultados menos utilizados o la implementación de una política de reemplazo. Esta técnica es útil cuando los resultados memorizados pueden consumir una cantidad significativa de memoria y se necesita controlar el uso de la memoria caché para evitar un agotamiento excesivo de recursos. Ejemplo:
+
+function factorial(n, cache = {}) {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
+
+  if (cache[n]) {
+    return cache[n];
+  }
+
+  const result = n * factorial(n - 1, cache);
+  cache[n] = result;
+
+  // Limitar el tamaño de la caché a 5 elementos
+  const cachedKeys = Object.keys(cache);
+  if (cachedKeys.length > 5) {
+    delete cache[cachedKeys[0]];
+  }
+
+  return result;
+}
+
+console.log(factorial(5));  // Output: 120
+console.log(factorial(4));  // Output: 24
+console.log(factorial(3));  // Output: 6
+console.log(factorial(2));  // Output: 2
+console.log(factorial(1));  // Output: 1
+console.log(factorial(0));  // Output: 1
+console.log(factorial(6));  // Output: 720
+console.log(factorial(5));  // Output: 120 (recuperado de la caché)
+
+** Explicacion del ejemplo de arriba ---> En este ejemplo, la función factorial calcula el factorial de un número dado n. Utiliza un objeto cache para almacenar los resultados calculados anteriormente. Si el resultado para un número n se encuentra en la caché, se devuelve directamente desde la caché. De lo contrario, se realiza el cálculo del factorial y se almacena el resultado en la caché. Además, se ha agregado una lógica para limitar el tamaño de la caché a 5 elementos. Después de cada cálculo y almacenamiento en caché, se verifica el tamaño de la caché. Si el número de elementos en la caché supera el límite establecido (5 en este caso), se elimina el elemento más antiguo (el primer elemento en el objeto cache).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ PARA IR PUNTO POR PUNTO
+
+Implementación de estructuras de datos de caché: La memorización se basa en el almacenamiento en caché de resultados. Puedes explorar cómo implementar estructuras de datos de caché más sofisticadas, como mapas, tablas hash o estructuras de datos personalizadas, para gestionar y organizar los resultados en caché.
+
+Aplicaciones prácticas: La memorización tiene aplicaciones prácticas en muchos campos, como algoritmos de programación dinámica, procesamiento de imágenes, cálculos matemáticos y optimización de consultas en bases de datos. Explora cómo se utiliza la memorización en estos contextos y cómo puedes aplicarla en tus propios proyectos.
+
+Investigación en lenguajes y bibliotecas específicas: Diferentes lenguajes de programación y bibliotecas pueden ofrecer características específicas relacionadas con la memorización. Investiga si el lenguaje o la biblioteca que estás utilizando proporciona utilidades o funciones incorporadas para la memorización y cómo puedes aprovecharlas.
+
+Pruebas y perfiles de rendimiento: A medida que implementes la memorización en tu código, es importante realizar pruebas de rendimiento y perfiles para evaluar su impacto y efectividad. Aprende cómo realizar pruebas de rendimiento y cómo interpretar los resultados para identificar las áreas donde la memorización puede ser más beneficiosa.
+
+
+
+

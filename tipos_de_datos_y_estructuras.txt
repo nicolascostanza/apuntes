@@ -1,0 +1,19 @@
+**** Estructuras de datos sofisticadas para optimizar rendimiento y eficiencia con cache *****
+
+1) Mapas --->  son estructuras de datos que almacenan pares clave-valor. Son útiles para almacenar los resultados de una función en caché, donde la clave es una combinación de los argumentos de entrada y el valor es el resultado correspondiente. Los mapas proporcionan un acceso rápido a los resultados almacenados y permiten la búsqueda eficiente basada en las claves.
+
+2) Tablas hash ---> 
+
+
+
+SEGUIR ACA CON CHATGPT
+
+
+
+
+
+
+
+
+
+
