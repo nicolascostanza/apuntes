@@ -2,6 +2,10 @@
 
 * La principal diferenciacion de este framework es que proporciona una arquitectura de aplicaciones lista para usar que permite a los desarrolladores y equipos crear aplicaciones altamente comprobables, escalables, POCO ACOPLADAS y fáciles de mantener.
 
+* Para iniciar un proyecto con nest tenemos q tener instalado el CLI y luego tirar nest new nombre_proyecto
+* para crear algun modulo o lo que queramos, nos paramos en la terminal en la ruta raiz del proyecto y tiramos nest generate module nombre_modulo
+* Tambien se pueden crear controllers, providers, etc
+
 * Cuando levantamos un proyecto con nest tenemos el template basico dentro del src:
 ** controller ---> Un controlador básico con una sola ruta.
 ** service ---> Un servicio básico con un único método.
@@ -247,9 +251,335 @@ import { Request } from 'express';
 
 * Los providers suelen tener un tiempo de vida ("scope") sincronizado con el ciclo de vida de la aplicación. Cuando la aplicación arranca, todas las dependencias deben resolverse y, por tanto, todos los providers deben instanciarse. Del mismo modo, cuando la aplicación se cierra, cada proveedor será destruido. Sin embargo, hay maneras de hacer que el tiempo de vida de tu proveedor sea también request-scoped.
 
-* me quede aca:
+* El patrón de diseño "Dependency Injection" (Inyección de Dependencias) es una técnica utilizada para lograr un código más modular, flexible y fácil de probar en una aplicación. Para entenderlo mejor, consideremos un ejemplo sencillo: una aplicación de blog que tiene un controlador y un servicio. El controlador se encarga de manejar las solicitudes HTTP y el servicio se encarga de interactuar con una base de datos para obtener los datos del blog. Ejemplo:
 
-https://docs.nestjs.com/providers#:~:text=Nest%20has%20a,provided%20here.
+	// Servicio de blog
+	class BlogService {
+	getAllPosts(): string[] {
+		return ["Publicación 1", "Publicación 2", "Publicación 3"];
+	}
+	}
+
+	// Controlador de blog
+	class BlogController {
+	private service: BlogService;
+
+	constructor(service: BlogService) {
+		this.service = service;
+	}
+
+	getAllPosts(): string[] {
+		return this.service.getAllPosts();
+	}
+	}
+
+	// Creación de instancias y uso
+	const blogService = new BlogService(); // Creamos una instancia del servicio
+	const blogController = new BlogController(blogService); // Pasamos la instancia del servicio al controlador
+
+	console.log(blogController.getAllPosts()); // Llamamos al método getAllPosts del controlador
+
+* Para que quede claro el concepto de services. Vendrian a ser como helpers que podremos reutilizar en nuestros controllers. Algunos ejemplos de para que se usan los services son los siguientes:
+
+** solicitudes a la base de datos. Get by id. Get all. Delete, etc
+** Lógica de negocio. Por ejemplo: un service que calcule el monto total del carrito, otro que restrinja por reglas de negocios la compras, etc.
+** integración con servicios externos. Por ejemplo: apis de terceros, metodos de pagos
+** Validación de datos
+** Operaciones de transformación de datos como mapear objetos de un formato a otro, aplicar reglas de normalización o denormalización, y realizar cálculos o agregaciones complejas.
+
+*********************** DIFERENCIA ENTRE CONTROLLER Y SERVICE **********************
+
+La diferencia entre controllers y services. Los controllers son los que se encargan de manejar el flujo del endpoint. De decir que se va a hacer en casa momento. Y los services se encargan de aplicar la logica y solicitudes que necesita el controller para devolver un resultado
+
+************************************************************************************
+
+* Una vez que tenemos definido el service y el controller tenemos que declararlos en el archivo module. Ejemplo:
+
+import { Module } from '@nestjs/common';
+import { CatsController } from './cats/cats.controller';
+import { CatsService } from './cats/cats.service';
+
+@Module({
+  controllers: [CatsController], // controller
+  providers: [CatsService], // service
+})
+export class AppModule {}
+
+*********************** MODULOS ***********************
+
+* Un módulo es una clase anotada con un decorador @Module(). El decorador @Module() proporciona metadatos que Nest utiliza para organizar la estructura de la aplicación. Cada aplicación tiene al menos un módulo, un módulo raíz. El módulo raíz es el punto de partida que Nest utiliza para construir el gráfico de la aplicación, la estructura de datos interna que Nest utiliza para resolver las relaciones y dependencias entre módulos y proveedores.
+
+* El decorador @Module() toma un único objeto cuyas propiedades describen el módulo:
+
+** providers ---> los providers que serán instanciados por el inyector Nest y que pueden ser compartidos al menos a través de este módulo
+** controllers ---> el conjunto de controladores definidos en este módulo que tienen que ser instanciados
+** imports ---> la lista de módulos importados que exportan los providers que se requieren en este módulo
+** exports ---> el subconjunto de providers que son proporcionados por este módulo y deben estar disponibles en otros módulos que importen este módulo. Puede utilizar el propio proveedor o sólo su token (proporcionar valor)
+
+* Es importante saber que El módulo encapsula los providers por defecto. Esto significa que es imposible inyectar providers que no forman parte directamente del módulo actual ni se exportan desde los módulos importados. Por lo tanto, puedes considerar los providers exportados de un módulo como la interfaz pública del módulo, o API.
+
+* Para modularizar la app, tenemos que por ejemplo agregar la carpeta "cats" y dentro poner todas las definiciones de su modulo. Luego en el module general de la aplicacion este modulo. Ejemplo:
+
+	// en cats/cats.module.ts definimos el modulo particular, con sus controlers y providers
+	import { Module } from '@nestjs/common';
+	import { CatsController } from './cats.controller';
+	import { CatsService } from './cats.service';
+
+	@Module({
+		controllers: [CatsController],
+		providers: [CatsService],
+	})
+	export class CatsModule {}
+
+	// despues en el modulo general, el de toda la app lo registramos asi:
+	import { Module } from '@nestjs/common';
+	import { CatsModule } from './cats/cats.module';
+
+	@Module({
+		imports: [CatsModule],
+	})
+	export class AppModule {}
+	// asi quedaria la estructura de carpetas
+	src
+		cats
+			dto
+				create-cat.dto.ts
+			interfaces
+				cat.interface.ts
+			cats.controller.ts
+			cats.module.ts
+			cats.service.ts
+		app.module.ts
+		main.ts
+
+*********************** MODULOS COMPARTIDOS ***********************
+
+* En Nest, los módulos son singletons por defecto, y por lo tanto se puede compartir la misma instancia de cualquier proveedor entre varios módulos sin esfuerzo. Cada módulo es automáticamente un módulo compartido. Una vez creado puede ser reutilizado por cualquier módulo. Imaginemos que queremos compartir una instancia de CatsService entre varios módulos. Para ello, primero tenemos que exportar el proveedor CatsService añadiéndolo a la matriz de exportaciones del módulo, como se muestra a continuación:
+
+	import { Module } from '@nestjs/common';
+	import { CatsController } from './cats.controller';
+	import { CatsService } from './cats.service';
+
+	@Module({
+		controllers: [CatsController],
+		providers: [CatsService],
+		exports: [CatsService] // esta es la clave para que pueda ser reutilizable
+	})
+	export class CatsModule {}
+
+ // ahora cada modulo que lo importe lo podra utilizar
+
+*********************** MODULOS GLOBALES ***********************
+
+* si se desea proporcionar un conjunto de providers que deben estar disponibles en todas partes fuera de la caja (por ejemplo, ayudantes, conexiones de base de datos, etc.), hacer que el módulo global con el @Global() decorador. Ejemplo:
+
+	import { Module, Global } from '@nestjs/common';
+	import { CatsController } from './cats.controller';
+	import { CatsService } from './cats.service';
+
+	@Global()
+	@Module({
+		controllers: [CatsController],
+		providers: [CatsService],
+		exports: [CatsService],
+	})
+	export class CatsModule {}
+
+
+*********************** MODULOS DINAMICOS ***********************
+
+*********************** MIDDLEWARES *****************************
+
+* Los middlewares de nest son por defecto iguales a los de express. Ejemplo de un middleware basico en nestJS:
+
+	import { Injectable, NestMiddleware } from '@nestjs/common';
+	import { Request, Response, NextFunction } from 'express';
+
+	@Injectable()
+	export class LoggerMiddleware implements NestMiddleware {
+		use(req: Request, res: Response, next: NextFunction) {
+			console.log('Request...');
+			next();
+		}
+	}
+	// asi tendriamos un middleware de clase, pero podemos pasarlo a funcion asi:
+	import { Request, Response, NextFunction } from 'express';
+
+	export function logger(req: Request, res: Response, next: NextFunction) {
+		console.log(`Request...`);
+		next();
+	};
+
+* El middleware Nest es totalmente compatible con la inyección de dependencias. Al igual que con los providers y controllers, son capaces de inyectar dependencias que están disponibles dentro del mismo módulo. Como de costumbre, esto se hace a través del constructor.
+
+* No hay lugar para middleware en el decorador @Module(). En su lugar, los configuramos utilizando el método configure() de la clase del módulo. Los módulos que incluyen middleware tienen que implementar la interfaz NestModule. Vamos a configurar el LoggerMiddleware en el nivel AppModule. Ejemplo de implementacion de un middleware para la ruta cats y el metodo get
+
+	import { Module, NestModule, RequestMethod, MiddlewareConsumer } from '@nestjs/common';
+	import { LoggerMiddleware } from './common/middleware/logger.middleware';
+	import { CatsModule } from './cats/cats.module';
+
+	@Module({
+		imports: [CatsModule],
+	})
+	export class AppModule implements NestModule {
+		configure(consumer: MiddlewareConsumer) {
+			consumer
+				.apply(LoggerMiddleware) // aplicamos el middleware
+				.exclude(
+					{ path: 'cats', method: RequestMethod.POST },
+					'cats/(.*)',
+				) // excluimos a la request post y a otras rutas con un comodin de ruta
+				.forRoutes({ path: 'cats', method: RequestMethod.GET }); // que rutas toma el middleware
+		}
+	}
+
+* aplicar multiples middlewares:
+
+	consumer.apply(cors(), helmet(), logger).forRoutes(CatsController);
+
+* aplicar middleware global:
+
+	app.use(middleware);
+
+*********************** FILTROS Y CAPAS DE EXCEPCIONES ***********************
+
+* Nest viene con una capa de excepciones incorporada que es responsable de procesar todas las excepciones no manejadas a través de una aplicación. Cuando una excepción no es manejada por el código de su aplicación, es capturada por esta capa, que envía automáticamente una respuesta apropiada y fácil de usar.
+
+* Cuando una excepción no es reconocida (no es ni HttpException ni una clase que herede de HttpException), el filtro de excepciones incorporado genera la siguiente respuesta JSON por defecto:
+
+	{
+		"statusCode": 500,
+		"message": "Internal server error"
+	}
+
+* Nest proporciona una clase HttpException incorporada, expuesta desde el paquete @nestjs/common. Para aplicaciones típicas basadas en HTTP REST/GraphQL API. Ejemplo:
+
+	@Get()
+	async findAll() {
+		throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+	}
+
+* Ejemplo de como overridear la respuesta:
+
+	@Get()
+	async findAll() {
+		try {
+			await this.service.findAll()
+		} catch (error) {
+			throw new HttpException({
+				status: HttpStatus.FORBIDDEN,
+				error: 'This is a custom message',
+			}, HttpStatus.FORBIDDEN, {
+				cause: error
+			});
+		}
+	}
+
+* En muchos casos, no necesitarás escribir excepciones personalizadas, y puedes usar la excepción HTTP Nest incorporada, como se describe en la siguiente sección. Si necesita crear excepciones personalizadas, es una buena práctica crear su propia jerarquía de excepciones, donde sus excepciones personalizadas hereden de la clase base HttpException. Con este enfoque, Nest reconocerá sus excepciones y se encargará automáticamente de las respuestas de error. Implementemos una excepción personalizada:
+
+	export class ForbiddenException extends HttpException {
+		constructor() {
+			super('Forbidden', HttpStatus.FORBIDDEN);
+		}
+	}
+
+* Lista de las excepciones que ya vienen con el modulo HttpException desde @nestjs/common:
+
+BadRequestException
+UnauthorizedException
+NotFoundException
+ForbiddenException
+NotAcceptableException
+RequestTimeoutException
+ConflictException
+GoneException
+HttpVersionNotSupportedException
+PayloadTooLargeException
+UnsupportedMediaTypeException
+UnprocessableEntityException
+InternalServerErrorException
+NotImplementedException
+ImATeapotException
+MethodNotAllowedException
+BadGatewayException
+ServiceUnavailableException
+GatewayTimeoutException
+PreconditionFailedException
+
+* Ejemplo de un manejador de errores para metodos http:
+
+	import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
+	import { Request, Response } from 'express';
+
+	@Catch(HttpException) // le informa q solo tomara excepciones http
+	export class HttpExceptionFilter implements ExceptionFilter { // crea la clase manejadora de errores y la extiende la basica (ExceptionFilter)
+		catch(exception: HttpException, host: ArgumentsHost) { // recibe los parametros necesarios, la excepcion y el host
+			const ctx = host.switchToHttp();
+			const response = ctx.getResponse<Response>();
+			const request = ctx.getRequest<Request>();
+			const status = exception.getStatus();
+			// genera la respuesta dinamica y personalizada segun la excepcion que haya sido pasada por parametro
+			response
+				.status(status)
+				.json({
+					statusCode: status,
+					timestamp: new Date().toISOString(),
+					path: request.url,
+				});
+		}
+	}
+
+* ArgumentsHost es muy util para tener cosas de la request y la response, podemos ver como en el ejemplo de arriba tomamos los datos con eso
+
+* Para usar estos filtros podemos hacerlo de dos formas:
+1) Agregandolo en el modulo.ts de nuestro modulo:
+
+	import { Module } from '@nestjs/common';
+	import { APP_FILTER } from '@nestjs/core';
+	import { HttpExceptionFilter } from './path/to/HttpExceptionFilter';
+
+	@Module({
+		providers: [
+			{
+				provide: APP_FILTER,
+				useClass: HttpExceptionFilter,
+			},
+		],
+	})
+	export class AppModule {}
+
+2) usando el decorador useFilters en el controller que lo necesitemos
+
+	@Post()
+	@UseFilters(new HttpExceptionFilter()) // esta fila tambien podria ser asi: @UseFilters(HttpExceptionFilter). Nose que diferencia hay, creo que estamos trayendo la clase en vez de instanciarla. Siempre es preferible usar las clases en vez de instanciar la clase.
+	async create(@Body() createCatDto: CreateCatDto) {
+		throw new ForbiddenException();
+	}
+
+* Para crear un filtro de manera global en la aplicacion y utilizarlo debemos hacer esto en nuestro archivo de entradad e la app:
+
+	async function bootstrap() {
+		const app = await NestFactory.create(AppModule);
+		app.useGlobalFilters(new HttpExceptionFilter());
+		await app.listen(3000);
+	}
+	bootstrap();
+
+	// o en el module.ts general hacer esto:
+	import { Module } from '@nestjs/common';
+	import { APP_FILTER } from '@nestjs/core';
+
+	@Module({
+		providers: [
+			{
+				provide: APP_FILTER,
+				useClass: HttpExceptionFilter,
+			},
+		],
+	})
+	export class AppModule {}
+
+* Para atrapar todas las excepciones no manejadas (independientemente del tipo de excepción), deja vacía la lista de parámetros del decorador @Catch().
 
 
 
@@ -260,7 +590,11 @@ https://docs.nestjs.com/providers#:~:text=Nest%20has%20a,provided%20here.
 
 
 
+TODO:
+aprender sobre modulos dinamicos
+en la tab de overview quedan por estudiar, pipes, guards, interceptors y custom decorators
 
-
+QUEDE ACA:
+https://docs.nestjs.com/pipes#:~:text=ADS%20VIA%20CARBON-,Pipes,-A%20pipe%20is
 
 
