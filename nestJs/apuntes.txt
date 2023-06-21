@@ -1,0 +1,266 @@
+* Es un framework para construir aplicaciones web escalables y eficientes. Detras de escenas usa Express, aunque puede configurarse tambien para usar Fastify
+
+* La principal diferenciacion de este framework es que proporciona una arquitectura de aplicaciones lista para usar que permite a los desarrolladores y equipos crear aplicaciones altamente comprobables, escalables, POCO ACOPLADAS y fáciles de mantener.
+
+* Cuando levantamos un proyecto con nest tenemos el template basico dentro del src:
+** controller ---> Un controlador básico con una sola ruta.
+** service ---> Un servicio básico con un único método.
+** module ---> El módulo raíz de la aplicación.
+** specs ---> test
+** main ---> El archivo de entrada de la aplicación que utiliza la función central NestFactory para crear una instancia de aplicación Nest.
+
+*************************** CONTROLLERS ***************************
+
+* Los controladores se encargan de gestionar las solicitudes entrantes y devolver las respuestas al cliente. Es la funcion donde esta la logica de negocios de los endpoints. Aca dejaremos un ejemplo de un controlador basico.
+
+	import { Controller, Get } from '@nestjs/common';
+
+	@Controller('cats')
+	export class CatsController {
+		@Get()
+		findAll(): string {
+			return 'This action returns all cats';
+		}
+
+		@Post()
+		create(): string {
+			return 'This action adds a new cat';
+		}
+	}
+
+** @Controller ---> es un decorador basico que se utiliza para definir un controllador
+** @Get() ---> dice que va a ser una request de tipo get y entre parentesis podemos pasarle parametros opcionales a la request
+** findAll() ---> funcion a la que se va a dirigir cuando se haga una solicitud de ese tipo a ese endpoint. El nombre es totalmente arbitrario, debemos asignarle el que nos parezca
+
+* Como maneja NestJS las respuestas ? Tiene dos formas:
+
+1) el metodo por defecto, cuando se devuelve un objeto o array nest lo serializa a JSON automaticamente, sin embargo si devolvemos un valor primitivo (string, number, boolean, etc) nest lo devolvera sin serializar. En esta forma siempre las respuestas por defecto devuelven un status 200, excepto las de tipo POST que las devolvera con 201.
+
+2) Podemos utilizar el objeto de respuesta específico de la biblioteca (por ejemplo, Express), que puede inyectarse utilizando el decorador @Res() en la firma del manejador del método (por ejemplo, findAll(@Res() response)). Con este enfoque, tienes la posibilidad de utilizar los métodos de gestión de respuesta nativos expuestos por ese objeto. Por ejemplo, con Express, puedes construir respuestas utilizando código como response.status(200).send().
+
+* Se puede modificar el status code que devolvemos con el decorador @HttpCode(...)
+
+* Como maneja NestJS la informacion que viene en la request ? Por defecto utiliza express. Ademas podemos acceder directamente a los del body en especifico con decoradores (ej: @Body() o @Query()) por lo tanto quedaria algo asi como el siguiente ejemplo:
+
+import { Controller, Get, Req } from '@nestjs/common';
+import { Request } from 'express';
+
+	@Controller('cats')
+	export class CatsController {
+	@Get()
+	findAll(@Req() request: Request): string {
+		return 'This action returns all cats';
+	}
+	}
+
+* Decoradores que podemos usar para obtener valores en los controllers:
+@Request(), @Req()
+@Response(), @Res()
+@Headers
+@Body(key?: string)
+@Query(key?: string)
+@Param(key?: string)
+@Next()
+@Headers(name?: string)
+@Ip()
+@HostParam()
+@Session()
+
+* Decoradores de metodos que tenemos disponibles:
+@Get()
+@Post()
+@Put()
+@Delete()
+@Patch()
+@Options()
+@Head()
+@All()
+
+* Podemos utilizar patterns para las rutas y hacerlas matchear. Ejemplo:
+
+	@Get('ab*cd') // el * indica q en la tercer posicion puede ir cualquier cosa
+	findAll() {
+		return 'This route uses a wildcard';
+	}
+
+* Para modificar el status de la response hacemos asi (esto solo aplica cuando la respuesta no es dinamica, siempre responde lo mismo):
+
+	@Post()
+	@HttpCode(204) // aca modificamos del 201 por defecto al 204
+	create() {
+		return 'This action adds a new cat';
+	}
+
+* Para modificar los headers de la respuesta podemos tomar por ejemplo con @Header('Cache-Control', 'none') o utilizar res.header()
+
+* Para redirigir una respuesta a una URL específica, puede utilizar un decorador @Redirect() o res.redirect(). @Redirect() toma dos argumentos, url y statusCode, ambos son opcionales. El valor por defecto de statusCode es 302 (Found) si se omite. Ejemplo:
+
+	@Get()
+	@Redirect('https://nestjs.com', 301)
+
+* Parametros de ruta. Ejemplo:
+
+	@Get(':id')
+	findOne(@Param('id') id: string): string {
+		return `This action returns a #${id} cat`;
+	}
+
+* El decorador @Controller puede tomar como parametro opcional la url de donde necesita que vengan las request. Ejemplo:
+
+	@Controller({ host: 'admin.example.com' })
+	export class AdminController {
+		@Get()
+		index(): string {
+			return 'Admin page';
+		}
+	}
+
+* DTO ---> Un DTO es un objeto que define cómo se enviarán los datos a través de la red. Podríamos determinar el esquema DTO usando interfaces TypeScript, o mediante clases simples( Se recomienda usar clases ya que ts no existe en tiempo de ejecucion por lo tanto las pipes no podrian hacer referencia a las DTOs en tiempo de ejecucion). Ejemplo de una DTO:
+
+	export class CreateCatDto {
+		name: string;
+		age: number;
+		breed: string;
+	}
+
+	// despues en el controller la usamos:
+	@Post()
+	async create(@Body() createCatDto: CreateCatDto) {
+		return 'This action adds a new cat';
+	}
+
+* Ejemplo de controladores basicos:
+
+	import { Controller, Get, Query, Post, Body, Put, Param, Delete } from '@nestjs/common';
+	import { CreateCatDto, UpdateCatDto, ListAllEntities } from './dto';
+
+	@Controller('cats')
+	export class CatsController {
+		@Post()
+		create(@Body() createCatDto: CreateCatDto) {
+			return 'This action adds a new cat';
+		}
+
+		@Get()
+		findAll(@Query() query: ListAllEntities) {
+			return `This action returns all cats (limit: ${query.limit} items)`;
+		}
+
+		@Get(':id')
+		findOne(@Param('id') id: string) {
+			return `This action returns a #${id} cat`;
+		}
+
+		@Put(':id')
+		update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto) {
+			return `This action updates a #${id} cat`;
+		}
+
+		@Delete(':id')
+		remove(@Param('id') id: string) {
+			return `This action removes a #${id} cat`;
+		}
+	}
+
+* Luego de crear los controllers correspondientes. Debemos insertarlos en el module. Para que nest haga la instancia. Ejemplo del app.module.ts
+
+	import { Module } from '@nestjs/common';
+	import { CatsController } from './cats/cats.controller';
+
+	@Module({
+		controllers: [CatsController],
+	})
+	export class AppModule {}
+
+* Respuestas manejadas por librerias como express. Aunque este enfoque funciona, y de hecho permite más flexibilidad en algunos aspectos al proporcionar un control total del objeto de respuesta (manipulación de cabeceras, características específicas de la biblioteca, etc.), debe utilizarse con cuidado. En general, el enfoque es mucho menos claro y tiene algunas desventajas. La principal desventaja es que tu código se vuelve dependiente de la plataforma (ya que las bibliotecas subyacentes pueden tener diferentes APIs en el objeto de respuesta), y más difícil de probar (tendrás que simular el objeto de respuesta, etc.). Ejemplo:
+
+	import { Controller, Get, Post, Res, HttpStatus } from '@nestjs/common';
+	import { Response } from 'express';
+
+	@Controller('cats')
+	export class CatsController {
+		@Post()
+		create(@Res() res: Response) {
+			res.status(HttpStatus.CREATED).send();
+		}
+
+		@Get()
+		findAll(@Res() res: Response) {
+			res.status(HttpStatus.OK).json([]);
+		}
+	}
+
+*************************** PROVIDERS ***************************
+
+* Anteriormente construimos un sencillo CatsController. Los controladores deben manejar peticiones HTTP y delegar tareas más complejas a los proveedores. Los proveedores son clases JavaScript simples que se declaran como proveedores en un módulo.
+
+* Empecemos creando un simple CatsService. Este servicio será responsable del almacenamiento y recuperación de datos, y está diseñado para ser utilizado por el CatsController, por lo que es un buen candidato para ser definido como un proveedor. Ejemplo del Service:
+
+	import { Injectable } from '@nestjs/common';
+	import { Cat } from './interfaces/cat.interface';
+
+	@Injectable()
+	export class CatsService {
+		private readonly cats: Cat[] = [];
+
+		create(cat: Cat) {
+			this.cats.push(cat);
+		}
+
+		findAll(): Cat[] {
+			return this.cats;
+		}
+	}
+
+	// definimos la interface
+	export interface Cat {
+		name: string;
+		age: number;
+		breed: string;
+	}
+
+* Luego de esto ahora tendriamos un controller que se encargaria de manejar la request HTTP y dejaria la logica mas compleja al service. Asi quedaria el controller:
+
+	import { Controller, Get, Post, Body } from '@nestjs/common';
+	import { CreateCatDto } from './dto/create-cat.dto';
+	import { CatsService } from './cats.service';
+	import { Cat } from './interfaces/cat.interface';
+
+	@Controller('cats')
+	export class CatsController {
+		constructor(private catsService: CatsService) {}
+
+		@Post()
+		async create(@Body() createCatDto: CreateCatDto) {
+			this.catsService.create(createCatDto);
+		}
+
+		@Get()
+		async findAll(): Promise<Cat[]> {
+			return this.catsService.findAll();
+		}
+	}
+
+* Nest está construido alrededor del fuerte patrón de diseño comúnmente conocido como "Dependency injection". gracias a las capacidades de TypeScript, es extremadamente fácil gestionar dependencias porque se resuelven simplemente por tipo. En el siguiente ejemplo, Nest resolverá el catsService creando y devolviendo una instancia de CatsService (o, en el caso normal de un singleton, devolviendo la instancia existente si ya ha sido solicitada en otro lugar). Esta dependencia se resuelve y se pasa al constructor de su controlador (o se asigna a la propiedad indicada):
+
+	constructor(private catsService: CatsService) {}
+
+* Los providers suelen tener un tiempo de vida ("scope") sincronizado con el ciclo de vida de la aplicación. Cuando la aplicación arranca, todas las dependencias deben resolverse y, por tanto, todos los providers deben instanciarse. Del mismo modo, cuando la aplicación se cierra, cada proveedor será destruido. Sin embargo, hay maneras de hacer que el tiempo de vida de tu proveedor sea también request-scoped.
+
+* me quede aca:
+
+https://docs.nestjs.com/providers#:~:text=Nest%20has%20a,provided%20here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,6 +18,10 @@
 * full outer join ---> te trae lo q no tiene intersecciuon entre las tablas (conjuntos)
 * Diagrama UML ---> sirve para diseñar las tablas y sus relaciones
 
+* FK es el id o PK de otra tabla. La PK es el identificador de la tabla en cuestion
+* Las sentencias DDL son para la creacion de la estructura de la base de datos(create table) en cambio las sentencias DML son para manipularlas (actualizar una fila)
+
+
 * TIPOS DE DATO
   ** BOOLEAN
   ** CHAR(1) (es un caracter)
@@ -89,14 +93,21 @@
   SELECT * FROM city WHERE ciudad LIKE 'A%' ---> si ponemos "%palabrasQuequeremosBuscar%"  . sirve para q contengan ciertas palabras en el campo buscado
 
 * CONSTRAINT ---> sirve para hacer los checks o dar las PK(primary key) o FK(foranean key). Ejemplo:
-  CREATE TABLE nombreTabla(
-    id SERIAL,
-    name VARCHAR(50) NOT NULL,
-    num_employees INT,
-    id_manufacturer INT,
-    CONSTRAINT pk_NombreDeEstaTabla PRIMARY KEY(campoElegido, gralmente id),
-    CONSTRAINT fk_nombreDeEstaTabla_NombreDeLaTablaRelacionada FOREIGN KEY (nombre de uno de los campos en esta tabla q va a apuntar a la otra tabla, ej id_manufacturer) REFERENCES nombreDeLaOtraTabla(campoDeLaOtraTabla)
-  )
+  CREATE TABLE Manufacturers (
+    manufacturer_id INT PRIMARY KEY,
+    manufacturer_name VARCHAR(50) NOT NULL
+  );
+
+  CREATE TABLE Products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(50) NOT NULL,
+    manufacturer_id INT,
+    CONSTRAINT fk_Products_Manufacturers FOREIGN KEY (manufacturer_id) REFERENCES Manufacturers(manufacturer_id)
+  );
+
+  La tabla "Manufacturers" tiene dos columnas: "manufacturer_id" y "manufacturer_name". La columna "manufacturer_id" se define como clave primaria (PRIMARY KEY), lo que garantiza que cada valor sea único en la tabla. La columna "manufacturer_name" no puede ser nula (NOT NULL), lo que significa que siempre debe tener un valor.
+
+  La tabla "Products" también tiene tres columnas: "product_id", "product_name" y "manufacturer_id". La columna "product_id" se define como clave primaria, asegurando la unicidad de los valores. La columna "product_name" también se define como no nula. La columna "manufacturer_id" se utiliza para establecer una relación con la tabla "Manufacturers" a través de una restricción de clave foránea (FOREIGN KEY). La restricción fk_Products_Manufacturers establece que los valores de la columna "manufacturer_id" en la tabla "Products" deben corresponder a los valores existentes en la columna "manufacturer_id" de la tabla "Manufacturers".
 
 * BORRADO EN CASCADA ---> Ejemplo:
   CREATE TABLE nombreTabla(
@@ -114,12 +125,12 @@
     id_producto INT,
     id_marca INT,
     precio NUMERIC NOT NULL CHECK(price >= 0),
-    CONSTRAINT pk_producto_marca PRIMARY KEY(id_producto, id_extra),
+    CONSTRAINT pk_producto_marca PRIMARY KEY(id_producto, id_marca),
     CONSTRAINT fk_producto_marca FOREIGN KEY (id_producto) REFERENCES productos(Campo con pk de la tabla productos) ON UPDATE cascade ON DELETE cascade,
     CONSTRAINT fk_marca_producto FOREIGN KEY (id_marca) REFERENCES marca(Campo con pk de la tabla marca) ON UPDATE cascade ON DELETE cascade
   )
 
-* FILTRADO QUE DEVUELVA ELEMENTOS UNICOS
+* FILTRADO QUE DEVUELVA ELEMENTOS UNICOS. Elimina los repetidos
   SELECT DISTINCT nombreCampo FROM nombreTabla;  ---> los trae solo una vez, elimina los repetidos
 
 * ORDER BY ---> te los devuelve ordenados. Por defecto es asc, de a-z. Le podemos agregar DESC al final y lo cambia Ejemplo:
@@ -133,9 +144,14 @@
   ** OR ---> cumple o 1 o la otra. Ejemplo:
     SELECT * FROM nombreTabla WHERE Condicion OR otraCondicion;
   ** AND ---> debe cumplir ambas. Ejemplo:
+    SELECT * FROM nombreTabla WHERE Condicion AND otraCondicion;
 
-* se pueden contar la repeticion de veces de capa elemento en una columna.
+* se pueden contar la repeticion de veces de cada elemento en una columna.
   SELECT nombreCampo, count(mismoNombreCampo) FROM nombreTabla group by mismoNombreCampo;
+
+* GROUP BY ---> agrupa los resultados por cada valor único en la columna que elegiste. Ejemplo
+  SELECT producto, COUNT(producto) FROM ventas GROUP BY producto;
+  La cláusula GROUP BY agrupa los resultados por cada valor único en la columna "producto", y la función de agregación COUNT() cuenta la cantidad de ocurrencias de cada valor en la columna seleccionada.
 
 * JOINS ---> es para hacer consulta entre tablas relacionadas. Por ejemplo cuando en una tabla tenes el id de otra entonces tendrias q ir a la otra tabla a consultar tambien.
   ** inner join hacemos q coincidan todos los registros. Hacemos q coincidan. Se pueden concatenar todos los joins q querramos
