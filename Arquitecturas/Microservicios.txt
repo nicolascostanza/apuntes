@@ -1,0 +1,142 @@
+* La arquitectura de microservicios es un enfoque para el desarrollo de aplicaciones en el que una aplicación grande se divide en servicios más pequeños e independientes. Cada servicio se enfoca en realizar una función específica y se comunica con otros servicios a través de interfaces bien definidas, como API REST o eventos.
+
+1) Comunicación por eventos ---> En este enfoque, los microservicios se comunican entre sí enviando y recibiendo eventos. Los eventos representan acciones o sucesos significativos que ocurren dentro del sistema. Cuando un microservicio realiza una acción importante, emite un evento describiendo ese suceso. Otros microservicios pueden suscribirse a estos eventos y reaccionar en consecuencia. Este modelo facilita la decoupled o desacoplamiento entre los servicios, ya que un servicio no necesita conocer directamente a los demás para comunicarse con ellos.
+
+Existen varios tipos de comunicación por eventos. Las 3 arquitecturas principales son:
+
+	1.a) arquitectura de cola de mensajes
+
+		Se utilizan por ejemplo Apache Kafka o RabbitMQ. Un microservicio puede publicar un evento en una cola, y los microservicios interesados pueden consumir ese evento y realizar las acciones correspondientes. Este enfoque es especialmente útil cuando necesitas una comunicación asíncrona y desacoplada entre los servicios. Una arquitectura de cola de mensajes actúa como intermediario entre los productores de eventos (los microservicios que publican eventos) y los consumidores de eventos (los microservicios interesados en esos eventos). El productor envía un mensaje a la cola, y luego el consumidor puede leer ese mensaje de la cola y tomar las acciones correspondientes.
+
+		Aquí hay un ejemplo simplificado de cómo podría funcionar la comunicación por eventos utilizando una cola de mensajes:
+
+			1) Un microservicio A produce un evento importante, por ejemplo, "Usuario registrado".
+			2) El microservicio A publica ese evento en una cola de mensajes como Apache Kafka o RabbitMQ.
+			3) Varios microservicios B, C y D están interesados en los eventos de "Usuario registrado" y están suscritos a la cola.
+			4) Los microservicios B, C y D consumen los eventos de la cola en el orden en que se publicaron.
+			5) Cada microservicio realiza las acciones correspondientes según el evento recibido. Por ejemplo, el microservicio B puede enviar un correo electrónico de bienvenida al nuevo usuario, el microservicio C puede almacenar información adicional del usuario en su base de datos, y el microservicio D puede registrar estadísticas de registro.
+
+		Esto nos proporciona una comunicación asíncrona y desacoplada entre los microservicios. Los productores y consumidores no necesitan conocerse directamente y no están bloqueados esperando respuestas inmediatas. Además, la cola de mensajes actúa como un buffer, lo que significa que si un consumidor está temporalmente desconectado o inactivo, los mensajes se almacenarán en la cola hasta que esté listo para consumirlos.
+
+	1.b) Sistemas de publicación/suscripción
+
+		1) Publicación de eventos: Los microservicios que actúan como productores de eventos pueden publicar eventos en un tema o canal específico en el bus de eventos. Cada evento tiene un tipo o nombre asociado que describe el suceso o acción que ocurrió. Por ejemplo, un microservicio de pedidos puede publicar un evento "PedidoCreado" cuando se realiza un nuevo pedido.
+
+		2) Suscripción a eventos: Los microservicios que están interesados en ciertos tipos de eventos pueden suscribirse a esos eventos en el bus de eventos. Al suscribirse, indican qué tipos de eventos desean recibir. Por ejemplo, un microservicio de envío puede suscribirse al evento "PedidoCreado" para recibir notificaciones cuando se realice un nuevo pedido.
+
+		3) Entrega de eventos: Cuando se publica un evento en el bus de eventos, el bus se encarga de entregar ese evento a todos los microservicios suscritos que han indicado interés en ese tipo de evento. Cada microservicio suscriptor recibe una copia del evento y puede procesarlo de acuerdo a sus necesidades.
+
+		4) Procesamiento de eventos: Cada microservicio suscriptor decide cómo procesar los eventos que recibe. Pueden realizar acciones como actualizar su estado interno, enviar notificaciones, realizar cálculos o generar otros eventos en respuesta. Por ejemplo, el microservicio de envío, al recibir el evento "PedidoCreado", puede iniciar el proceso de preparación del envío y generar un evento "EnvíoCreado" como resultado.
+
+		Ejemplo sencillo:
+
+			1) Un microservicio "ServicioA" publica eventos en el tema "Pedidos" del bus de eventos.
+			2) Otros microservicios, como "ServicioB" y "ServicioC", se suscriben al tema "Pedidos" para recibir notificaciones.
+			3) Cuando "ServicioA" crea un nuevo pedido, publica un evento "PedidoCreado" en el tema "Pedidos".
+			4) Tanto "ServicioB" como "ServicioC" reciben el evento "PedidoCreado" y realizan acciones en respuesta. Por ejemplo, "ServicioB" puede actualizar su base de datos con la información del pedido y "ServicioC" puede enviar una notificación al cliente sobre el nuevo pedido.
+
+		¿ Entonces cuando es util este tipo de arquitectura ?
+
+		La principal diferencia del modelo de sistemas de publicación/suscripción con respecto a otros enfoques, como las colas de mensajes, es que los eventos se agrupan en temas o canales en lugar de en colas. Esto permite que varios microservicios suscritos reciban los mismos eventos y los procesen de manera independiente. Además, el bus de eventos actúa como intermediario entre los productores y los consumidores, asegurando la entrega y la propagación de los eventos. El modelo de sistemas de publicación/suscripción es especialmente útil cuando varios microservicios necesitan estar informados sobre un mismo tipo de evento y no es necesario que cada evento sea consumido por un solo microservicio. Esto promueve la escalabilidad y la flexibilidad en el sistema, ya que los micro
+
+	1.3) webhooks
+
+		En este caso, un microservicio puede registrar una URL (webhook) en otro microservicio para recibir notificaciones cuando ocurra un evento específico. Cuando se produce el evento, el microservicio emisor hace una solicitud HTTP a la URL registrada, notificando al receptor sobre el evento. Veamos como funciona:
+
+		1) Registro del webhook: Un microservicio que desea recibir notificaciones de eventos se registra en otro microservicio proporcionando una URL. Esta URL es donde el microservicio emisor enviará las notificaciones cuando ocurra un evento relevante.
+
+		2) Notificación de eventos: Cuando se produce un evento importante, el microservicio emisor hace una solicitud HTTP POST o PUT a la URL registrada, incluyendo los detalles del evento en el cuerpo de la solicitud. Esta solicitud se considera la notificación del evento.
+
+		3) Procesamiento de la notificación: El microservicio receptor (el que registró el webhook) recibe la notificación del evento en la URL registrada. Puede analizar la solicitud y extraer los datos del evento para tomar acciones correspondientes, como actualizar su estado interno, realizar cálculos o generar otras respuestas.
+
+		4) Confirmación de recepción: El microservicio receptor puede enviar una respuesta HTTP al microservicio emisor para confirmar que ha recibido correctamente la notificación. Esta respuesta generalmente es un código de estado HTTP, como 200 OK.
+
+		A continuació dejamos un ejemplo sencillo para entender mas a fondo:
+
+		1) Un microservicio "ServicioA" desea recibir notificaciones cuando se produce un nuevo pedido.
+		2) "ServicioA" registra un webhook en el microservicio "ServicioB", proporcionando una URL específica donde desea recibir las notificaciones.
+		3) Cuando "ServicioB" recibe un nuevo pedido, hace una solicitud HTTP POST a la URL del webhook de "ServicioA", incluyendo los detalles del pedido en el cuerpo de la solicitud.
+		4) "ServicioA" recibe la solicitud en su URL de webhook, analiza el cuerpo para obtener los datos del pedido y realiza acciones adicionales, como actualizar su base de datos o enviar notificaciones a los usuarios correspondientes.
+
+		¿ Entonces cuando es util implementar esta arquitectura ?
+
+		La principal diferencia del modelo de webhooks con respecto a otros enfoques, como las colas de mensajes o los sistemas de publicación/suscripción, es que los microservicios emisores envían notificaciones directamente al microservicio receptor a través de una solicitud HTTP. Esto significa que no hay un intermediario o infraestructura adicional para gestionar la comunicación. Los webhooks son útiles cuando un microservicio específico necesita recibir notificaciones precisas y en tiempo real de eventos específicos que ocurren en otros microservicios.
+
+2) Comunicación por API REST ---> En este enfoque, los microservicios se comunican entre sí mediante API REST (Representational State Transfer). Cada microservicio expone un conjunto de endpoints HTTP que representan diferentes acciones o recursos dentro del servicio. Otros microservicios pueden llamar a estos endpoints para realizar solicitudes y obtener respuestas. Esta comunicación es síncrona y generalmente se utiliza cuando se necesita una respuesta inmediata de otro servicio. Sin embargo, es importante tener en cuenta que la comunicación a través de API REST puede generar acoplamientos entre los servicios, ya que cada microservicio necesita conocer la interfaz y los detalles de implementación del servicio al que se está conectando.
+
+* En resumen, la comunicación por eventos proporciona un enfoque más desacoplado y asíncrono, mientras que la comunicación a través de API REST es más adecuada para casos en los que se necesita una interacción directa y sincrónica entre los servicios. La elección del enfoque depende de los requisitos y las características específicas de tu arquitectura de microservicios.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+seguir este path:
+
+¡Claro! Aquí tienes algunos puntos fundamentales para comenzar a trabajar con arquitectura de microservicios:
+
+1. **Comprender la arquitectura de microservicios**: La arquitectura de microservicios es un enfoque para el desarrollo de aplicaciones en el que una aplicación grande se divide en servicios más pequeños e independientes. Cada servicio se enfoca en realizar una función específica y se comunica con otros servicios a través de interfaces bien definidas, como API REST o eventos. Es importante entender los principios y beneficios clave de esta arquitectura.
+
+2. **Decomposición del dominio**: Divide tu aplicación en servicios basados en los límites del dominio y las responsabilidades funcionales. Cada microservicio debe ser responsable de una parte específica del dominio de tu aplicación. Esto promueve la modularidad y la independencia de cada servicio.
+
+3. **Gestión de datos**: Cada microservicio debe tener su propia base de datos, preferiblemente optimizada para el servicio específico. Esto ayuda a garantizar una mayor autonomía y evita acoplamientos entre los servicios.
+
+4. **Comunicación entre microservicios**: Los microservicios se comunican entre sí a través de mecanismos de comunicación como API REST, mensajes asincrónicos o eventos. Puedes utilizar protocolos y tecnologías como HTTP, AMQP, RabbitMQ o Apache Kafka para facilitar la comunicación entre los servicios.
+
+5. **Orquestación vs. Coreografía**: Existen dos enfoques principales para coordinar las interacciones entre microservicios: la orquestación y la coreografía. En la orquestación, un componente central coordina y controla las interacciones entre los microservicios, mientras que en la coreografía, cada microservicio se comunica directamente con otros servicios sin un control centralizado. Es importante comprender las ventajas y desventajas de cada enfoque y elegir el más adecuado para tu caso de uso.
+
+6. **Escalabilidad y tolerancia a fallos**: Los microservicios deben poder escalar de forma independiente para manejar cargas de trabajo variables. Puedes utilizar herramientas como Kubernetes para orquestar y escalar automáticamente los microservicios. Además, debes tener en cuenta la tolerancia a fallos, implementando mecanismos de recuperación y resiliencia en tus servicios.
+
+7. **Monitorización y registro**: La monitorización y el registro son cruciales en un entorno de microservicios. Debes implementar mecanismos para recopilar y analizar registros de cada microservicio, así como para supervisar su rendimiento y estado. Herramientas como Prometheus, Grafana y ELK Stack son comunes para este propósito.
+
+8. **Seguridad**: Asegúrate de implementar medidas de seguridad adecuadas en cada microservicio, como autenticación y autorización. Considera también la protección de tus comunicaciones mediante el uso de protocolos seguros como HTTPS.
+
+9. **Pruebas y despliegue**: Es importante contar con un sólido proceso de pruebas para cada microservicio, incluyendo pruebas unitarias, de integración y de extremo a extremo. Además, debes tener un enfoque claro para el despliegue y la gestión de versiones de tus microservicios.
+
+10. **Cultura DevOps**: Adopta una cultura DevOps, donde el desarrollo y la operación de los microserv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ me queda el ultimo del primeor:
+
+ Webhooks: En este caso, un microservicio puede registrar una URL (webhook) en otro microservicio para recibir notificaciones cuando ocurra un evento específico. Cuando se produce el evento, el microservicio emisor hace una solicitud HTTP a la URL registrada, notificando al receptor sobre el evento.
+
