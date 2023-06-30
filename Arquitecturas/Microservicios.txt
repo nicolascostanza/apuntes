@@ -1,5 +1,7 @@
 * La arquitectura de microservicios es un enfoque para el desarrollo de aplicaciones en el que una aplicación grande se divide en servicios más pequeños e independientes. Cada servicio se enfoca en realizar una función específica y se comunica con otros servicios a través de interfaces bien definidas, como API REST o eventos.
 
+******************************** TIPOS DE COMUNICACION ********************************
+
 1) Comunicación por eventos ---> En este enfoque, los microservicios se comunican entre sí enviando y recibiendo eventos. Los eventos representan acciones o sucesos significativos que ocurren dentro del sistema. Cuando un microservicio realiza una acción importante, emite un evento describiendo ese suceso. Otros microservicios pueden suscribirse a estos eventos y reaccionar en consecuencia. Este modelo facilita la decoupled o desacoplamiento entre los servicios, ya que un servicio no necesita conocer directamente a los demás para comunicarse con ellos.
 
 Existen varios tipos de comunicación por eventos. Las 3 arquitecturas principales son:
@@ -66,77 +68,170 @@ Existen varios tipos de comunicación por eventos. Las 3 arquitecturas principal
 
 * En resumen, la comunicación por eventos proporciona un enfoque más desacoplado y asíncrono, mientras que la comunicación a través de API REST es más adecuada para casos en los que se necesita una interacción directa y sincrónica entre los servicios. La elección del enfoque depende de los requisitos y las características específicas de tu arquitectura de microservicios.
 
+******************************** MODULARIZACION Y SEPARACION DE RESPONSABILIDADES ********************************
 
+* Es un paso fundamental al trabajar con arquitecturas de microservicios. Implica dividir tu aplicación en servicios más pequeños y autónomos, basados en los límites del dominio y las responsabilidades funcionales. Detalles sobre este proceso:
 
+	1) identificacion de modulos ---> el primer paso es comprender las diferentes áreas o subdominios dentro de tu aplicación. Estos subdominios pueden representar funcionalidades específicas o áreas del negocio. Por ejemplo, en una aplicación de comercio electrónico, los subdominios pueden ser: gestión de pedidos, catálogo de productos, autenticación de usuarios, envío y facturación, entre otros.
 
+	2) Identificación de responsabilidades ---> una vez identificados los modulos, es necesario determinar las responsabilidades funcionales de cada uno. Cada microservicio debe ser responsable de una parte específica del dominio y tener una finalidad clara. Esto implica definir qué funcionalidades o procesos se encuentran dentro del alcance de cada microservicio y cuáles están fuera.
 
+	3) implementacion independiente ---> Es importante que cada microservicio sea independiente y pueda funcionar de manera autónoma. Esto significa que debe tener su propia base de código, su lógica de negocio interna, su base de datos o almacenamiento dedicado, y sus propios límites de transacciones y consistencia de datos. La independencia de los microservicios facilita el desarrollo, la escalabilidad y la capacidad de realizar cambios de manera aislada sin afectar a otros servicios.
 
+	4) Comunicación entre microservicios ---> Una vez que hayas decompuesto tu dominio en microservicios, necesitarán comunicarse entre sí para realizar tareas más complejas o compartir información. Esto se puede lograr mediante la comunicación API REST o la comunicación por eventos donde cada microservicio toma acción basado en los eventos que recibe.
 
+	5) Modelado del contexto del modulo ---> Cada microservicio debe tener su propio modelo de datos que refleje y se adapte a su responsabilidad funcional. El modelado de datos debe ser coherente dentro del microservicio, pero puede diferir entre los distintos microservicios. Esto permite una mayor flexibilidad y evita acoplamientos innecesarios entre los servicios.
 
+* Puntos a tener en cuenta:
 
+	1) Tamaño y granularidad de los microservicios ---> Es crucial encontrar el equilibrio adecuado en el tamaño y la granularidad de los microservicios. Si un microservicio es demasiado pequeño, puede resultar en una sobrecarga de comunicación y complejidad de coordinación entre ellos. Por otro lado, si un microservicio es demasiado grande, puede volverse difícil de mantener y escalar. La granularidad de los microservicios debe basarse en las responsabilidades funcionales y en la cohesión de los componentes dentro de un contexto de dominio.
 
+	2) Gestión de la coherencia y la consistencia ---> La gestión de la coherencia y la consistencia se refiere a cómo mantener los datos coherentes y consistentes en un sistema compuesto por múltiples microservicios. En un entorno de microservicios, donde cada servicio tiene su propia base de datos y es responsable de una parte específica del dominio, puede surgir el desafío de mantener la integridad de los datos en todo el sistema. A continuación algunos puntos claves:
 
+		2.1) Transacciones distribuidas: En ocasiones, es posible que necesites realizar operaciones que afecten a múltiples microservicios de manera simultánea y asegurarte de que se completen de manera exitosa o que se reviertan si algo sale mal. Esto se conoce como transacciones distribuidas. Sin embargo, las transacciones distribuidas pueden ser complejas de implementar y pueden tener un impacto negativo en el rendimiento y la escalabilidad. Algunas técnicas para implementar transacciones distribuidas son el protocolo 2PC (Two-Phase Commit) o protocolos más modernos como Sagas.
 
+		2.2) Eventual Consistency (Consistencia eventual): En lugar de buscar una coherencia inmediata entre los microservicios, otra estrategia común es permitir la consistencia eventual. Esto significa que los microservicios pueden operar de manera independiente y que los cambios realizados en un servicio pueden propagarse gradualmente a otros servicios a lo largo del tiempo. En este enfoque, los microservicios están diseñados para tolerar temporalmente estados inconsistentes y trabajar hacia un estado coherente en un período de tiempo razonable.
 
+		2.3) Eventos compensatorios: En lugar de revertir transacciones completas en caso de errores, se pueden utilizar eventos compensatorios para deshacer las operaciones realizadas en un microservicio en caso de fallos. Por ejemplo, si un microservicio realiza una operación y envía un evento para notificar a otros servicios sobre el cambio, y luego ocurre un error en uno de los servicios de destino, se puede utilizar un evento compensatorio para deshacer la operación anterior.
 
+		2.4) Consistencia basada en consultas: En lugar de mantener una coherencia fuerte entre todos los microservicios, puedes optar por una consistencia basada en consultas, donde los servicios consultan y combinan datos de múltiples fuentes para obtener una visión coherente de los datos en tiempo real. Esto se puede lograr mediante la implementación de una capa de consulta o utilizando patrones de diseño como CQRS (Command Query Responsibility Segregation).
 
+	3) Organización y estructura del código ---> Es recomendable organizar y estructurar el código de cada microservicio de manera coherente. Esto facilitará el desarrollo, la prueba, el despliegue y el mantenimiento de los servicios. Puedes utilizar patrones de diseño y buenas prácticas de desarrollo de software, como la separación de preocupaciones, la modularidad y la aplicabilidad del principio de responsabilidad única.
 
+	4) Monitoreo y gestión de microservicios ---> Al tener múltiples microservicios funcionando en tu arquitectura, es importante contar con herramientas y prácticas adecuadas para monitorear y gestionar estos servicios. Esto implica el uso de herramientas de monitoreo de aplicaciones, registro de eventos, métricas y alertas para detectar y solucionar problemas. También debes considerar la implementación de prácticas como el escalado automático y la gestión de versiones para facilitar la operación de los microservicios en entornos de producción.
 
+* A continuación un ejemplo de modularización:
 
+	** Subdominio 1: Gestión de pedidos.
+		Responsabilidades: Crear nuevos pedidos, consultar el estado de los pedidos, gestionar pagos, enviar notificaciones de actualización de pedidos.
+		Microservicio 1: OrderService.
 
+	** Subdominio 2: Catálogo de productos.
+		Responsabilidades: Agregar nuevos productos, consultar información de productos, gestionar inventario.
+		Microservicio 2: ProductService.
 
+	** Subdominio 3: Autenticación de usuarios.
+		Responsabilidades: Autenticar usuarios, gestionar perfiles de usuarios, generar tokens de acceso.
+		Microservicio 3: AuthService.
 
+******************************** GESTIÓN DE DATOS ********************************
 
+* La gestión de datos en microservicios es un aspecto crítico para garantizar la autonomía y la independencia de cada servicio. A continuación los aspectos mas importantes a tener en cuenta:
 
+	1) Base de datos por microservicio ---> Cada microservicio debe tener su propia base de datos, lo que significa que cada servicio tiene su propia fuente de datos dedicada y no comparte una base de datos centralizada con otros servicios. Esto evita el acoplamiento entre los servicios y permite que cada uno tenga su propio esquema de datos y evolucione de manera independiente.
 
+	2) Base de datos específica para cada servicio ---> Es recomendable utilizar una base de datos específica para cada microservicio, optimizada para las necesidades y el dominio del servicio en particular. Puedes elegir entre diferentes tipos de bases de datos, como bases de datos relacionales, bases de datos NoSQL o almacenamiento en memoria, según los requisitos de tu servicio.
 
+	3) Patrón de acceso a datos ---> Cada microservicio debe tener su propia capa de acceso a datos que encapsule la lógica de acceso y manipulación de datos específica del servicio. Esto significa que el microservicio es responsable de realizar operaciones CRUD (crear, leer, actualizar, eliminar) en su base de datos y exponer interfaces o API para acceder a estos datos.
 
+	4) Consistencia y sincronización de datos ---> Al tener múltiples bases de datos en los microservicios, es posible que surjan desafíos de consistencia y sincronización de datos. Algunas opciones para abordar esto son: propagar eventos o mensajes para notificar a otros servicios sobre cambios de datos, implementar mecanismos de sincronización periódica de datos o utilizar consultas distribuidas para obtener vistas coherentes de los datos.
 
+	5) Desafíos de integridad referencial ---> Cuando se trabaja con múltiples bases de datos en microservicios, es importante considerar la integridad referencial entre los datos. Las referencias o relaciones entre datos en diferentes servicios pueden volverse más complejas. Puedes utilizar técnicas como el uso de identificadores únicos globales o la duplicación selectiva de datos para abordar los desafíos de integridad referencial. Ahora que es la integridad referencial ? A continuacion una breve explicación:
 
+		* La integridad referencial es un concepto importante en las bases de datos relacionales que se refiere a la consistencia y validez de las relaciones entre las tablas. En el contexto de los microservicios, donde cada servicio tiene su propia base de datos, la integridad referencial puede volverse más compleja. En un sistema basado en microservicios, es posible que haya entidades relacionadas entre diferentes servicios. Por ejemplo, puede haber una entidad de "Cliente" en un servicio y una entidad de "Pedido" en otro servicio, donde cada pedido está asociado a un cliente. La integridad referencial se refiere a garantizar que estas relaciones entre entidades se mantengan válidas y consistentes en todo el sistema. Cuando hablamos de integridad referencial en el contexto de los microservicios, los desafíos surgen debido a la separación de las bases de datos y la autonomía de cada servicio. Algunos desafíos comunes incluyen:
 
+			5.1) Consistencia de datos relacionados ---> Si un cambio ocurre en una entidad en un servicio, es necesario asegurarse de que los datos relacionados en otros servicios también se actualicen correctamente. Por ejemplo, si se actualiza el nombre de un cliente en un servicio, es importante asegurarse de que los pedidos relacionados con ese cliente también reflejen el cambio.
 
+			5.2) Mantenimiento de la integridad ---> Al tener bases de datos separadas, es fundamental garantizar la integridad de los datos. Esto implica asegurarse de que las relaciones entre entidades se mantengan válidas y coherentes. Por ejemplo, si se elimina un cliente de un servicio, es importante asegurarse de que los pedidos relacionados también se gestionen adecuadamente.
 
+			5.3) Actualización y sincronización de datos ---> Cuando se actualizan o modifican datos relacionados en diferentes servicios, es necesario tener mecanismos para propagar esos cambios de manera consistente y sincronizar los datos. Esto puede involucrar el uso de eventos, mensajes o mecanismos de sincronización periódica para mantener la coherencia entre los servicios.
 
+	6) Seguridad y acceso a datos ---> Cada microservicio debe tener su propio mecanismo de seguridad y control de acceso a datos. Esto implica asegurar que solo los usuarios o servicios autorizados puedan acceder y manipular los datos de cada servicio. Puedes implementar autenticación, autorización y encriptación de datos para garantizar la seguridad de los datos en cada microservicio.
 
-seguir este path:
+******************************** ORQUESTACIÓN VS COREOGRAFÍA ********************************
 
-¡Claro! Aquí tienes algunos puntos fundamentales para comenzar a trabajar con arquitectura de microservicios:
+* Existen dos enfoques principales para coordinar las interacciones entre microservicios: la orquestación y la coreografía. En la orquestación, un componente central coordina y controla las interacciones entre los microservicios, mientras que en la coreografía, cada microservicio se comunica directamente con otros servicios sin un control centralizado. Es importante comprender las ventajas y desventajas de cada enfoque y elegir el más adecuado para tu caso de uso.
 
-1. **Comprender la arquitectura de microservicios**: La arquitectura de microservicios es un enfoque para el desarrollo de aplicaciones en el que una aplicación grande se divide en servicios más pequeños e independientes. Cada servicio se enfoca en realizar una función específica y se comunica con otros servicios a través de interfaces bien definidas, como API REST o eventos. Es importante entender los principios y beneficios clave de esta arquitectura.
+* Orquestacion --->  hay un componente centralizado llamado orquestador que coordina y controla las interacciones entre los microservicios. El orquestador se encarga de dirigir el flujo de trabajo y de controlar el orden en que se llaman a los diferentes servicios. Algunas características de la orquestación son:
 
-2. **Decomposición del dominio**: Divide tu aplicación en servicios basados en los límites del dominio y las responsabilidades funcionales. Cada microservicio debe ser responsable de una parte específica del dominio de tu aplicación. Esto promueve la modularidad y la independencia de cada servicio.
+	1) Control centralizado: Un componente central, el orquestador, toma las decisiones sobre las interacciones entre los microservicios. El orquestador se encarga de dirigir el flujo de trabajo y de decidir qué servicio debe ser invocado en cada etapa del proceso.
 
-3. **Gestión de datos**: Cada microservicio debe tener su propia base de datos, preferiblemente optimizada para el servicio específico. Esto ayuda a garantizar una mayor autonomía y evita acoplamientos entre los servicios.
+	2) Mayor acoplamiento: Debido a que el orquestador controla el flujo de trabajo y coordina las interacciones entre los microservicios, hay un mayor acoplamiento entre los servicios y el orquestador. Los microservicios dependen del orquestador para saber cuándo y cómo deben actuar.
 
-4. **Comunicación entre microservicios**: Los microservicios se comunican entre sí a través de mecanismos de comunicación como API REST, mensajes asincrónicos o eventos. Puedes utilizar protocolos y tecnologías como HTTP, AMQP, RabbitMQ o Apache Kafka para facilitar la comunicación entre los servicios.
+	3) Mejor visibilidad y control: La orquestación centralizada proporciona una mayor visibilidad y control sobre el flujo de trabajo en todo el sistema. Esto puede ser beneficioso para casos en los que se requiere un control estricto sobre el proceso de negocio.
 
-5. **Orquestación vs. Coreografía**: Existen dos enfoques principales para coordinar las interacciones entre microservicios: la orquestación y la coreografía. En la orquestación, un componente central coordina y controla las interacciones entre los microservicios, mientras que en la coreografía, cada microservicio se comunica directamente con otros servicios sin un control centralizado. Es importante comprender las ventajas y desventajas de cada enfoque y elegir el más adecuado para tu caso de uso.
+* Coreografía ---> no hay un componente centralizado que coordine las interacciones entre los microservicios. En cambio, cada microservicio se comunica directamente con otros servicios a través de eventos, mensajes o APIs para lograr la colaboración y el intercambio de datos. Algunas características de la coreografía son:
 
-6. **Escalabilidad y tolerancia a fallos**: Los microservicios deben poder escalar de forma independiente para manejar cargas de trabajo variables. Puedes utilizar herramientas como Kubernetes para orquestar y escalar automáticamente los microservicios. Además, debes tener en cuenta la tolerancia a fallos, implementando mecanismos de recuperación y resiliencia en tus servicios.
+	1) Descentralización: No hay un componente centralizado que controle el flujo de trabajo. Cada microservicio es autónomo y se comunica directamente con otros servicios según sea necesario.
 
-7. **Monitorización y registro**: La monitorización y el registro son cruciales en un entorno de microservicios. Debes implementar mecanismos para recopilar y analizar registros de cada microservicio, así como para supervisar su rendimiento y estado. Herramientas como Prometheus, Grafana y ELK Stack son comunes para este propósito.
+	2) Bajo acoplamiento: Los microservicios en una coreografía tienen un bajo acoplamiento, ya que no dependen de un componente centralizado para saber cómo deben actuar. Cada servicio responde a eventos o mensajes y toma decisiones en función de su propio estado y lógica interna.
 
-8. **Seguridad**: Asegúrate de implementar medidas de seguridad adecuadas en cada microservicio, como autenticación y autorización. Considera también la protección de tus comunicaciones mediante el uso de protocolos seguros como HTTPS.
+	3) Mayor escalabilidad: La coreografía permite una mayor escalabilidad, ya que los microservicios pueden operar de forma independiente y responder a eventos o mensajes de manera asincrónica. Esto facilita la implementación de sistemas distribuidos escalables y tolerantes a fallos.
 
-9. **Pruebas y despliegue**: Es importante contar con un sólido proceso de pruebas para cada microservicio, incluyendo pruebas unitarias, de integración y de extremo a extremo. Además, debes tener un enfoque claro para el despliegue y la gestión de versiones de tus microservicios.
+******************************** ESCALABILIDAD Y TOLERANCIA A FALLOS ********************************
 
-10. **Cultura DevOps**: Adopta una cultura DevOps, donde el desarrollo y la operación de los microserv
+* Escalabilidad ---> La escalabilidad se refiere a la capacidad de los microservicios para manejar cargas de trabajo variables y adaptarse a la demanda en tiempo real. Los microservicios deben poder escalar tanto horizontalmente (agregando más instancias de un servicio) como verticalmente (aumentando los recursos de una instancia). Algunos puntos importantes a considerar para lograr la escalabilidad son:
 
+	1) Separación de responsabilidades: Los microservicios deben estar diseñados de manera que puedan escalar de forma independiente. Esto significa que cada microservicio debe tener su propia base de datos y ser responsable de una parte específica del dominio de la aplicación.
 
+	2) Orquestación de contenedores: Puedes utilizar herramientas como Kubernetes, que es un orquestador de contenedores, para gestionar automáticamente el despliegue, la escalabilidad y la distribución de los microservicios en un clúster de máquinas. Kubernetes te permite escalar los microservicios de manera flexible y eficiente.
 
+	3) Monitoreo y ajuste: Es importante implementar sistemas de monitoreo para observar el rendimiento y la carga de los microservicios. Con un monitoreo adecuado, puedes identificar cuellos de botella y realizar ajustes en la configuración o la infraestructura para garantizar una escalabilidad óptima.
 
+* Tolerancia a fallos ---> La tolerancia a fallos se refiere a la capacidad de los microservicios para mantener la disponibilidad y la funcionalidad incluso en caso de fallos o errores. Es importante diseñar los microservicios de manera que sean resistentes a fallos y puedan recuperarse de manera rápida y confiable. Algunas consideraciones para implementar la tolerancia a fallos son:
 
+	1) Diseño para la resiliencia: Los microservicios deben ser capaces de manejar errores y fallas sin afectar la funcionalidad global del sistema. Esto implica implementar mecanismos de manejo de errores, como el uso de circuit breakers, retries y fallbacks. Que son estos 3 ultimos conceptos ? A continuacion una explicacion breve de cada uno:
 
+		1.1) Circuit Breaker ---> Un circuit breaker es un patrón de diseño que se utiliza para manejar la comunicación entre microservicios en un entorno distribuido. Su objetivo principal es evitar el colapso del sistema cuando uno o más microservicios experimentan un fallo o un rendimiento deficiente. Funciona de la siguiente manera: cuando un microservicio invoca a otro, se coloca un circuit breaker entre ellos. Si el microservicio invocado no responde dentro de un límite de tiempo establecido o muestra un alto índice de errores, el circuit breaker se activa y, en lugar de realizar más intentos de invocación, devuelve una respuesta alternativa o un valor predeterminado al microservicio invocador. Esto ayuda a evitar una degradación mayor del sistema y permite que se recupere de manera más rápida.
 
+		1.2) Retries --->  son intentos adicionales de realizar una operación o invocación de un microservicio en caso de que la primera solicitud falle o no obtenga una respuesta exitosa. Cuando se produce un error o una respuesta no deseada, el microservicio que realiza la invocación puede configurarse para intentar nuevamente la operación después de un breve período de tiempo. Los reintentos pueden ser útiles en situaciones donde el fallo puede ser temporal o debido a condiciones transitorias, como una congestión de red o un servicio no disponible momentáneamente. Al realizar reintentos, se espera que el problema se resuelva y la operación se complete exitosamente en algún momento.
 
+		1.3) Fallbacks ---> Los fallbacks (alternativas) son acciones o respuestas de respaldo que se proporcionan cuando una operación o invocación de microservicio falla. En lugar de devolver un error o una respuesta vacía, se ofrece una respuesta alternativa o un valor predeterminado que permita que el sistema siga funcionando. El fallback se utiliza como una estrategia de contingencia cuando no se puede completar una operación según lo esperado. Puede ser una respuesta estática predefinida o una acción alternativa que intente mitigar el impacto del fallo. Por ejemplo, en lugar de mostrar una página de error, se puede mostrar una página con información relevante o datos parciales disponibles.
 
+		* Estos conceptos, circuit breakers, retries y fallbacks, son patrones y estrategias que se utilizan para mejorar la resiliencia y la tolerancia a fallos en los sistemas distribuidos y los microservicios en particular.
 
+	2) Respaldos y replicación: Puedes implementar respaldos y replicación de servicios para garantizar la disponibilidad continua. Esto implica tener copias de seguridad de los datos y tener múltiples instancias del mismo servicio en diferentes nodos o zonas de disponibilidad.
 
+	3) Pruebas de resiliencia: Es importante realizar pruebas de resiliencia para evaluar cómo se comportan los microservicios ante diferentes escenarios de fallos. Esto te permitirá identificar posibles puntos débiles y mejorar la tolerancia a fallos del sistema.
 
+******************************** MONITORIZACION Y REGISTRO ********************************
 
+* La monitorización y el registro son cruciales en un entorno de microservicios. Debes implementar mecanismos para recopilar y analizar registros de cada microservicio, así como para supervisar su rendimiento y estado. Herramientas como Prometheus, Grafana y ELK Stack son comunes para este propósito.
 
+* Monitorizacion ---> implica recopilar datos en tiempo real sobre el rendimiento, la disponibilidad y el estado de los microservicios. Esto permite detectar problemas o cuellos de botella y tomar medidas para solucionarlos antes de que afecten a los usuarios finales. Algunos aspectos importantes de la monitorización son:
 
- me queda el ultimo del primeor:
+	1) Recopilación de métricas: Debes recopilar métricas relevantes, como el tiempo de respuesta, el uso de recursos, el número de solicitudes y los errores. Puedes utilizar herramientas como Prometheus para recopilar y almacenar estas métricas.
 
- Webhooks: En este caso, un microservicio puede registrar una URL (webhook) en otro microservicio para recibir notificaciones cuando ocurra un evento específico. Cuando se produce el evento, el microservicio emisor hace una solicitud HTTP a la URL registrada, notificando al receptor sobre el evento.
+	2) Visualización de datos: Es útil tener una forma de visualizar los datos de monitorización para comprender mejor el rendimiento y detectar patrones o tendencias. Grafana es una herramienta popular para crear paneles de control y visualizar datos de monitorización.
 
+	3) Alertas y notificaciones: Configura alertas para recibir notificaciones cuando se superen ciertos umbrales o se produzcan situaciones inesperadas. Esto te permite actuar de manera proactiva ante problemas y minimizar el tiempo de inactividad.
+
+* Registros ---> implica la recopilación y el almacenamiento de registros o logs generados por los microservicios. Estos registros son útiles para realizar un seguimiento de las actividades y el comportamiento de los microservicios, así como para investigar problemas o errores. Algunos aspectos importantes del registro son:
+
+	1) Formato y estructura de los registros: Define un formato consistente y una estructura clara para los registros generados por los microservicios. Esto facilita la búsqueda, el filtrado y el análisis de los registros.
+
+	2) Centralización de registros: Puedes utilizar herramientas como ELK Stack (Elasticsearch, Logstash, Kibana) para centralizar y almacenar los registros de los microservicios. Esto te permite realizar búsquedas y análisis avanzados en los registros.
+
+	3) Análisis de registros: Utiliza técnicas de análisis de registros para extraer información útil de los registros y detectar patrones o problemas. Esto puede ayudarte a identificar áreas de mejora y optimizar el rendimiento de los microservicios.
+
+******************************** SEGURIDAD ********************************
+
+* algunos puntos clave sobre la seguridad en el contexto de los microservicios:
+
+	1) Autenticación y autorización: Cada microservicio debe implementar mecanismos de autenticación para verificar la identidad de los usuarios o servicios que intentan acceder a él. Esto puede involucrar el uso de tokens de acceso, como JSON Web Tokens (JWT), o el intercambio de credenciales seguras, como OAuth. Además, es importante implementar mecanismos de autorización para controlar qué usuarios o servicios tienen permiso para acceder a qué recursos dentro de cada microservicio.
+
+	2) Protección de las comunicaciones: Es esencial proteger las comunicaciones entre los microservicios para prevenir ataques de interceptación y garantizar la confidencialidad e integridad de los datos. El uso de protocolos seguros como HTTPS (HTTP seguro) es altamente recomendable. Esto implica el uso de certificados SSL/TLS para cifrar las comunicaciones y garantizar la autenticidad de los servidores.
+
+	3) Gestión de secretos: Los microservicios a menudo necesitan acceder a credenciales, como contraseñas o claves de API, para interactuar con otros servicios o bases de datos. Es importante manejar adecuadamente estos secretos, evitando su exposición accidental o su almacenamiento en texto plano. Puedes utilizar herramientas como Vault o servicios de gestión de secretos en la nube para almacenar y proteger los secretos de manera segura.
+
+	4) Validación y sanitización de entradas: Asegúrate de validar y sanitizar adecuadamente las entradas que reciben tus microservicios para prevenir ataques de inyección, como SQL injection o cross-site scripting (XSS). Utiliza bibliotecas o marcos de desarrollo que incluyan funcionalidades de validación y sanitización de forma automática.
+
+	5)Gestión de errores segura: Cuando se producen errores en los microservicios, evita revelar información sensible o detalles internos que puedan ser explotados por atacantes. Proporciona mensajes de error genéricos y limita la cantidad de información técnica expuesta en las respuestas de error.
+
+	6) Auditoría y registro de eventos: Implementa mecanismos de auditoría y registro de eventos para tener un registro de las actividades realizadas en tus microservicios. Esto es útil para realizar un seguimiento de las acciones realizadas, detectar posibles brechas de seguridad y cumplir con requisitos de cumplimiento normativo.
+
+******************************** PRUEBAS Y DEPLOYS ********************************
+
+* Es importante contar con un sólido proceso de pruebas para cada microservicio, incluyendo pruebas unitarias, de integración y de extremo a extremo. Además, debes tener un enfoque claro para el despliegue y la gestión de versiones de tus microservicios.
+
+* Realizar pruebas unitarias, de integracion, ent to ent (de entrada a final) y de rendimiento y stress
+
+* Deploys:
+
+	1) Automatización del despliegue: Implementa herramientas y procesos de automatización para facilitar el despliegue de tus microservicios. Utiliza herramientas como Docker y Kubernetes para crear imágenes de contenedores y orquestar el despliegue y la gestión de tus microservicios.
+
+	2) Gestión de versiones: Establece una estrategia clara para la gestión de versiones de tus microservicios. Esto implica utilizar etiquetas o números de versión para identificar y controlar las versiones de tus microservicios, lo que facilita la gestión de cambios y la reversión en caso de problemas.
+
+	3) Entornos de pruebas y producción: Mantén entornos separados para pruebas y producción, lo que te permitirá probar los cambios en un entorno aislado antes de desplegarlos en producción. Esto ayuda a minimizar los impactos de posibles problemas y permite una validación adecuada antes de poner en producción tus microservicios.
+
+	4) Monitoreo post-despliegue: Después de desplegar tus microservicios, asegúrate de monitorear su rendimiento y estado en tiempo real. Esto te permitirá detectar problemas o anomalías y tomar medidas correctivas de manera oportuna.

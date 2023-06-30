@@ -1,0 +1,182 @@
+*********************************** HOT FUNCTIONS EN V8 ******************************
+
+En el contexto de V8, el motor JavaScript de código abierto desarrollado por Google que se utiliza en el navegador Chrome, las "funciones calientes" (hot functions) se refieren a las funciones que se han ejecutado con frecuencia y, por lo tanto, se consideran "calientes" o "activas". V8 utiliza un mecanismo de compilación denominado "optimización de compilación justo a tiempo" (Just-In-Time, JIT) para mejorar el rendimiento de las funciones calientes. Cuando una función se ejecuta repetidamente en V8, el motor realiza un seguimiento de su comportamiento y recopila información sobre los tipos de datos que recibe y las operaciones que realiza. Basándose en esta información, V8 puede aplicar optimizaciones específicas a la función, como la eliminación de códigos innecesarios, la especialización de tipos y la reorganización de instrucciones, para hacerla más eficiente. Una vez que una función ha sido identificada como "caliente" y optimizada, V8 puede almacenarla en caché para su uso posterior. Esto significa que, en lugar de volver a compilar la función cada vez que se llama, V8 puede ejecutar directamente la versión optimizada en caché, lo que reduce la sobrecarga de tiempo de compilación y mejora el rendimiento general de la aplicación. Las funciones calientes en V8 y su almacenamiento en caché ayudan a acelerar la ejecución de aplicaciones en el navegador Chrome. Al optimizar y reutilizar las funciones que se ejecutan con frecuencia, V8 puede lograr una mejora significativa en el rendimiento y hacer que las aplicaciones sean más eficientes.
+
+* No es posible indicar explícitamente qué funciones deben considerarse "calientes" desde el codigo de la aplicacion para el motor V8 de Chrome.
+
+* PRACTICAS PARA AYUDAR AL MOTOR V8 A REALIZAR UNA OPTIMIZACION EFICIENTE:
+
+1) Evita el uso excesivo de funciones anónimas o de alto orden: V8 optimiza mejor las funciones que tienen un nombre y un alcance estable, ya que puede rastrear su comportamiento de manera más precisa.
+
+2) Evita la redefinición de funciones: V8 puede tener dificultades para optimizar funciones que se redefinen durante la ejecución, ya que esto puede afectar la estabilidad de la optimización. (REACT NO HACE ESTO, NO SE REDEFINEN EN LA EJECUCION NI EN CADA RENDER, son estables.)
+
+3) Evita patrones de código que deshabiliten las optimizaciones: Algunas construcciones de código como:
+
+3.a) eval() ---> La función eval() en JavaScript permite ejecutar código JavaScript en forma de una cadena. lo que hayamos pasado como argumento a esta funcion se ejecuta en tiempo de ejecucion por lo tanto no se puede optimizar de ante mano en tiempo de compilacion. Algunos casos de uso de eval():
+
+** En aplicaciones que necesitan interpretar fórmulas matemáticas ingresadas por el usuario, eval() podría utilizarse para evaluar y calcular el resultado de esas fórmulas
+
+** Algunos sistemas permiten a los usuarios cargar módulos o plugins personalizados en tiempo de ejecución.
+
+** En un entorno de desarrollo o en una consola de depuración, eval() puede ser útil para probar y ejecutar rápidamente fragmentos de código JavaScript en el contexto actual.
+
+3.b) with ---> La construcción with en JavaScript permite establecer un objeto como el contexto actual en el que se accede a las propiedades. Sin embargo, el uso de with no se considera una buena práctica y su uso se desaconseja en la mayoría de los casos. A partir de ECMAScript 5 strict mode, with está prohibido y su uso genera un error.
+
+4) Utilizar React.memo ---> Se puede utilizar para memorizar el resultado de un componente y evitar renderizaciones innecesarias cuando las propiedades no han cambiado. Esto permite al motor V8 optimizar el rendimiento al evitar la ejecución y reconciliación de componentes que no necesitan ser actualizados.
+
+5) usar keys en listas o mapeos de react
+
+6) Utilizar operadores "cortocircuito" ---> En lugar de usar condicionales largos y anidados, considera el uso de operadores de cortocircuito como "&&" y "||". Estos operadores permiten realizar evaluaciones condicionales de manera concisa y pueden ayudar al motor V8 a generar un código más eficiente.
+
+7) Usar con precaucion el useEffect y usar la menor cantidad de estados posible. Evita crear un gran número de estados y efectos innecesarios en tus componentes. Mantén tu árbol de componentes lo más liviano posible y asegúrate de que los efectos estén bien optimizados y se ejecuten solo cuando sea necesario.
+
+8) Siempre que se pueda usar un fragment por sobre un <div> ---> Los fragmentos ayudan a evitar la generación innecesaria de nodos DOM adicionales.
+
+9) Implementar Lazy loading en el caso de que tu aplicación tiene componentes o recursos pesados que no son necesarios al cargar inicialmente la página
+
+10) Minimiza el uso de objetos temporales ---> Evita crear y asignar objetos temporales (objeto que se crea y se utiliza temporalmente durante la ejecución de una porción de código, pero que no tiene una utilidad o relevancia más allá de ese contexto específico.) en bucles o funciones que se ejecutan con frecuencia. Los objetos temporales pueden generar una sobrecarga de memoria y afectar el rendimiento. Intenta reutilizar objetos existentes siempre que sea posible o utiliza estructuras de datos más eficientes, como arrays o maps.
+
+11) Utiliza operaciones matemáticas eficientes ---> En vez de usar un for y recorrer y sumar por ejemplo. Es conveniente siempre usar un map() o reduce()
+
+12) Evita el acceso excesivo al DOM ---> Esto ya lo hace react solo con la ayuda del virtual dom
+
+13) Utiliza técnicas de optimización de CSS: El rendimiento también puede verse afectado por la manipulación y el renderizado de estilos CSS. Evita el uso excesivo de selectores complejos y específicos que requieren un mayor esfuerzo de cálculo por parte del motor CSS.
+
+14) Minimizar el uso de propiedades y métodos dinámicos: El acceso a propiedades y métodos dinámicos en tiempo de ejecución puede tener un impacto negativo en el rendimiento. Si es posible, intenta utilizar acceso estático a propiedades y métodos en su lugar. Ejemplo de una propiedad dinamica que es accedida en tiempo de ejecucion:
+
+const obj = {
+  prop1: 'valor1',
+  prop2: 'valor2',
+};
+
+const propertyName = 'prop1';
+console.log(obj[propertyName]);  // Output: 'valor1'
+
+// Al llegar a la linea del console.log() se esta accediendo al objeto. El programa "ve" que accede mediante una variable. Por lo cual primero debe ir y ver que valor tiene la variable "propertyName". Esto hace que sea menos performante que obj['prop1']
+
+15) Utilizar operaciones aritméticas en lugar de funciones matemáticas ---> En algunos casos, el uso de operaciones aritméticas simples (como suma, resta, multiplicación, etc.) puede ser más eficiente que el uso de funciones matemáticas incorporadas más complejas.
+
+16) optimizar la lógica dentro de los bucles siempre que sea posible
+
+********************************* MEMORIZACION *********************************
+
+* la memorización es una técnica que permite almacenar en caché los resultados de cálculos costosos y reutilizarlos en futuras llamadas con los mismos valores de entrada. Esto puede mejorar el rendimiento al evitar el cálculo repetido y utilizar los resultados previamente calculados desde la caché. Esto es lo que utiliza la libreria "re-select" de react con los selectores por detras. Cuando lo que vas a retornar es distinto cada vez, pese a que estes pasando los mismos argumentos (por ejemplo algun calculo con la hora actual o lectura|escritura de un archivo o realizar solicitudes a una base de datos) no tiene sentido implementar una memoizacion. En resumen, si tenes una funcion no pura (devuelve distinto resultado pese a que tenga los mismos argumentos), NO USAR MEMORIZACION NI RESELECT
+* Algunos puntos a tener en cuenta para saber si debemos memorizar algo o no:
+
+** Complejidad del cálculo: Si la función realiza cálculos costosos o procesos computacionalmente intensivos, puede tener sentido utilizar la memorización para evitar recalcular el resultado cuando los mismos datos de entrada se utilizan nuevamente.
+
+** Frecuencia de reutilización: Si la función se llama repetidamente con los mismos argumentos o en un bucle, la memorización puede mejorar significativamente el rendimiento al evitar cálculos redundantes.
+
+** Inmutabilidad de los datos de entrada: Si los datos de entrada son inmutables, es decir, no cambian después de su creación, es más seguro aplicar la memorización, ya que los resultados almacenados en caché no se volverán obsoletos.
+
+** Espacio en memoria disponible: La memorización implica almacenar resultados en caché, lo que puede consumir memoria adicional. Si el espacio en memoria es limitado, es posible que desees limitar la cantidad de resultados almacenados en caché o considerar otros enfoques de optimización.
+
+* Ejemplo basico de memorizacion:
+
+function square(n, cache = {}) {
+  if (cache[n]) {
+    return cache[n];
+  } else {
+    const result = n * n;
+    cache[n] = result;
+    return result;
+  }
+}
+
+console.log(square(5));  // Output: 25
+console.log(square(5));  // Output: 25, Esta vez no hara el calculo al ya haberlo hecho y tenerlo en cache, saca la respuesta de ahi
+
+* Existen 3 tipos comunes de memorizacion avanzada:
+
+1) memorizacion en cascada ---> Dividimos en varias cache. En lugar de tener una sola memoria caché, se utilizan varias capas de caché, cada una con diferentes niveles de granularidad. Cada capa de caché almacena resultados calculados en diferentes etapas del proceso de cálculo. En resumen, tenemos varias caches que se van anidando una debajo de otra. Ejemplo:
+
+function complexCalculation(n) {
+  if (complexCalculation.cache1[n]) {
+    return complexCalculation.cache1[n];
+  } else {
+    // Realizar cálculos complejos de la etapa 1
+    const result1 = /* ... */;
+
+    if (complexCalculation.cache2[result1]) {
+      return complexCalculation.cache2[result1];
+    } else {
+      // Realizar cálculos complejos de la etapa 2
+      const result2 = /* ... */;
+
+      // Almacenar resultados en la memoria caché
+      complexCalculation.cache1[n] = result1;
+      complexCalculation.cache2[result1] = result2;
+
+      return result2;
+    }
+  }
+}
+
+complexCalculation.cache1 = {};
+complexCalculation.cache2 = {};
+
+console.log(complexCalculation(5));  // Output: Resultado complejo para n = 5
+console.log(complexCalculation(5));  // Output: Resultado complejo para n = 5
+
+2) Memorización parcial ---> se utiliza cuando solo se desea almacenar en caché una parte de los resultados de una función, en lugar de memorizar todos los posibles resultados. Se utiliza cuando solo algunos valores de entrada específicos son propensos a cálculos repetidos. En el caso de abajo solo la catcheamos si es un valor que nos importa, Ejemplo:
+
+function complexCalculation(n) {
+  if (n === complexCalculation.interestingValue && complexCalculation.cache[n]) {
+    return complexCalculation.cache[n];
+  } else {
+    // Realizar cálculos complejos
+    const result = /* ... */;
+
+    if (n === complexCalculation.interestingValue) {
+      complexCalculation.cache[n] = result;
+    }
+
+    return result;
+  }
+}
+
+complexCalculation.cache = {};
+complexCalculation.interestingValue = 5;
+
+console.log(complexCalculation(5));  // Output: Resultado complejo para n = 5
+console.log(complexCalculation(5));  // Output: Resultado complejo para n = 5
+console.log(complexCalculation(10)); // Output: Resultado complejo para n = 10
+
+3) Memorización con límites de tamaño ---> es una técnica que impone un límite en el tamaño de la caché utilizada para almacenar los resultados memorizados. Cuando la caché alcanza su límite máximo, se pueden aplicar diferentes estrategias para gestionar el espacio limitado, como la eliminación de resultados menos utilizados o la implementación de una política de reemplazo. Esta técnica es útil cuando los resultados memorizados pueden consumir una cantidad significativa de memoria y se necesita controlar el uso de la memoria caché para evitar un agotamiento excesivo de recursos. Ejemplo:
+
+function factorial(n, cache = {}) {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
+
+  if (cache[n]) {
+    return cache[n];
+  }
+
+  const result = n * factorial(n - 1, cache);
+  cache[n] = result;
+
+  // Limitar el tamaño de la caché a 5 elementos
+  const cachedKeys = Object.keys(cache);
+  if (cachedKeys.length > 5) {
+    delete cache[cachedKeys[0]];
+  }
+
+  return result;
+}
+
+console.log(factorial(5));  // Output: 120
+console.log(factorial(4));  // Output: 24
+console.log(factorial(3));  // Output: 6
+console.log(factorial(2));  // Output: 2
+console.log(factorial(1));  // Output: 1
+console.log(factorial(0));  // Output: 1
+console.log(factorial(6));  // Output: 720
+console.log(factorial(5));  // Output: 120 (recuperado de la caché)
+
+** Explicacion del ejemplo de arriba ---> En este ejemplo, la función factorial calcula el factorial de un número dado n. Utiliza un objeto cache para almacenar los resultados calculados anteriormente. Si el resultado para un número n se encuentra en la caché, se devuelve directamente desde la caché. De lo contrario, se realiza el cálculo del factorial y se almacena el resultado en la caché. Además, se ha agregado una lógica para limitar el tamaño de la caché a 5 elementos. Después de cada cálculo y almacenamiento en caché, se verifica el tamaño de la caché. Si el número de elementos en la caché supera el límite establecido (5 en este caso), se elimina el elemento más antiguo (el primer elemento en el objeto cache).
+
+
+
+
+
