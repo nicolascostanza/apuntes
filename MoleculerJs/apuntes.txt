@@ -1,0 +1,208 @@
+*********************** CONCEPTOS CORE ***********************
+
+* Service ---> Un servicio es un simple módulo JavaScript que contiene alguna parte de una aplicación compleja. Está aislado y es autónomo, lo que significa que incluso si se desconecta o se bloquea, el resto de servicios no se verán afectados.
+
+* Nodo o Node ---> es un simple proceso del sistema operativo que se ejecuta en una red local o externa. Una única instancia de un nodo puede alojar uno o varios servicios.
+
+* Local service ---> Two (or more) services running on a single node are considered local services. They share hardware resources and use local bus to communicate with each other, no network latency (transporter is not used).
+
+* Remote service ---> Los servicios distribuidos en varios nodos se consideran remotos. En este caso, la comunicación se realiza a través del transportador.
+
+* Service Broker ---> Service Broker es el corazón de Moleculer. Es responsable de la gestión y comunicación entre servicios (locales y remotos). Cada nodo debe tener una instancia de Service Broker.
+
+* Transporter ---> El transportador es un bus de comunicación que los servicios utilizan para intercambiar mensajes. Transfiere eventos, peticiones y respuestas.
+
+* Gateway ---> API Gateway exposes Moleculer services to end-users. The gateway is a regular Moleculer service running a (HTTP, WebSockets, etc.) server. It handles the incoming requests, maps them into service calls, and then returns appropriate responses. Seria como la api maestra que maneja todos los modulos y la encargada de manejar las request y orquetas la asignacion a cada modulo.
+
+*********************** BROKER ***********************
+
+* El ServiceBroker es el componente principal de Moleculer. Maneja servicios, llama a acciones, emite eventos y se comunica con nodos remotos. Debe crear una instancia de ServiceBroker en cada nodo
+
+* Crear un broker con opciones por defecto:
+
+	const { ServiceBroker } = require("moleculer");
+	const broker = new ServiceBroker({
+			nodeID: "my-node"
+	});
+
+* Crear un broker con transporter para comunicarme con nodos remotos:
+
+	const { ServiceBroker } = require("moleculer");
+	const broker = new ServiceBroker({
+			nodeID: "node-1",
+			transporter: "nats://localhost:4222",
+			logLevel: "debug",
+			requestTimeout: 5 * 1000
+	});
+
+* Opciones de metadata
+
+	const broker = new ServiceBroker({
+			nodeID: "broker-2",
+			transporter: "NATS",
+			metadata: {
+					region: "eu-west1"
+			}
+	});
+
+* Manejador de errores y fallas de eventos globales:
+
+	const broker = new ServiceBroker({
+			errorHandler(err, info) {
+					this.logger.warn("Log the error:", err);
+					throw err; // Throw further
+			}
+	});
+
+*********************** SERVICES ***********************
+
+* Mixins ---> Los mixins son una forma flexible de distribuir funcionalidades reutilizables para los servicios de Moleculer. El constructor del servicio fusiona estos mixins con el esquema actual. Cuando un servicio utiliza mixins, todas las propiedades presentes en el mixin se "mezclarán" en el servicio actual.
+
+* Actions ---> Las acciones son los métodos invocables/públicos del servicio. Son invocables con broker.call o ctx.call.
+La acción puede ser una función (abreviatura de manejador) o un objeto con algunas propiedades y manejador.
+Las acciones deben colocarse bajo la clave actions en el esquema. Para más información, consulte la documentación sobre acciones. Ejemplo:
+
+	// math.service.js
+	module.exports = {
+			name: "math",
+			actions: {
+					// Shorthand definition, only a handler function
+					add(ctx) {
+							return Number(ctx.params.a) + Number(ctx.params.b);
+					},
+
+					// Normal definition with other properties. In this case
+					// the `handler` function is required!
+					mult: {
+							cache: false,
+							params: {
+									a: "number",
+									b: "number"
+							},
+							handler(ctx) {
+									// The action properties are accessible as `ctx.action.*`
+									if (!ctx.action.cache)
+											return Number(ctx.params.a) * Number(ctx.params.b);
+							}
+					}
+			}
+	};
+
+* Methods ---> sirven para hacer acciones privadas en nuestro modulo, no pueden ser llamadas con broker.call. Ejemplo:
+
+	// mailer.service.js
+	module.exports = {
+			name: "mailer",
+			actions: {
+					send(ctx) {
+							// Call the `sendMail` method
+							return this.sendMail(ctx.params.recipients, ctx.params.subject, ctx.params.body);
+					}
+			},
+
+			methods: {
+					// Send an email to recipients
+					sendMail(recipients, subject, body) {
+							return new Promise((resolve, reject) => {
+									...
+							});
+					}
+			}
+	};
+
+* Hot reloading para developer ---> como hacer que se refrezque el servidor cuando realizamos un cambio en el codigo:
+
+	const broker = new ServiceBroker({
+			hotReload: true
+	});
+
+	broker.loadService("./services/test.service.js");
+
+*********************** ACTIONS ***********************
+
+* En un proyecto comun, tendriamos una api gateway y dentro de el tendriamos un manejador de request, que usariamos broker.call. Osea desde una API llamariamos a un modulo. Ejemplo:
+
+	const res = await broker.call(actionName, params, opts);
+
+	** actionName es un string separado con punto de la accion que vamos a llamar. La primera parte es el modulo y la segunda la acion. Ejemplo 'products.list'
+	** params es un objeto que se le pasan props como parte del context
+	** opts es un objeto que sobreescribe o setea algunas propiedades de configuracion
+
+* Ejemplo de una llamada a una accion:
+
+	const res = await broker.call("user.recommendation", { limit: 5 }, {
+			timeout: 500,
+			retries: 3,
+			fallbackResponse: defaultRecommendation
+	});
+
+* Ejemplo de una llamada a una accion con manejo de errores
+
+	broker.call("posts.update", { id: 2, title: "Modified post title" })
+			.then(res => console.log("Post updated!"))
+			.catch(err => console.error("Unable to update Post!", err));
+
+
+* La prop meta en el de options sirve para enviar de vuelta al servicio que llama. Utilícelo para enviar información meta adicional a la persona que llama. Por ejemplo: enviar cabeceras de respuesta de vuelta a la pasarela API o establecer el usuario conectado resuelto en metadatos.
+
+* Llamada a varias acciones al mismo tiempo. Ejemplo:
+
+	await broker.mcall(
+			[
+					{ action: 'posts.find', params: { author: 1 }, options: { /* Calling options for this call. */} },
+					{ action: 'users.find', params: { name: 'John' } }
+			],
+			{
+					// Common calling options for all calls.
+					meta: { token: '63f20c2d-8902-4d86-ad87-b58c9e2333c2' }
+			}
+	);
+
+* Visibilidad de la accion ---> Cada accion se le puede setear valor para saber si es visible o si es llamable. Opciones y ejemplo final:
+
+	** published or null ---> accion publica. Puede ser llamada localmente, remotamente y puede ser publicada por la API Gateway
+	** public ---> accion publica. Puede ser llamada local y remotamente pero no publicada por API Gateway
+	** protected ---> puede ser llamada solo locamente
+	** private ---> puede ser llamada solo internamente por el mismo servicio
+
+	module.exports = {
+			name: "posts",
+			actions: {
+					// It's published by default
+					find(ctx) {},
+					clean: {
+							// Callable only via `this.actions.clean`
+							visibility: "private",
+							handler(ctx) {}
+					}
+			},
+	}
+
+
+* Actions hooks ---> son funciones middleware que pueden usarse antes(validacion), despues(mapeo o lo que necesite) o en los errores(gestion del error) de los servicios
+
+*********************** EVENTOS ***********************
+
+* En el caso de que tengas balanceo de carga, por cada emision de evento va a llegar a solo una instancia de la accion. Osea si tengo 3 workers trabajando para enviar emails y llega un evento de la creacion de UN usuario, se va a llamar a solo una accion de enviar email de bienvenida por ejemplo. Si usamos emit estamos enviando solo una instancia
+
+* Ejemplo de emision de evento:
+
+	broker.emit("user.created", user);
+
+* Ejemplo de emision de evento para un grupoe especifico de modulos:
+
+	broker.emit("user.created", user, ["mail", "payments"]);
+
+* Emision de eventos a todas las instancias de cada modulo. Esto se realiza mediante el metodo broadcast. Ejemplo
+
+	broker.broadcast("user.created", { user }, ["user", "purchase"]);
+
+
+
+
+
+aca me quede
+
+https://moleculer.services/docs/0.14/events.html#:~:text=%7D%0A%20%20%20%20%7D%0A%7D-,Event%20parameter%20validation,-Similar%20to%20action
+
+
